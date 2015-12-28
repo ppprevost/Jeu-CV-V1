@@ -204,26 +204,7 @@ $('document').ready(function() {
 			}
 		};
 
-		referenceTuyauGris.animate = function() {
-			referenceTuyauGris.x = referenceTuyauGris.x - referenceTuyauGris.step;
-			// referenceTuyauGris.y = referenceTuyauGris.y - referenceTuyauGris.stepy;
 
-			// if (referenceTuyauGris.x < parseFloat(container.style.left)) {
-			// 	alert('aie');
-			// } 
-
-			if (referenceTuyauGris.x <= 0) {
-				$(this.elementHTML).remove();
-
-				// referenceTuyauGris.y = Math.floor(Math.random() * 300);
-			}
-			referenceTuyauGris.elementHTML.style.left = referenceTuyauGris.x + 'px';
-			referenceTuyauGris.elementHTML.style.top = referenceTuyauGris.y + 'px';
-			window.requestAnimationFrame(function() {
-				referenceTuyauGris.animate();
-			});
-			return this;
-		};
 
 		var referenceBee = {
 			y: 82,
