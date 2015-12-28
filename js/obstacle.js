@@ -70,14 +70,14 @@ var usineObstacle = function(random) {
 							spriteObstacle();
 						};
 						moveDiplo();
-					return this;
+						return this;
 
-				}
-			};
+					}
+				};
 
-			referenceDiplo.animate = function() {
-				referenceDiplo.x = referenceDiplo.x - referenceDiplo.step;
-				referenceDiplo.y = referenceDiplo.y - referenceDiplo.stepy;
+				referenceDiplo.animate = function() {
+					referenceDiplo.x = referenceDiplo.x - referenceDiplo.step;
+					referenceDiplo.y = referenceDiplo.y - referenceDiplo.stepy;
 
 				// if (referenceDiplo.x - colisionPositionPerso / 2 && referenceDiplo.y < colisionPositionPerso) {
 				// 	$(this.elementHTML).remove();
@@ -108,7 +108,7 @@ var usineObstacle = function(random) {
 				x: window.innerWidth,
 				width: 249,
 				src: 'img/Dino/',
-				visuel:['Pachy.png','raptor-bleu.png','raptor-vert.png'],
+				visuel:['pachy.png','raptor-bleu.png','raptor-vert.png'],
 				choix:Math.round(Math.random()*2),
 				className : "containerRaptor",
 				spriteX: [0,-249, -498, -747, -996, -1245, -1494, -1743],
@@ -205,28 +205,28 @@ var usineObstacle = function(random) {
 					width: 128,
 					spriteX: [0,-128, -256, -384, -512],
 				//0 -> Attack  -100 -> Run
-					spriteY: [0, -100],
-					src: "img/Dino/ptero.png",
-					className : 'containerPtero',
-					height: 100,
-					borderWidth: 5,
-					elementHTML: obs,
-					creation: function() {
-						document.body.appendChild(this.elementHTML);
-						this.elementHTML.style.top = this.y + "px";
-						this.elementHTML.style.left = this.x + "px";
-						this.elementHTML.appendChild(img);
-						img.setAttribute('src', this.src);
-						$(this.elementHTML).addClass(this.className);
-						$('.' +this.className).css({
-							'z-index':'40',
-							'position': 'absolute',
-							'left': this.x + "px",
-							'top': this.y + "px",
-							'width':this.width + "px",
-							'height':this.height + "px",
-							'overflow':'hidden'
-						});
+				spriteY: [0, -100],
+				src: "img/Dino/ptero.png",
+				className : 'containerPtero',
+				height: 100,
+				borderWidth: 5,
+				elementHTML: obs,
+				creation: function() {
+					document.body.appendChild(this.elementHTML);
+					this.elementHTML.style.top = this.y + "px";
+					this.elementHTML.style.left = this.x + "px";
+					this.elementHTML.appendChild(img);
+					img.setAttribute('src', this.src);
+					$(this.elementHTML).addClass(this.className);
+					$('.' +this.className).css({
+						'z-index':'40',
+						'position': 'absolute',
+						'left': this.x + "px",
+						'top': this.y + "px",
+						'width':this.width + "px",
+						'height':this.height + "px",
+						'overflow':'hidden'
+					});
 						/////
 					//Ptero Frame dans methode creation//
 					/////
@@ -260,7 +260,7 @@ var usineObstacle = function(random) {
 						return this;
 					}
 				};
-			
+
 
 				referencePtero.animate = function() {
 
