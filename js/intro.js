@@ -1,3 +1,6 @@
+var intro = function(){
+
+	
 $('#game').prepend("<div id='intro'></div>");
 	$('#intro').append("<div></div>")
 
@@ -45,6 +48,4 @@ $('.perso-hunter').css({
 	width:'350px',
 });
 
-$('.launch').click(function(){
-	$(this).remove();
-	$('#intro').remove();
+}

@@ -3,6 +3,14 @@
 $('document').ready(function() {
 
 
+//introduction jeu intro.js
+intro();
+
+//declencheur du jeu
+$('.launch').click(function(){
+	//suppression du dom de l'intro
+	$(this).remove();
+	$('#intro').remove();
 // Chargement du terrain
 Field().creation().animate();
 
@@ -28,7 +36,7 @@ creationTimer();
 // crer un nouvel hero à l'aide de la fonction constructeur ! 
 perso = new ObjetRyu();
 	// Positionnement générale de ryu! 
-	$('#game').append("<img id='contenu'></div>")
+	$('#game').append("<img id='contenu'></div>");
 	$('#contenu').attr('src',perso.src).wrap($('<div id="container"></div>')).css('position', 'absolute');
 
 	$('#container').css({
@@ -124,6 +132,6 @@ perso = new ObjetRyu();
 	}, false);
 
 
-// })//click
+})//click
 
 }); // end
