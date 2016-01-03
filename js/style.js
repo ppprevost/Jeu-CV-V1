@@ -44,7 +44,7 @@ perso = new ObjetRyu();
 		'position': 'absolute',
 		'left': '200px',
 		'top': '454px',
-		'width': '100px',
+		'width': '116px',
 		'height': '100px',
 		'overflow': 'hidden'
 	});
@@ -53,10 +53,11 @@ perso = new ObjetRyu();
 	if(perso.enAttente)
 		{ruyFixed();}
 
+	
 		// var Obstacle = [usineObstacle(0), usineObstacle(1), usineObstacle()];
 
 		creationObstacle();
-
+// 
 	/////
 	//Déplacement //
 	/////
@@ -65,30 +66,53 @@ perso = new ObjetRyu();
 		
 		switch (e.keyCode) {
 
-			case 38:
+			case 38: //haut
 
 			if (!perso.isJumping) {
 				RyuMove();
 			}
 
 			break;
-			case 39:
+			case 39: //droite
 			e.preventDefault();
 			if (!perso.isRunning && !perso.isJumping) {
 				
-				RyuRunning(50);
+				RyuRunning('+=',5);
 
 			}
 
 			break;
-			case 32:
+
+			case 37: //gauche
 			e.preventDefault();
-			if(!perso.isHaiduken && !perso.isJumping)
+			if (!perso.isRunning && !perso.isJumping) {
+				
+				RyuRunning('-=',5);
+
+			}
+
+			break;
+			case 32: //espace
+			e.preventDefault();
+			if(!perso.isHaiduken && !perso.isJumping &&!perso.isCrouching)
 			{
 				RyuHaiduken();
+				
+	bulletHaiduken().creation().animate();
 
 			}
+
+		
 			break;
+
+			case 40: // bas
+			e.preventDefault();
+			if(!perso.isCrouching && !perso.isHaiduken)
+				{
+					RyuCrouching()
+				}
+				break;
+
 		}
 
 	}, false);
@@ -126,8 +150,28 @@ perso = new ObjetRyu();
 			}
 
 
+			break;
+
+			case 37:
+			e.preventDefault();
+			if (perso.isRunning) {
+				perso.isRunning = false;
+
+
+			}
+
+
 			break;	
+			case 40: 
+		
+			if(perso.isCrouching)
+				{
+					perso.isCrouching=false;
+				}
+				break;
 		}
+
+		
 
 	}, false);
 
