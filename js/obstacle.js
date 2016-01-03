@@ -8,9 +8,6 @@
 		obs.style.zIndex = "6";
 		var colisionPositionPersoX = $('#container').position().left;
 		var colisionPositionPersoY = $('#container').position().top;
-		
-
-
 
 
 		/////
@@ -212,7 +209,7 @@ tab = [1,2,3,4,5,6,7,8,9,10,11,12,13,14]; //Hit Box marge d'erreur
 		/////
 		var referencePtero = {
 			y: 82,
-			step: Math.random() * 10,
+			step: Math.round(Math.random() * 10)+1,
 			stepy: Math.random() * 5,
 			numero: "",
 			x: 2000,
@@ -279,14 +276,8 @@ tab = [1,2,3,4,5,6,7,8,9,10,11,12,13,14]; //Hit Box marge d'erreur
 
 		referencePtero.animate = function() {
 
-			referencePtero.x = parseInt(referencePtero.x - referencePtero.step);
+			referencePtero.x = referencePtero.x - referencePtero.step;
 
-
-			if (
-				referencePtero.x - colisionPositionPersoX - 40 / 2 < colisionPositionPersoX && referencePtero.y - colisionPositionPersoY - 40 / 2 == colisionPositionPersoY
-			) {
-				$(this.elementHTML).remove();
-			}
 
 			if (referencePtero.x <= -80) {
 				$(this.elementHTML).remove();
@@ -302,43 +293,43 @@ tab = [1,2,3,4,5,6,7,8,9,10,11,12,13,14]; //Hit Box marge d'erreur
 		};
 
 		//request animation frame pour le sinus 
-		referencePtero.sinus = function() {
-			var start, xf = 0;
-			var animation = function(timestamp) {
-				start = (start) ? start : timestamp;
-				var delay = timestamp - start;
-				if (delay > 20) {
-					referencePtero.elementHTML.style.top = Math.sin(xf * Math.PI / 200) * 268 + 82 + 'px';
-					xf += 2.4;
-					referencePtero.x += 5;
-					referencePtero.elementHTML.style.left = referencePtero.x + 'px';
-					start = timestamp;
-				}
-				if (xf <= 200) {
-					requestAnimationFrame(animation);
-				}
-			}
-			requestAnimationFrame(animation);
-			// referencePtero.x = referencePtero.x - referencePtero.step;
-			// referencePtero.y = referencePtero.y - referencePtero.stepy;
+		// referencePtero.sinus = function() {
+		// 	var start, xf = 0;
+		// 	var animation = function(timestamp) {
+		// 		start = (start) ? start : timestamp;
+		// 		var delay = timestamp - start;
+		// 		if (delay > 20) {
+		// 			referencePtero.elementHTML.style.top = Math.sin(xf * Math.PI / 200) * 268 + 82 + 'px';
+		// 			xf += 2.4;
+		// 			referencePtero.x += 5;
+		// 			referencePtero.elementHTML.style.left = referencePtero.x + 'px';
+		// 		 	start = timestamp;
+		// 		}
+		// 		if (xf <= 200) {
+		// 			requestAnimationFrame(animation);
+		// 		}
+		// 	}
+		// 	requestAnimationFrame(animation);
+		// 	// referencePtero.x = referencePtero.x - referencePtero.step;
+		// 	// referencePtero.y = referencePtero.y - referencePtero.stepy;
 
-			// if (referencePtero.x < parseFloat(container.style.left)) {
-			// 	alert('aie');
-			// } 
+		// 	// if (referencePtero.x < parseFloat(container.style.left)) {
+		// 	// 	alert('aie');
+		// 	// } 
 
-			if (referencePtero.x <= 0) {
-				$(this.elementHTML).remove();
+		// 	if (referencePtero.x <= 0) {
+		// 		$(this.elementHTML).remove();
 
-				// 	// referencePtero.y = Math.floor(Math.random() * 300);
-				// }
-				// referencePtero.elementHTML.style.left = referencePtero.x + 'px';
-				// window.requestAnimationFrame(function() {
-				// 	referencePtero.animate();
-				// });
+		// 		// 	// referencePtero.y = Math.floor(Math.random() * 300);
+		// 		// }
+		// 		// referencePtero.elementHTML.style.left = referencePtero.x + 'px';
+		// 		// window.requestAnimationFrame(function() {
+		// 		// 	referencePtero.animate();
+		// 		// });
 
-			};
+		// 	};
 
-		};
+		// };
 
 		if (random == 1) {
 			return referenceDiplo;
@@ -361,7 +352,7 @@ tab = [1,2,3,4,5,6,7,8,9,10,11,12,13,14]; //Hit Box marge d'erreur
 			// 	var nouvelObstacle = usineObstacle(typeObstacle).creation().animate().sinus();
 			// 	console.log(nouvelObstacle);
 			// } else {
-			var nouvelObstacle = usineObstacle(typeObstacle).creation().animate();
+			var nouvelObstacle = usineObstacle(2).creation().animate();
 			// }
 			delete nouvelObstacle;
 		}, 2000);

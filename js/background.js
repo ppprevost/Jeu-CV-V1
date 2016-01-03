@@ -52,7 +52,7 @@ var usineNuage = function() {
 	nuage.style.position = "absolute";
 
 	var referenceNuage = {
-		y: Math.floor(Math.random() * 300),
+		y: Math.floor(Math.random() * 200),
 		step: Math.random() * 10,
 		x: 2000,
 		width: 100,
@@ -74,7 +74,7 @@ var usineNuage = function() {
 
 		if (referenceNuage.x <= -4) {
 			referenceNuage.x = window.innerWidth; //taille de la fenetre
-			referenceNuage.y = Math.floor(Math.random() * 300);
+			referenceNuage.y = Math.floor(Math.random() * 200);
 		}
 		referenceNuage.elementHTML.style.left = referenceNuage.x + 'px';
 		referenceNuage.elementHTML.style.top = referenceNuage.y + 'px';
@@ -148,7 +148,7 @@ var usineBackground = function() {
 
 var creationBackground = function() {
 	usineBackground().creation().animate();
-	
+
 	setInterval(function() {
 		usineBackground().creation().animate();
 	}, 10000);

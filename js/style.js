@@ -53,6 +53,8 @@ perso = new ObjetRyu();
 		'overflow': 'hidden'
 	});
 
+
+
 	//launch frame idle
 	if(perso.enAttente)
 		{ruyFixed();}
@@ -104,7 +106,7 @@ perso = new ObjetRyu();
 				RyuHaiduken();
 				
 	bulletHaiduken().creation().animate();
-	
+
 			}
 
 		
