@@ -11,6 +11,10 @@ $('.launch').click(function(){
 	//suppression du dom de l'intro
 	$(this).remove();
 	$('#intro').remove();
+
+//lancement du son
+// $('#game').append('<audio autoplay loop><source src="son/main.mp3"><source src="son/main.ogg"></audio>');
+
 // Chargement du terrain
 Field().creation().animate();
 
@@ -57,6 +61,7 @@ perso = new ObjetRyu();
 		// var Obstacle = [usineObstacle(0), usineObstacle(1), usineObstacle()];
 
 		creationObstacle();
+
 // 
 	/////
 	//Déplacement //
@@ -99,7 +104,7 @@ perso = new ObjetRyu();
 				RyuHaiduken();
 				
 	bulletHaiduken().creation().animate();
-
+	
 			}
 
 		

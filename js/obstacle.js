@@ -92,9 +92,7 @@ tab = [1,2,3,4,5,6,7,8,9,10,11,12,13,14]; //Hit Box marge d'erreur
 			if (referenceDiplo.x <= colisionPositionPersoX ) {
 				$(this.elementHTML).remove();
 			}
-			// var colisionBullet = $('.containerBullet').position().left;
-			// if(referenceDiplo.x <= colisionBullet )
-			// 	$(this.elementHTML).remove();
+			
 	// }		
 
 
@@ -363,9 +361,9 @@ tab = [1,2,3,4,5,6,7,8,9,10,11,12,13,14]; //Hit Box marge d'erreur
 			// 	var nouvelObstacle = usineObstacle(typeObstacle).creation().animate().sinus();
 			// 	console.log(nouvelObstacle);
 			// } else {
-			var nouvelObstacle = usineObstacle(1).creation().animate();
+			var nouvelObstacle = usineObstacle(typeObstacle).creation().animate();
 			// }
-
+			delete nouvelObstacle;
 		}, 2000);
 
 	};

@@ -174,6 +174,7 @@
 					$('#contenu').css('top', perso.spriteY[3] + "px");
 					tPrecedent = tActuel;
 
+
 				}
 				if (perso.isHaiduken) {
 					var animationRequestId = window.requestAnimationFrame(spriteHaiduken);
@@ -195,7 +196,7 @@
 
 			var obs = document.createElement('div');
 			var img = document.createElement('img');
-			img.style.position = "absolute";
+			
 
 			var ObjetHaiduken = {
 				x: $('#container').position().left + 100,
@@ -211,6 +212,7 @@
 				creation: function() {
 					$('#game').append($(this.elementHTML));
 					$(this.elementHTML).addClass(this.className);
+					$(this.elementHTML).append('<audio autoplay><source src="son/fusil.mp3"><source src="son/fusil.ogg"></audio>');
 					$('.containerBullet').append(img);
 
 					$('.bullet').css({
@@ -277,6 +279,10 @@
 					ObjetHaiduken.animate();
 				});
 
+
+
+
+
 			};
 
 			return ObjetHaiduken;
@@ -327,7 +333,50 @@
 			spriteRunning();
 		};
 
-		
+		// Running right
+		var RyuRunningLeft = function(vitesse) {
+
+			perso.isRunning = true;
+
+			var tActuel;
+			var tPrecedent;
+			var frameRunning = 0;
+
+			var spriteRunning = function(actuel) {
+
+				tActuel = actuel;
+				tPrecedent = tPrecedent || actuel;
+
+				var delai = tActuel - tPrecedent;
+
+				if (delai > 70) {
+					$('#container').animate({
+						'left': '-=4px'
+					}, vitesse);
+					frameRunning++;
+					if (frameRunning == 8) {
+						frameRunning = 0;
+					}
+
+					$('#contenu').css('left', perso.spriteX[frameRunning] + "px");
+					$('#contenu').css('top', perso.spriteY[4] + "px");
+					tPrecedent = tActuel;
+
+				}
+				if (perso.isRunning) {
+					var animationRequestId = window.requestAnimationFrame(spriteRunning);
+
+					perso.enAttente = false;
+
+				} else {
+					ruyFixed();
+				}
+
+			};
+			spriteRunning();
+		};
+
+
 
 		//perso is crouching
 		var RyuCrouching = function() {

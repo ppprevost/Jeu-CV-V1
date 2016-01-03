@@ -1,5 +1,5 @@
 /////
-// Bush//
+// Terre//
 /////
 var Field = function() {
 
@@ -148,17 +148,17 @@ var usineBackground = function() {
 
 var creationBackground = function() {
 	usineBackground().creation().animate();
+	
 	setInterval(function() {
 		usineBackground().creation().animate();
 	}, 10000);
-
+delete usineBackground()
 };
 
 
 /*
 Compteur 
  */
-
 
 var creationTimer = function() {
 
