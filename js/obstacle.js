@@ -352,7 +352,7 @@ tab = [1,2,3,4,5,6,7,8,9,10,11,12,13,14]; //Hit Box marge d'erreur
 			// 	var nouvelObstacle = usineObstacle(typeObstacle).creation().animate().sinus();
 			// 	console.log(nouvelObstacle);
 			// } else {
-			var nouvelObstacle = usineObstacle(2).creation().animate();
+			var nouvelObstacle = usineObstacle(typeObstacle).creation().animate();
 			// }
 			delete nouvelObstacle;
 		}, 2000);
