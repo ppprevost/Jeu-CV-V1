@@ -208,7 +208,7 @@ tab = [1,2,3,4,5,6,7,8,9,10,11,12,13,14]; //Hit Box marge d'erreur
 		//Pterodactyle //
 		/////
 		var referencePtero = {
-			y: 82,
+			y: 282,
 			step: Math.round(Math.random() * 10)+1,
 			stepy: Math.random() * 5,
 			numero: "",
