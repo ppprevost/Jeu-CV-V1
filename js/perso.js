@@ -17,8 +17,6 @@
 			// 0 -> walk -100 -> Jump -200 -> Crouch -300 -> Walk Shoot  -400 -> Run
 			this.spriteY = [0, -100, -200, -300, -400]; //balle
 
-
-
 		};
 
 		// Prototype du joueur 
@@ -143,7 +141,6 @@
 
 
 
-
 		// attaque au fusil
 		var RyuHaiduken = function() {
 
@@ -196,7 +193,7 @@
 
 			var obs = document.createElement('div');
 			var img = document.createElement('img');
-			
+
 
 			var ObjetHaiduken = {
 				x: $('#container').position().left + 100,
@@ -266,20 +263,48 @@
 				}
 
 			};
-			ObjetHaiduken.animate = function() {
 
-				ObjetHaiduken.x += 15
-				$(this.elementHTML).css('left', ObjetHaiduken.x)
+			ObjetHaiduken.collisionObstacle = function() {
+				//On parcourt le tableau d'obstacle et si on trouve un obstacle aux prochaines coordonnées de la balle on le supprimer ou on déclenche une méthode qui le supprime.
+				//ex : tabObstacle[x].boum();
+				// return false;
 
-				if ($(this.elementHTML).position().left >= $(window).width()) {
 
-					(this.elementHTML).remove();
+				for (var i = 0; i < tabObstacle.length; i++) {
+					if(tabObstacle[i] != undefined && tabObstacle[i].alive){
+					if (ObjetHaiduken.x+29 >= tabObstacle[i].x && ObjetHaiduken.x+29 <= tabObstacle[i].x+128) {
+						
+							
+						console.log(tabObstacle[i])
+						tabObstacle[i].boum();
+						tabObstacle.splice(i,1);
+						return true;
+					}
+					}
 				}
-				window.requestAnimationFrame(function() {
-					ObjetHaiduken.animate();
-				});
 
+			};
 
+			ObjetHaiduken.animate = function() {
+				if (this.collisionObstacle()) {
+					//suppression de la balle ou tu déclenche l'animation d'explosion
+					
+
+					//suppression de la balle
+					$(this.elementHTML).remove();
+					
+				} else {
+					ObjetHaiduken.x += 15;
+					$(this.elementHTML).css('left', ObjetHaiduken.x)
+
+					if ($(this.elementHTML).position().left >= $(window).width()) {
+						(this.elementHTML).remove();
+					delete this;
+					}
+					window.requestAnimationFrame(function() {
+						ObjetHaiduken.animate();
+					});
+				}
 
 
 
