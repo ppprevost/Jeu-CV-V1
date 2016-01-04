@@ -1,4 +1,4 @@
-	
+	var tabObstacle = [];
 
 	var usineObstacle = function(random) {
 
@@ -85,16 +85,16 @@ tab = [1,2,3,4,5,6,7,8,9,10,11,12,13,14]; //Hit Box marge d'erreur
 // for (var i = 0; i < tab.length; i++) {
 	
 
-			//collision Diplo
-			if (referenceDiplo.x <= colisionPositionPersoX ) {
-				$(this.elementHTML).remove();
-			}
+			// //collision Diplo
+			// if (referenceDiplo.x <= colisionPositionPersoX ) {
+			// 	$(this.elementHTML).remove();
+			// }
 			
 	// }		
 
-
 			if (referenceDiplo.x <= -80) {
 				$(this.elementHTML).remove();
+				delete this;
 				
 			}
 			referenceDiplo.elementHTML.style.left = referenceDiplo.x + 'px';
@@ -105,6 +105,10 @@ tab = [1,2,3,4,5,6,7,8,9,10,11,12,13,14]; //Hit Box marge d'erreur
 
 			return this;
 		};
+		referenceDiplo.boum =function(){
+			$(this.elementHTML).hide(1000).delay(1200).remove();
+			delete this;
+		}
 
 
 		/////
@@ -193,6 +197,7 @@ tab = [1,2,3,4,5,6,7,8,9,10,11,12,13,14]; //Hit Box marge d'erreur
 
 			if (referenceRaptor.x <= -80) {
 				$(this.elementHTML).remove();
+				delete this;
 
 			}
 			referenceRaptor.elementHTML.style.left = referenceRaptor.x + 'px';
@@ -203,6 +208,11 @@ tab = [1,2,3,4,5,6,7,8,9,10,11,12,13,14]; //Hit Box marge d'erreur
 			return this;
 
 		};
+		referenceRaptor.boum =function(){
+			$(this.elementHTML).hide(1000).delay(1200).remove();
+			delete this;
+			
+		}
 
 		/////
 		//Pterodactyle //
@@ -278,65 +288,49 @@ tab = [1,2,3,4,5,6,7,8,9,10,11,12,13,14]; //Hit Box marge d'erreur
 
 			referencePtero.x = referencePtero.x - referencePtero.step;
 
-
 			if (referencePtero.x <= -80) {
 				$(this.elementHTML).remove();
-
-
+				for(property in tabObstacle){
+				if(tabObstacle[property] == this){
+					delete tabObstacle[property];
+				}
+			}
+				
 			}
 			referencePtero.elementHTML.style.left = referencePtero.x + 'px';
 			referencePtero.elementHTML.style.top = referencePtero.y + 'px';
 			window.requestAnimationFrame(function() {
 				referencePtero.animate();
 			});
-			return this;
+			
 		};
 
-		//request animation frame pour le sinus 
-		// referencePtero.sinus = function() {
-		// 	var start, xf = 0;
-		// 	var animation = function(timestamp) {
-		// 		start = (start) ? start : timestamp;
-		// 		var delay = timestamp - start;
-		// 		if (delay > 20) {
-		// 			referencePtero.elementHTML.style.top = Math.sin(xf * Math.PI / 200) * 268 + 82 + 'px';
-		// 			xf += 2.4;
-		// 			referencePtero.x += 5;
-		// 			referencePtero.elementHTML.style.left = referencePtero.x + 'px';
-		// 		 	start = timestamp;
-		// 		}
-		// 		if (xf <= 200) {
-		// 			requestAnimationFrame(animation);
-		// 		}
-		// 	}
-		// 	requestAnimationFrame(animation);
-		// 	// referencePtero.x = referencePtero.x - referencePtero.step;
-		// 	// referencePtero.y = referencePtero.y - referencePtero.stepy;
+		referencePtero.alive = true;
 
-		// 	// if (referencePtero.x < parseFloat(container.style.left)) {
-		// 	// 	alert('aie');
-		// 	// } 
+		referencePtero.boum =function(){
+			this.alive = false;
+			$(this.elementHTML).hide(1000,function(){
+				$(this.elementHTML).remove()
+			});
 
-		// 	if (referencePtero.x <= 0) {
-		// 		$(this.elementHTML).remove();
-
-		// 		// 	// referencePtero.y = Math.floor(Math.random() * 300);
-		// 		// }
-		// 		// referencePtero.elementHTML.style.left = referencePtero.x + 'px';
-		// 		// window.requestAnimationFrame(function() {
-		// 		// 	referencePtero.animate();
-		// 		// });
-
-		// 	};
-
-		// };
+			//suppression de l'objet dans le tableau
+			for(property in tabObstacle){
+				if(tabObstacle[property] == this){
+					delete tabObstacle[property];
+				}
+			}
+			
+		}
 
 		if (random == 1) {
+			tabObstacle.push(referenceDiplo);
 			return referenceDiplo;
 
 		} else if (random == 2) {
+			tabObstacle.push(referencePtero);
 			return referencePtero;
 		} else {
+			tabObstacle.push(referenceRaptor);
 			return referenceRaptor;
 		}
 	};
@@ -352,9 +346,9 @@ tab = [1,2,3,4,5,6,7,8,9,10,11,12,13,14]; //Hit Box marge d'erreur
 			// 	var nouvelObstacle = usineObstacle(typeObstacle).creation().animate().sinus();
 			// 	console.log(nouvelObstacle);
 			// } else {
-			var nouvelObstacle = usineObstacle(typeObstacle).creation().animate();
+			var nouvelObstacle = usineObstacle(2).creation().animate();
 			// }
-			delete nouvelObstacle;
+			
 		}, 2000);
 
 	};
