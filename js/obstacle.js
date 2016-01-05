@@ -80,7 +80,7 @@
 		referenceDiplo.animate = function() {
 			referenceDiplo.x = referenceDiplo.x - referenceDiplo.step;
 			
-tab = [1,2,3,4,5,6,7,8,9,10,11,12,13,14]; //Hit Box marge d'erreur
+tab = [1,2,3,4,5,6,7,8,9,10,11,12,13,14]; //Hit Box marge d'erreur (nul)
 
 // for (var i = 0; i < tab.length; i++) {
 	
@@ -118,7 +118,7 @@ tab = [1,2,3,4,5,6,7,8,9,10,11,12,13,14]; //Hit Box marge d'erreur
 		var referenceRaptor = {
 			y: 410,
 			step: Math.random() * 10, // pour regler la vitesse en x
-			stepy: null,
+		
 			x: window.innerWidth,
 			width: 249,
 			src: 'img/Dino/',
@@ -294,7 +294,18 @@ tab = [1,2,3,4,5,6,7,8,9,10,11,12,13,14]; //Hit Box marge d'erreur
 				if(tabObstacle[property] == this){
 					delete tabObstacle[property];
 				}
-			}
+				}
+				
+
+				for (var i = 0; i < tabObstacle.length; i++) {
+					// this et non pas this.elementHTML
+					if (tabObstacle[i] == this){
+					tabObstacle.splice(i,1);
+					}
+				};
+				
+
+			
 				
 			}
 			referencePtero.elementHTML.style.left = referencePtero.x + 'px';
@@ -314,6 +325,7 @@ tab = [1,2,3,4,5,6,7,8,9,10,11,12,13,14]; //Hit Box marge d'erreur
 			});
 
 			//suppression de l'objet dans le tableau
+			// suppression de l'obstacle cote obstacle ou cote perso ==> preference cote perso 
 			for(property in tabObstacle){
 				if(tabObstacle[property] == this){
 					delete tabObstacle[property];
@@ -346,7 +358,7 @@ tab = [1,2,3,4,5,6,7,8,9,10,11,12,13,14]; //Hit Box marge d'erreur
 			// 	var nouvelObstacle = usineObstacle(typeObstacle).creation().animate().sinus();
 			// 	console.log(nouvelObstacle);
 			// } else {
-			var nouvelObstacle = usineObstacle(typeObstacle).creation().animate();
+			var nouvelObstacle = usineObstacle(2).creation().animate();
 			// }
 			
 		}, 2000);

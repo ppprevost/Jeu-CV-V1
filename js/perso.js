@@ -272,10 +272,11 @@
 
 				for (var i = 0; i < tabObstacle.length; i++) {
 					if(tabObstacle[i] != undefined && tabObstacle[i].alive){
-					if (ObjetHaiduken.x+29 >= tabObstacle[i].x && ObjetHaiduken.x+29 <= tabObstacle[i].x+128) {
+					// detection collision avec bullet
+					if (ObjetHaiduken.x+ObjetHaiduken.width >= tabObstacle[i].x && ObjetHaiduken.x+ObjetHaiduken.width <= tabObstacle[i].x+tabObstacle[i].width) {
+						// si dino derriere alors il peut quand meme tirer 
+						// ObjetHaiduken <= dino.x
 						
-							
-						console.log(tabObstacle[i])
 						tabObstacle[i].boum();
 						tabObstacle.splice(i,1);
 						return true;
@@ -299,7 +300,7 @@
 
 					if ($(this.elementHTML).position().left >= $(window).width()) {
 						(this.elementHTML).remove();
-					delete this;
+					
 					}
 					window.requestAnimationFrame(function() {
 						ObjetHaiduken.animate();
