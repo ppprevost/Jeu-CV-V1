@@ -102,7 +102,6 @@ $('document').ready(function() {
 						e.preventDefault();
 						if (!perso.isHaiduken && !perso.isJumping && !perso.isCrouching) {
 							RyuHaiduken();
-
 							bulletHaiduken().creation().animate();
 
 						}
@@ -127,12 +126,10 @@ $('document').ready(function() {
 				switch (e.keyCode) {
 
 					case 32:
-						if (perso.isHaiduken) {
-							RyuHaiduken();
-							perso.isHaiduken = false;
+						// if (perso.isHaiduken) {
+						
 
-
-						}
+						// }
 
 						break;
 					case 38:
@@ -142,17 +139,13 @@ $('document').ready(function() {
 
 						}
 
-
-
 						break;
 					case 39:
 						e.preventDefault();
 						if (perso.isRunning) {
 							perso.isRunning = false;
 
-
 						}
-
 
 						break;
 
@@ -160,7 +153,6 @@ $('document').ready(function() {
 						e.preventDefault();
 						if (perso.isRunning) {
 							perso.isRunning = false;
-
 
 						}
 

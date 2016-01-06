@@ -1,6 +1,7 @@
 /////
 // Terre//
 /////
+
 var Field = function() {
 
 	var bush = document.createElement('img');
@@ -87,9 +88,6 @@ var usineNuage = function() {
 	return referenceNuage;
 };
 
-
-
-
 var usineBackground = function() {
 
 
@@ -134,6 +132,7 @@ var usineBackground = function() {
 
 		if (ReferenceBackground.x <= 0) {
 			$(this.elementHTML).remove();
+			delete this;
 
 		}
 		ReferenceBackground.elementHTML.style.left = ReferenceBackground.x + 'px';
@@ -152,7 +151,7 @@ var creationBackground = function() {
 	setInterval(function() {
 		usineBackground().creation().animate();
 	}, 10000);
-delete usineBackground()
+
 };
 
 

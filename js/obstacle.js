@@ -1,366 +1,329 @@
-	var tabObstacle = [];
+var tabObstacle = [];
 
-	var usineObstacle = function(random) {
+var usineObstacle = function(random) {
 
-		var obs = document.createElement('div');
-		var img = document.createElement('img');
-		img.style.position = "absolute";
-		obs.style.zIndex = "6";
-		var colisionPositionPersoX = $('#container').position().left;
-		var colisionPositionPersoY = $('#container').position().top;
+	var obs = document.createElement('div');
+	var img = document.createElement('img');
+	img.style.position = "absolute";
+	obs.style.zIndex = "6";
+	var colisionPositionPersoX = $('#container').position().left;
+	var colisionPositionPersoY = $('#container').position().top;
 
+	var referenceDinosaur = {
+		step: Math.round(Math.random() * 10) + 1,
+		//c'est une soustraction qui lance l'animation si = 0 pas de déplacement !!!
+		x: window.innerWidth,
+		energie: null,
+		y: null,
+		src: null,
+		className: null,
+		spriteX: null,
+		spriteY: null,
+		width: null,
+		height: null,
 
-		/////
-		//Diplo //
-		/////
-		var referenceDiplo = {
-			y: 410,
-			step: Math.round(Math.random() * 10)+1, // +1 car c'est une soustraction qui lance l'animation si = 0 pas de déplacement
-			x: window.innerWidth,
-			src: 'img/Dino/diplo.png',
-			className: 'containerDiplo',
-			spriteX: [0, -228, -456, -684, -912, -1140, -1368, -1596],
-			//0 -> Attack  -100 -> Run
-			spriteY: [0, -150, -300, -450],
-			width: 228,
-			height: 150,
-			elementHTML: obs,
-			creation: function() {
-				document.body.appendChild(this.elementHTML);
-				this.elementHTML.style.top = this.y + "px";
-				this.elementHTML.style.left = this.x + "px";
-				this.elementHTML.appendChild(img);
-				img.setAttribute('src', this.src);
-				$(this.elementHTML).addClass(this.className);
-				$('.' + this.className).css({
-					'z-index': '40',
-					'position': 'absolute',
-					'left': this.x + "px",
-					'top': this.y + "px",
-					'width': this.width + "px",
-					'height': this.height + "px",
-					'overflow': 'hidden'
-				});
-				/////
-				//Diplo Frame dans methode creation//
-				/////
-				var moveDiplo = function() {
-					var tActuel;
-					var tPrecedent;
-					var frame = 0;
-					var spriteObstacle = function(actuel) {
+		elementHTML: obs,
+		creation: function() { // on crée le dinosaur et on lui affecte une position initial et ses sprites
+			document.body.appendChild(this.elementHTML);
+			this.elementHTML.style.top = this.y + "px";
+			this.elementHTML.style.left = this.x + "px";
+			this.elementHTML.appendChild(img);
 
-						tActuel = actuel;
-						tPrecedent = tPrecedent || actuel;
-						var delai = tActuel - tPrecedent;
-
-						if (delai > 100) {
-
-							tPrecedent = tActuel;
-							frame++;
-							if (frame == referenceDiplo.spriteX.length) {
-								frame = 0
-							};
-
-							$(img).css('left', referenceDiplo.spriteX[frame] + "px");
-							$(img).css('top', referenceDiplo.spriteY[0]);
-
-						}
-						window.requestAnimationFrame(spriteObstacle);
-
-					};
-					spriteObstacle();
-				};
-				moveDiplo();
-				return this;
-
-			}
-		};
-
-		referenceDiplo.animate = function() {
-			referenceDiplo.x = referenceDiplo.x - referenceDiplo.step;
-			
-tab = [1,2,3,4,5,6,7,8,9,10,11,12,13,14]; //Hit Box marge d'erreur (nul)
-
-// for (var i = 0; i < tab.length; i++) {
-	
-
-			// //collision Diplo
-			// if (referenceDiplo.x <= colisionPositionPersoX ) {
-			// 	$(this.elementHTML).remove();
-			// }
-			
-	// }		
-
-			if (referenceDiplo.x <= -80) {
-				$(this.elementHTML).remove();
-				delete this;
-				
-			}
-			referenceDiplo.elementHTML.style.left = referenceDiplo.x + 'px';
-			referenceDiplo.elementHTML.style.top = referenceDiplo.y + 'px';
-			window.requestAnimationFrame(function() {
-				referenceDiplo.animate();
-			});
-
-			return this;
-		};
-		referenceDiplo.boum =function(){
-			$(this.elementHTML).hide(1000).delay(1200).remove();
-			delete this;
-		}
-
-
-		/////
-		//Objet Raptor //
-		/////
-
-		var referenceRaptor = {
-			y: 410,
-			step: Math.random() * 10, // pour regler la vitesse en x
-		
-			x: window.innerWidth,
-			width: 249,
-			src: 'img/Dino/',
-			visuel: ['pachy.png', 'raptor-bleu.png', 'raptor-vert.png'],
-			choix: Math.round(Math.random() * 2),
-			className: "containerRaptor",
-			spriteX: [0, -249, -498, -747, -996, -1245, -1494, -1743],
-			//0 -> Attack  -100 -> Run
-			spriteY: [0, -150, -300, -450],
-			height: 150,
-			elementHTML: obs,
-			creation: function() {
-				document.body.appendChild(this.elementHTML);
-				this.elementHTML.style.top = this.y + "px";
-				this.elementHTML.style.left = this.x + "px";
-				this.elementHTML.appendChild(img);
+			if (this.choix != undefined && this.visuel != undefined) {
 				img.setAttribute('src', this.src + this.visuel[this.choix]);
-
-				$(this.elementHTML).addClass(referenceRaptor.className);
-				$('.' + this.className).css({
-					'z-index': '40',
-					'position': 'absolute',
-					'left': this.x + "px",
-					'top': this.y + "px",
-					'width': this.width + "px",
-					'height': this.height + "px",
-					'overflow': 'hidden'
-				});
-
-				/////
-				//Raptor Frame dans methode creation//
-				/////
-				var moveRaptor = function() {
-					var tActuel;
-					var tPrecedent;
-					var frame = 0;
-					var spriteObstacle = function(actuel) {
-
-						tActuel = actuel;
-						tPrecedent = tPrecedent || actuel;
-						var delai = tActuel - tPrecedent;
-
-						if (delai > 70) {
-
-							tPrecedent = tActuel;
-							frame++;
-							if (frame == referenceRaptor.spriteX.length) {
-								frame = 0
-							};
-
-							$(img).css('left', referenceRaptor.spriteX[frame] + "px");
-							$(img).css('top', referenceRaptor.spriteY[0]);
-
-						}
-						window.requestAnimationFrame(spriteObstacle);
-
-					};
-					spriteObstacle();
-				};
-				moveRaptor();
-				return this;
+			} else {
+				img.setAttribute('src', this.src);
 			}
-		};
-		/////
-		//Raptor déplacement dans methode animate//
-		/////
-		referenceRaptor.animate = function() {
-			referenceRaptor.x = referenceRaptor.x - referenceRaptor.step;
+			$(this.elementHTML).addClass(this.className);
+			$('.' + this.className).css({
+				'z-index': '40',
+				'position': 'absolute',
+				'left': this.x + "px",
+				'top': this.y + "px",
+				'width': this.width + "px",
+				'height': this.height + "px",
+				'overflow': 'hidden'
+			});
 
 			/////
-			//Collision Raptor //
+			//Dinosaur Frame  //
 			/////
-			// if ( !perso.isJumping){
-			// 	$(this.elementHTML).remove();
-			// }
 
-			if (referenceRaptor.x <= -80) {
+			return this; // pour le chainage de methode
+
+		},
+		moveDinosaur: function() {
+			var tActuel;
+			var tPrecedent;
+			var frame = 0;
+			var dino = this; // correspond bien a l'objet
+			var spriteObstacle = function(actuel) {
+				// console.log(this); // correspond a rien ou a la methode qui n'est pas un objet 
+				tActuel = actuel;
+				tPrecedent = tPrecedent || actuel;
+				var delai = tActuel - tPrecedent;
+				if (delai > 100) {
+					tPrecedent = tActuel;
+					frame++;
+					if (frame == dino.spriteX.length) {
+						frame = 0;
+					}
+					$(img).css('left', dino.spriteX[frame] + "px");
+					$(img).css('top', dino.spriteY[0]);
+				}
+				window.requestAnimationFrame(spriteObstacle);
+
+			};
+			spriteObstacle();
+			return this;
+		},
+		// probleme de reference a l'objet ==> soit on fait une reference avec la var animation soir on sot de l'objet la methode. 
+
+		animate: function() {
+			this.x = this.x - this.step;
+			this.elementHTML.style.left = this.x + 'px';
+			this.elementHTML.style.top = this.y + 'px';
+			var animation = this;
+			if (this.x <= -80) {
 				$(this.elementHTML).remove();
-				delete this;
+				for (i in tabObstacle) {
+					if (tabObstacle[i] == this) {
+						delete tabObstacle[i];
+						tabObstacle.splice(i, 1);
+					}
+				}
+				// for (var i = 0; i < tabObstacle.length; i++) {
+				// 	// this et non pas this.elementHTML
+				// 	if (tabObstacle[i] == this) {
 
+				// 	}
+				// }
 			}
-			referenceRaptor.elementHTML.style.left = referenceRaptor.x + 'px';
-			referenceRaptor.elementHTML.style.top = referenceRaptor.y + 'px';
+			this.alive = true; // sert a la methode boum
+
 			window.requestAnimationFrame(function() {
-				referenceRaptor.animate();
+				animation.animate();
 			});
 			return this;
+		},
+		boum: function() {
+			// stop la methode animate et lance la methode boum
 
-		};
-		referenceRaptor.boum =function(){
-			$(this.elementHTML).hide(1000).delay(1200).remove();
-			delete this;
-			
-		}
-
-		/////
-		//Pterodactyle //
-		/////
-		var referencePtero = {
-			y: 282,
-			step: Math.round(Math.random() * 10)+1,
-			stepy: Math.random() * 5,
-			numero: "",
-			x: 2000,
-			width: 128,
-			spriteX: [0, -128, -256, -384, -512],
-			//0 -> Attack  -100 -> Run
-			spriteY: [0, -100],
-			src: "img/Dino/ptero.png",
-			className: 'containerPtero',
-			height: 100,
-			borderWidth: 5,
-			elementHTML: obs,
-			creation: function() {
-				document.body.appendChild(this.elementHTML);
-				this.elementHTML.style.top = this.y + "px";
-				this.elementHTML.style.left = this.x + "px";
-				this.elementHTML.appendChild(img);
-				img.setAttribute('src', this.src);
-				$(this.elementHTML).addClass(this.className);
-				$('.' + this.className).css({
-					'z-index': '40',
-					'position': 'absolute',
-					'left': this.x + "px",
-					'top': this.y + "px",
-					'width': this.width + "px",
-					'height': this.height + "px",
-					'overflow': 'hidden'
-				});
-				/////
-				//Ptero Frame dans methode creation//
-				/////
-				var movePtero = function() {
-					var tActuel;
-					var tPrecedent;
-					var frame = 0;
-					var spriteObstacle = function(actuel) {
-
-						tActuel = actuel;
-						tPrecedent = tPrecedent || actuel;
-						var delai = tActuel - tPrecedent;
-
-						if (delai > 100) {
-
-							tPrecedent = tActuel;
-							frame++;
-							if (frame == referencePtero.spriteX.length) {
-								frame = 0
-							};
-
-							$(img).css('left', referencePtero.spriteX[frame] + "px");
-							$(img).css('top', referencePtero.spriteY[0]);
-
-						}
-						window.requestAnimationFrame(spriteObstacle);
-
-					};
-					spriteObstacle();
-				};
-				movePtero();
-				return this;
-			}
-		};
-
-
-		referencePtero.animate = function() {
-
-			referencePtero.x = referencePtero.x - referencePtero.step;
-
-			if (referencePtero.x <= -80) {
-				$(this.elementHTML).remove();
-				for(property in tabObstacle){
-				if(tabObstacle[property] == this){
-					delete tabObstacle[property];
-				}
-				}
-				
-
-				for (var i = 0; i < tabObstacle.length; i++) {
-					// this et non pas this.elementHTML
-					if (tabObstacle[i] == this){
-					tabObstacle.splice(i,1);
+			this.energie -= 30;
+			if (this.energie > 0) {
+				this.alive = true;
+			} else {
+				this.alive = false;
+				// on supprime l'element dans la memoire et on le supprime du tableau ! Attention cela va de pair car si l'on ne supprime pas du tableau, les objets prennent du temps a se supprimer ( et donc conflit avec les balles) et si l'on supprime uniquement de la memoire , le tableau s'incrémente de undefined a l'inifi et risque de fuite memoire
+				for (i in tabObstacle) {
+					if (tabObstacle[i] == this) {
+						delete tabObstacle[i];
+						tabObstacle.splice(i, 1);
 					}
-				};
-				
-
-			
-				
+				}
+				// cacher l'element puis le supprimer du DOM
+				$(this.elementHTML).fadeOut(1000, function() {
+					$(this.elementHTML).remove();
+				});
 			}
-			referencePtero.elementHTML.style.left = referencePtero.x + 'px';
-			referencePtero.elementHTML.style.top = referencePtero.y + 'px';
-			window.requestAnimationFrame(function() {
-				referencePtero.animate();
+		},
+		chainage: function() {
+			this.creation().animate().moveDinosaur();
+		}
+	};
+
+	/////
+	//Diplo //
+	/////
+
+	var referenceDiplo = Object.create(referenceDinosaur);
+
+	referenceDiplo.y = 410;
+	referenceDiplo.energie = 100;
+	referenceDiplo.src = 'img/Dino/diplo.png';
+	referenceDiplo.className = 'containerDiplo';
+	referenceDiplo.spriteX = [0, -228, -456, -684, -912, -1140, -1368, -1596];
+	// 	//0 -> Attack  -100 -> Run
+	referenceDiplo.spriteY = [0, -150, -300, -450];
+	referenceDiplo.width = 228;
+	referenceDiplo.height = 150;
+
+
+	var referenceRaptor = Object.create(referenceDinosaur);
+
+	/////
+	//Raptor //
+	/////
+	referenceRaptor.y = 410;
+	referenceRaptor.energie = 200;
+	referenceRaptor.src = 'img/Dino/';
+	referenceRaptor.visuel = ['pachy.png', 'raptor-bleu.png', 'raptor-vert.png'];
+	referenceRaptor.className = "containerRaptor";
+	referenceRaptor.spriteX = [0, -249, -498, -747, -996, -1245, -1494, -1743];
+	//0 -> Attack  -100 -> Run
+	referenceRaptor.spriteY = [0, -150, -300, -450];
+	referenceRaptor.width = 249;
+	referenceRaptor.height = 150;
+	referenceRaptor.choix = Math.round(Math.random() * 2);
+
+
+	/////
+	//Pterodactyle //
+	/////
+	var referencePtero = Object.create(referenceDinosaur)
+
+	referencePtero.y = 282;
+	referencePtero.energie = 80;
+	referencePtero.src = "img/Dino/ptero.png",
+		referencePtero.className = 'containerPtero',
+		referencePtero.spriteX = [0, -128, -256, -384, -512];
+	// 	//0 -> Attack  -100 -> Run
+	referencePtero.spriteY = [0, -100];
+	referencePtero.width = 128;
+	referencePtero.height = 100;
+
+
+	if (random == 1) {
+		tabObstacle.push(referenceDiplo);
+		return referenceDiplo;
+
+	} else if (random == 2) {
+		tabObstacle.push(referencePtero);
+		return referencePtero;
+	} else {
+		tabObstacle.push(referenceRaptor);
+		return referenceRaptor;
+	}
+};
+
+
+var creationObstacle = function() {
+
+	setInterval(function() {
+		var typeObstacle = Math.round(Math.random() * 2);
+
+		// var nouvelObstacle = 
+		usineObstacle(typeObstacle).chainage();
+	}, 1000);
+
+};
+
+//fonction usine balle
+
+var bulletHaiduken = function() {
+
+	var obs = document.createElement('div');
+	var img = document.createElement('img');
+
+
+	var ObjetHaiduken = {
+		x: $('#container').position().left + 100,
+		y: $('#container').position().top + 45,
+		className: 'containerBullet',
+		src: 'img/item.png',
+		spriteItemX: [0, -29, -58, -87, -116, -145, -174, -203, -232, -261],
+		spriteItemY: [0], //balle 
+		width: 29,
+		height: 13,
+		elementHTML: obs,
+
+		creation: function() {
+			$('#game').append($(this.elementHTML));
+			$(this.elementHTML).addClass(this.className);
+			$(this.elementHTML).append('<audio autoplay><source src="son/fusil.mp3"><source src="son/fusil.ogg"></audio>');
+			$('.containerBullet').append(img);
+
+			$('.bullet').css({
+				'position': 'absolute'
 			});
-			
-		};
 
-		referencePtero.alive = true;
+			img.setAttribute('src', this.src);
+			$('.containerBullet').css({
+				'overflow': 'hidden',
+				'width': this.width + 'px',
+				'height': this.height + 'px',
+				'position': 'absolute',
+				'left': this.x + 'px', // retranchement des valeurs des positions du hero
+				'top': this.y + 'px'
 
-		referencePtero.boum =function(){
-			this.alive = false;
-			$(this.elementHTML).hide(1000,function(){
-				$(this.elementHTML).remove()
 			});
 
-			//suppression de l'objet dans le tableau
-			// suppression de l'obstacle cote obstacle ou cote perso ==> preference cote perso 
-			for(property in tabObstacle){
-				if(tabObstacle[property] == this){
-					delete tabObstacle[property];
+			//sprite bullet
+			var moveBullet = function() {
+
+				var tActuel;
+				var tPrecedent;
+				var frameBullet = 0;
+				var spriteBullet = function(actuel) {
+					tActuel = actuel;
+					tPrecedent = tPrecedent || actuel;
+
+					var delai = tActuel - tPrecedent;
+
+					if (delai > 50) {
+						frameBullet++;
+						if (frameBullet == ObjetHaiduken.spriteItemX.length) {
+							frameBullet = 0;
+						}
+						$(img).css('left', ObjetHaiduken.spriteItemX[frameBullet] + "px");
+						$(img).css('top', ObjetHaiduken.spriteItemY[0] + "px");
+						tPrecedent = tActuel;
+
+
+					}
+					// if (perso.isHaiduken) {
+					var animationRequestId = window.requestAnimationFrame(spriteBullet);
+
+					// }
+				};
+				spriteBullet();
+
+			};
+			moveBullet()
+			return this;
+		}
+
+	};
+
+	ObjetHaiduken.collisionObstacle = function() {
+		//On parcourt le tableau d'obstacle et si on trouve un obstacle aux prochaines coordonnées de la balle on le supprimer ou on déclenche une méthode qui le supprime.
+
+		for (var i = 0; i < tabObstacle.length; i++) {
+			if (tabObstacle[i] != undefined) { // s'il existe et qu'il es vivant alors detection collision avec bullet
+				if (ObjetHaiduken.x + ObjetHaiduken.width >= tabObstacle[i].x && ObjetHaiduken.x + ObjetHaiduken.width <= tabObstacle[i].x + tabObstacle[i].width) {
+					// si dino derriere alors il peut quand meme tirer 
+					// ObjetHaiduken <= dino.x ca marche pas si derriere
+
+					tabObstacle[i].boum();
+
+					return true;
 				}
 			}
-			
 		}
 
-		if (random == 1) {
-			tabObstacle.push(referenceDiplo);
-			return referenceDiplo;
+	};
 
-		} else if (random == 2) {
-			tabObstacle.push(referencePtero);
-			return referencePtero;
+	ObjetHaiduken.animate = function() {
+		if (this.collisionObstacle()) {
+
+			//suppression de la balle
+			$(this.elementHTML).remove();
+			delete this;
+
 		} else {
-			tabObstacle.push(referenceRaptor);
-			return referenceRaptor;
+			ObjetHaiduken.x += 15;
+			$(this.elementHTML).css('left', ObjetHaiduken.x);
+
+			if ($(this.elementHTML).position().left >= $(window).width()) {
+				$(this.elementHTML).remove();
+
+			}
+			window.requestAnimationFrame(function() {
+				ObjetHaiduken.animate();
+			});
 		}
 	};
 
+	return ObjetHaiduken;
 
-	var creationObstacle = function() {
-
-		setInterval(function() {
-			var typeObstacle = Math.round(Math.random() * 2);
-
-			// if (usineObstacle(typeObstacle).sinus() != undefined) {
-
-			// 	var nouvelObstacle = usineObstacle(typeObstacle).creation().animate().sinus();
-			// 	console.log(nouvelObstacle);
-			// } else {
-			var nouvelObstacle = usineObstacle(2).creation().animate();
-			// }
-			
-		}, 2000);
-
-	};
+};
