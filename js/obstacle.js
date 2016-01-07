@@ -1,3 +1,4 @@
+// pour tester les collisions je mets les objets obstacles dans ce tableau. Nous testerons par la suite les collisions avec l'usine Bullet
 var tabObstacle = [];
 
 var usineObstacle = function(random) {
@@ -10,17 +11,18 @@ var usineObstacle = function(random) {
 	var colisionPositionPersoY = $('#container').position().top;
 
 	var referenceDinosaur = {
-		step: Math.round(Math.random() * 10) + 1,
-		//c'est une soustraction qui lance l'animation si = 0 pas de déplacement !!!
+		step: Math.round(Math.random() * 10) + 1, //c'est une soustraction qui lance l'animation si = 0 pas de déplacement !!!
 		x: window.innerWidth,
 		energie: null,
 		y: null,
 		src: null,
 		className: null,
 		spriteX: null,
+		spriteXDead: null,
 		spriteY: null,
 		width: null,
 		height: null,
+		alive: true, // lance la methode boum et a la methode moveDinosaur qui va permettre de declencher le sprite correspondant en fonction de l'etat
 
 		elementHTML: obs,
 		creation: function() { // on crée le dinosaur et on lui affecte une position initial et ses sprites
@@ -29,7 +31,8 @@ var usineObstacle = function(random) {
 			this.elementHTML.style.left = this.x + "px";
 			this.elementHTML.appendChild(img);
 
-			if (this.choix != undefined && this.visuel != undefined) {
+			if (this.choix !== undefined && this.visuel !== undefined) {
+				// methode pour la creation du visuel raptor
 				img.setAttribute('src', this.src + this.visuel[this.choix]);
 			} else {
 				img.setAttribute('src', this.src);
@@ -44,10 +47,10 @@ var usineObstacle = function(random) {
 				'height': this.height + "px",
 				'overflow': 'hidden'
 			});
-
-			/////
-			//Dinosaur Frame  //
-			/////
+			$(this.elementHTML).append('<audio autoplay><source src=' + this.srcSon + '></audio>')
+				/////
+				//Dinosaur Frame  //
+				/////
 
 			return this; // pour le chainage de methode
 
@@ -65,12 +68,22 @@ var usineObstacle = function(random) {
 				if (delai > 100) {
 					tPrecedent = tActuel;
 					frame++;
-					if (frame == dino.spriteX.length) {
-						frame = 0;
+					if (dino.alive) { // s'il est vivant alors sprite Run
+						if (frame == dino.spriteX.length) {
+							frame = 0;
+						}
+						$(img).css('top', dino.spriteY[0]);
+						$(img).css('left', dino.spriteX[frame] + "px");
+					} else { // s'il est mort alors sprite dead
+
+						if (frame == dino.spriteX.length) {
+							console.log(dino.alive)
+						}
+						$(img).css('top', dino.spriteY[1]);
+						$(img).css('left', dino.spriteXDead[frame] + "px");
 					}
-					$(img).css('left', dino.spriteX[frame] + "px");
-					$(img).css('top', dino.spriteY[0]);
 				}
+
 				window.requestAnimationFrame(spriteObstacle);
 
 			};
@@ -80,6 +93,7 @@ var usineObstacle = function(random) {
 		// probleme de reference a l'objet ==> soit on fait une reference avec la var animation soir on sot de l'objet la methode. 
 
 		animate: function() {
+
 			this.x = this.x - this.step;
 			this.elementHTML.style.left = this.x + 'px';
 			this.elementHTML.style.top = this.y + 'px';
@@ -92,14 +106,8 @@ var usineObstacle = function(random) {
 						tabObstacle.splice(i, 1);
 					}
 				}
-				// for (var i = 0; i < tabObstacle.length; i++) {
-				// 	// this et non pas this.elementHTML
-				// 	if (tabObstacle[i] == this) {
 
-				// 	}
-				// }
 			}
-			this.alive = true; // sert a la methode boum
 
 			window.requestAnimationFrame(function() {
 				animation.animate();
@@ -109,11 +117,10 @@ var usineObstacle = function(random) {
 		boum: function() {
 			// stop la methode animate et lance la methode boum
 
-			this.energie -= 30;
-			if (this.energie > 0) {
-				this.alive = true;
-			} else {
+			this.energie -= 60;
+			if (this.energie <= 0) {
 				this.alive = false;
+
 				// on supprime l'element dans la memoire et on le supprime du tableau ! Attention cela va de pair car si l'on ne supprime pas du tableau, les objets prennent du temps a se supprimer ( et donc conflit avec les balles) et si l'on supprime uniquement de la memoire , le tableau s'incrémente de undefined a l'inifi et risque de fuite memoire
 				for (i in tabObstacle) {
 					if (tabObstacle[i] == this) {
@@ -121,8 +128,9 @@ var usineObstacle = function(random) {
 						tabObstacle.splice(i, 1);
 					}
 				}
-				// cacher l'element puis le supprimer du DOM
-				$(this.elementHTML).fadeOut(1000, function() {
+				// lancer l'animation dead  puis le supprimer du DOM
+
+				$(this.elementHTML).fadeOut(2000, function() {
 					$(this.elementHTML).remove();
 				});
 			}
@@ -130,6 +138,7 @@ var usineObstacle = function(random) {
 		chainage: function() {
 			this.creation().animate().moveDinosaur();
 		}
+
 	};
 
 	/////
@@ -139,6 +148,7 @@ var usineObstacle = function(random) {
 	var referenceDiplo = Object.create(referenceDinosaur);
 
 	referenceDiplo.y = 410;
+	referenceDiplo.spriteXDead = [0, -228, -456, -684, -912, -1140, -1368, -1596, -1824, -2052]
 	referenceDiplo.energie = 100;
 	referenceDiplo.src = 'img/Dino/diplo.png';
 	referenceDiplo.className = 'containerDiplo';
@@ -147,6 +157,7 @@ var usineObstacle = function(random) {
 	referenceDiplo.spriteY = [0, -150, -300, -450];
 	referenceDiplo.width = 228;
 	referenceDiplo.height = 150;
+	referenceDiplo.srcSon = 'son/16456.mp3';
 
 
 	var referenceRaptor = Object.create(referenceDinosaur);
@@ -160,29 +171,32 @@ var usineObstacle = function(random) {
 	referenceRaptor.visuel = ['pachy.png', 'raptor-bleu.png', 'raptor-vert.png'];
 	referenceRaptor.className = "containerRaptor";
 	referenceRaptor.spriteX = [0, -249, -498, -747, -996, -1245, -1494, -1743];
+	referenceRaptor.spriteXDead = [0, -249, -498, -747, -996, -1245, -1494, -1743, -1992, -2241];
 	//0 -> Attack  -100 -> Run
 	referenceRaptor.spriteY = [0, -150, -300, -450];
 	referenceRaptor.width = 249;
 	referenceRaptor.height = 150;
 	referenceRaptor.choix = Math.round(Math.random() * 2);
+	referenceRaptor.srcSon = 'son/141.mp3';
 
 
 	/////
 	//Pterodactyle //
 	/////
-	var referencePtero = Object.create(referenceDinosaur)
+	var referencePtero = Object.create(referenceDinosaur);
 
 	referencePtero.y = 282;
 	referencePtero.energie = 80;
-	referencePtero.src = "img/Dino/ptero.png",
-		referencePtero.className = 'containerPtero',
-		referencePtero.spriteX = [0, -128, -256, -384, -512];
+	referencePtero.src = "img/Dino/ptero.png";
+	referencePtero.className = 'containerPtero';
+	referencePtero.spriteX = [0, -128, -256, -384, -512];
 	// 	//0 -> Attack  -100 -> Run
 	referencePtero.spriteY = [0, -100];
 	referencePtero.width = 128;
 	referencePtero.height = 100;
+	referencePtero.srcSon = "son/16467.mp3";
 
-
+	// Retour de l'objet en fonction de math random
 	if (random == 1) {
 		tabObstacle.push(referenceDiplo);
 		return referenceDiplo;
@@ -204,7 +218,7 @@ var creationObstacle = function() {
 
 		// var nouvelObstacle = 
 		usineObstacle(typeObstacle).chainage();
-	}, 1000);
+	}, 2000);
 
 };
 
@@ -244,7 +258,8 @@ var bulletHaiduken = function() {
 				'height': this.height + 'px',
 				'position': 'absolute',
 				'left': this.x + 'px', // retranchement des valeurs des positions du hero
-				'top': this.y + 'px'
+				'top': this.y + 'px',
+				'z-index': '100'
 
 			});
 
@@ -279,51 +294,51 @@ var bulletHaiduken = function() {
 				spriteBullet();
 
 			};
-			moveBullet()
+			moveBullet();
 			return this;
-		}
+		},
 
-	};
 
-	ObjetHaiduken.collisionObstacle = function() {
-		//On parcourt le tableau d'obstacle et si on trouve un obstacle aux prochaines coordonnées de la balle on le supprimer ou on déclenche une méthode qui le supprime.
 
-		for (var i = 0; i < tabObstacle.length; i++) {
-			if (tabObstacle[i] != undefined) { // s'il existe et qu'il es vivant alors detection collision avec bullet
-				if (ObjetHaiduken.x + ObjetHaiduken.width >= tabObstacle[i].x && ObjetHaiduken.x + ObjetHaiduken.width <= tabObstacle[i].x + tabObstacle[i].width) {
-					// si dino derriere alors il peut quand meme tirer 
-					// ObjetHaiduken <= dino.x ca marche pas si derriere
+		collisionObstacle: function() {
+			//On parcourt le tableau d'obstacle et si on trouve un obstacle aux prochaines coordonnées de la balle on le supprimer ou on déclenche une méthode qui le supprime.
 
-					tabObstacle[i].boum();
+			for (var i = 0; i < tabObstacle.length; i++) {
+				if (tabObstacle[i] !== undefined) { // s'il existe et qu'il es vivant alors detection collision avec bullet
+					if (this.x + this.width >= tabObstacle[i].x && this.x + this.width <= tabObstacle[i].x + tabObstacle[i].width) {
+						// si dino derriere alors il peut quand meme tirer 
+						// ObjetHaiduken <= dino.x ca marche pas si derriere
 
-					return true;
+						tabObstacle[i].boum();
+
+						return true;
+					}
 				}
 			}
-		}
 
-	};
+		},
 
-	ObjetHaiduken.animate = function() {
-		if (this.collisionObstacle()) {
+		animate: function() {
+			if (this.collisionObstacle()) {
 
-			//suppression de la balle
-			$(this.elementHTML).remove();
-			delete this;
-
-		} else {
-			ObjetHaiduken.x += 15;
-			$(this.elementHTML).css('left', ObjetHaiduken.x);
-
-			if ($(this.elementHTML).position().left >= $(window).width()) {
+				//suppression de la balle
 				$(this.elementHTML).remove();
+				delete this;
 
+			} else {
+				ObjetHaiduken.x += 15;
+				$(this.elementHTML).css('left', ObjetHaiduken.x);
+
+				if ($(this.elementHTML).position().left >= $(window).width()) {
+					$(this.elementHTML).remove();
+
+				}
+				window.requestAnimationFrame(function() {
+					ObjetHaiduken.animate();
+				});
 			}
-			window.requestAnimationFrame(function() {
-				ObjetHaiduken.animate();
-			});
 		}
 	};
-
 	return ObjetHaiduken;
 
 };

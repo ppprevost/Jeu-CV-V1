@@ -1,5 +1,8 @@
 $('document').ready(function() {
 
+document.onunload = function(){
+	alert('')
+}
 
 	//introduction jeu intro.js
 	intro();
@@ -52,11 +55,9 @@ $('document').ready(function() {
 			});
 
 
-
 			//launch frame idle
-			if (perso.enAttente) {
-				ruyFixed();
-			}
+				perso.ruyFixed();
+			
 
 
 			// var Obstacle = [usineObstacle(0), usineObstacle(1), usineObstacle()];

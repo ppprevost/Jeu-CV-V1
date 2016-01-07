@@ -54,7 +54,6 @@ var usineNuage = function() {
 
 	var referenceNuage = {
 		y: Math.floor(Math.random() * 200),
-		step: Math.random() * 10,
 		x: 2000,
 		width: 100,
 		height: 100,
@@ -70,7 +69,7 @@ var usineNuage = function() {
 
 	referenceNuage.animate = function() {
 
-		referenceNuage.x = referenceNuage.x - referenceNuage.step;
+		referenceNuage.x = referenceNuage.x - 4;
 
 
 		if (referenceNuage.x <= -4) {
@@ -100,7 +99,7 @@ var usineBackground = function() {
 		x: window.innerWidth,
 		src: 'img/background/background',
 		className: 'objetBackground',
-		width: 80,
+		width: 90,
 		height: 80,
 		elementHTML: background,
 		creation: function() {

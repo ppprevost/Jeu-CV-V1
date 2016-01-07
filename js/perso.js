@@ -1,6 +1,5 @@
 		// Coordonnée Perso
 
-
 		/**
 		 * [ObjetRyu fonction constructeur pour creer des héros]
 		 */
@@ -13,55 +12,100 @@
 			this.isCrouching = false; // Frame se baisser
 			this.spriteHeight = 80;
 			this.src = 'img/test.png';
+			this.energie = 100;
 			this.spriteX = [0, -116, -232, -348, -464, -580, -696, -812, -928, -1044]; // coordonnées X des sprites pour 10 frames 
 			// 0 -> walk -100 -> Jump -200 -> Crouch -300 -> Walk Shoot  -400 -> Run
-			this.spriteY = [0, -100, -200, -300, -400]; //balle
-
-		};
-
-		// Prototype du joueur 
-
+			this.spriteY = [0, -100, -200, -300, -400]; //bullet
 		// Perso Idle
-		var ruyFixed = function() {
-			perso.enAttente = true;
+			this.ruyFixed = function() {
+				this.enAttente = true;
+				var frameFixed = 0;
+				var tActuel;
+				var tPrecedent;
 
-			var frameFixed = 0;
+				var Perso = this; // reference à l'objet
+				var animate = function(actuel) {
 
-			var tActuel;
-			var tPrecedent;
-			var animate = function(actuel) {
+					tActuel = actuel;
+					tPrecedent = tPrecedent || actuel;
+					var delai = tActuel - tPrecedent;
 
-				tActuel = actuel;
-				tPrecedent = tPrecedent || actuel;
-				var delai = tActuel - tPrecedent;
+					if (delai > 70) {
+						
+						tPrecedent = tActuel;
 
-				if (delai > 70) {
+						frameFixed++;
+						if (frameFixed == Perso.spriteX.length) {
+							frameFixed = 0;
+						}
 
-					tPrecedent = tActuel;
+						$('#contenu').css('left', Perso.spriteX[frameFixed] + "px");
+						$('#contenu').css('top', Perso.spriteY[0] + "px");
+						// $('#contenu').css('width', Perso.idle[frameFixed].w + "px");
+						// $('#contenu').css('height', Perso.idle[frameFixed].h + "px");
 
-					frameFixed++;
-					if (frameFixed == perso.spriteX.length) {
-						frameFixed = 0;
 					}
+					if (this.enAttente) {
+						window.requestAnimationFrame(animate);
+						
+					}
+				};
+				animate();
 
-					$('#contenu').css('left', perso.spriteX[frameFixed] + "px");
-					$('#contenu').css('top', perso.spriteY[0] + "px");
-					// $('#contenu').css('width', perso.idle[frameFixed].w + "px");
-					// $('#contenu').css('height', perso.idle[frameFixed].h + "px");
-
-				}
-
-				if (perso.enAttente) {
-					window.requestAnimationFrame(animate);
-					perso.isHaiduken = false;
-
-				}
 			};
 
-		
-			animate();	
+
+
+
+
+
+
 
 		};
+
+
+
+		// Perso Idle
+		// var perso.ruyFixed = function() {
+		// 	perso.enAttente = true;
+
+		// 	var frameFixed = 0;
+
+		// 	var tActuel;
+		// 	var tPrecedent;
+		// 	var animate = function(actuel) {
+
+		// 		tActuel = actuel;
+		// 		tPrecedent = tPrecedent || actuel;
+		// 		var delai = tActuel - tPrecedent;
+
+		// 		if (delai > 70) {
+
+		// 			tPrecedent = tActuel;
+
+		// 			frameFixed++;
+		// 			if (frameFixed == perso.spriteX.length) {
+		// 				frameFixed = 0;
+		// 			}
+
+		// 			$('#contenu').css('left', perso.spriteX[frameFixed] + "px");
+		// 			$('#contenu').css('top', perso.spriteY[0] + "px");
+		// 			// $('#contenu').css('width', perso.idle[frameFixed].w + "px");
+		// 			// $('#contenu').css('height', perso.idle[frameFixed].h + "px");
+
+		// 		}
+
+		// 		if (perso.enAttente) {
+		// 			window.requestAnimationFrame(animate);
+		// 			perso.isHaiduken = false;
+
+		// 		}
+		// 	};
+
+
+		// 	animate();
+
+		// };
 
 		// Saut Perso
 		var RyuMove = function() {
@@ -123,7 +167,7 @@
 					perso.isHaiduken = false;
 					//remise a 0
 				} else {
-					ruyFixed();
+					perso.ruyFixed();
 				}
 
 			};
@@ -182,17 +226,16 @@
 
 
 				} else {
-					ruyFixed();
+					perso.ruyFixed();
 				}
 
 			};
 			spriteHaiduken();
-			setTimeout(function(){
+			setTimeout(function() {
 				perso.isHaiduken = false;
-			},300)
+			}, 300)
 		};
 
-		
 
 
 		// Running right
@@ -231,7 +274,7 @@
 					perso.enAttente = false;
 
 				} else {
-					ruyFixed();
+					perso.ruyFixed();
 				}
 
 			};
@@ -274,7 +317,7 @@
 					perso.enAttente = false;
 
 				} else {
-					ruyFixed();
+					perso.ruyFixed();
 				}
 
 			};
@@ -312,7 +355,7 @@
 					perso.enAttente = false;
 
 				} else {
-					ruyFixed();
+					perso.ruyFixed();
 				}
 
 			};
