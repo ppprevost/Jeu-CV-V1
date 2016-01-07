@@ -53,7 +53,6 @@ var dino5 =$('img:nth-of-type(6)');
 dino5.attr('src','img/intro/pachy.png').addClass('perso-dino').css({'left':dinoArrival+'px','z-index':'13'});
 
 
-
 $('.perso-dino').css({
 	'width':'350px',
 	'position':'absolute',

@@ -1,8 +1,5 @@
 $('document').ready(function() {
 
-document.onunload = function(){
-	alert('')
-}
 
 	//introduction jeu intro.js
 	intro();
@@ -38,22 +35,27 @@ document.onunload = function(){
 			//chargement du compteur 
 			creationTimer();
 
+
 			// crer un nouvel hero à l'aide de la fonction constructeur ! 
 			perso = new ObjetRyu();
 			// Positionnement générale de ryu! 
 			$('#game').append("<img id='contenu'></div>");
 			$('#contenu').attr('src', perso.src).wrap($('<div id="container"></div>')).css('position', 'absolute');
+		
+			perso.creation();
 
-			$('#container').css({
-				'z-index': '40',
-				'position': 'absolute',
-				'left': '200px',
-				'top': '454px',
-				'width': '116px',
-				'height': '100px',
-				'overflow': 'hidden'
-			});
+/////
+// Test des Collisions //
+/////
+			// detecter les collisions du Hero avec les Dinos
+			perso.testCollision();	
+			// detecter les collisions des balles avec les Dinos
+			
+			// Affichage de la vie 
+			$('#health').text(perso.energie)
 
+			// Affichage du score 
+			$('#score').text(perso.score);
 
 			//launch frame idle
 				perso.ruyFixed();
@@ -76,7 +78,7 @@ document.onunload = function(){
 					case 38: //haut
 
 						if (!perso.isJumping) {
-							RyuMove();
+							perso.RyuMove();
 						}
 
 						break;
@@ -84,7 +86,7 @@ document.onunload = function(){
 						e.preventDefault();
 						if (!perso.isRunning && !perso.isJumping) {
 
-							RyuRunning('+=', 5);
+							perso.RyuRunning();
 
 						}
 
@@ -93,8 +95,8 @@ document.onunload = function(){
 					case 37: //gauche
 						e.preventDefault();
 						if (!perso.isRunning && !perso.isJumping) {
-
-							RyuRunning('-=', 5);
+							perso.isRunningLeft = true;
+							perso.RyuRunning();
 
 						}
 
@@ -102,18 +104,42 @@ document.onunload = function(){
 					case 32: //espace
 						e.preventDefault();
 						if (!perso.isHaiduken && !perso.isJumping && !perso.isCrouching) {
-							RyuHaiduken();
-							bulletHaiduken().creation().animate();
+							// on lance l'animation du Hero avec son fusil
+							perso.RyuHaiduken();
+							// on lance la fonction usine retournant balle
+							ObjetBalleEnMouvement();
 
 						}
+						else if(!perso.isHaiduken && !perso.isJumping && perso.isCrouching)
+							// Get Low
+							{
+								usineBullet().creation().animate();
+								perso.RyuHaiduken(); // remplacer le visuel correspondant par Crouching + shot
+							}
 
+							// Get low and Shoot
+						else if(!perso.isHaiduken && !perso.isJumping && !perso.isCrouching && perso.isRunning)
+							
+							{
+								usineBullet().creation().animate();
+								perso.RyuHaiduken(); // remplacer le visuel correspondant par Crouching + shot
+							}
+
+							// Jump and Shoot 
+						else if(!perso.isHaiduken && perso.isJumping && !perso.isCrouching && !perso.isRunning)	{
+
+								usineBullet().creation().animate();
+								perso.RyuHaiduken();
+								console.log(perso.isHaiduken)
+
+						}
 
 						break;
 
 					case 40: // bas
 						e.preventDefault();
 						if (!perso.isCrouching && !perso.isHaiduken) {
-							RyuCrouching()
+							perso.RyuCrouching()
 						}
 						break;
 
@@ -153,6 +179,7 @@ document.onunload = function(){
 					case 37:
 						e.preventDefault();
 						if (perso.isRunning) {
+							perso.isRunningLeft = false;
 							perso.isRunning = false;
 
 						}

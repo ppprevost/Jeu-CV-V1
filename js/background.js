@@ -68,7 +68,6 @@ var usineNuage = function() {
 	};
 
 	referenceNuage.animate = function() {
-
 		referenceNuage.x = referenceNuage.x - 4;
 
 
@@ -153,17 +152,17 @@ var creationBackground = function() {
 
 };
 
-
 /*
 Compteur 
  */
 
 var creationTimer = function() {
 
-
-	$('#game').prepend("<div id='timer'></div>");
+	$('#compteur').prepend("<div id='timer'></div>");
 	// $('#timer').html("00 : 00");
-
+	$('#timer').css({
+				'font-size':'3em'
+		})
 	var seconde = 0;
 	var minute = 0;
 
@@ -182,8 +181,12 @@ var creationTimer = function() {
 			$('#timer').append(" Bravo vous avez tenu " + seconde + " secondes")
 		}
 
+
+
 	};
 
 	setInterval(chrono, 1000);
 
 };
+
+

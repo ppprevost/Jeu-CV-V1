@@ -47,10 +47,10 @@ var usineObstacle = function(random) {
 				'height': this.height + "px",
 				'overflow': 'hidden'
 			});
-			$(this.elementHTML).append('<audio autoplay><source src=' + this.srcSon + '></audio>')
-				/////
-				//Dinosaur Frame  //
-				/////
+			$(this.elementHTML).append('<audio autoplay><source src=' + this.srcSon + '></audio>');
+			/////
+			//Dinosaur Frame  //
+			/////
 
 			return this; // pour le chainage de methode
 
@@ -120,7 +120,8 @@ var usineObstacle = function(random) {
 			this.energie -= 60;
 			if (this.energie <= 0) {
 				this.alive = false;
-
+				perso.score -= this.energie * 200;
+				$('#score').text(perso.score);
 				// on supprime l'element dans la memoire et on le supprime du tableau ! Attention cela va de pair car si l'on ne supprime pas du tableau, les objets prennent du temps a se supprimer ( et donc conflit avec les balles) et si l'on supprime uniquement de la memoire , le tableau s'incrémente de undefined a l'inifi et risque de fuite memoire
 				for (i in tabObstacle) {
 					if (tabObstacle[i] == this) {
@@ -148,7 +149,7 @@ var usineObstacle = function(random) {
 	var referenceDiplo = Object.create(referenceDinosaur);
 
 	referenceDiplo.y = 410;
-	referenceDiplo.spriteXDead = [0, -228, -456, -684, -912, -1140, -1368, -1596, -1824, -2052]
+	referenceDiplo.spriteXDead = [0, -228, -456, -684, -912, -1140, -1368, -1596, -1824, -2052];
 	referenceDiplo.energie = 100;
 	referenceDiplo.src = 'img/Dino/diplo.png';
 	referenceDiplo.className = 'containerDiplo';
@@ -157,7 +158,7 @@ var usineObstacle = function(random) {
 	referenceDiplo.spriteY = [0, -150, -300, -450];
 	referenceDiplo.width = 228;
 	referenceDiplo.height = 150;
-	referenceDiplo.srcSon = 'son/16456.mp3';
+	referenceDiplo.classSon = 'diplo';
 
 
 	var referenceRaptor = Object.create(referenceDinosaur);
@@ -177,7 +178,7 @@ var usineObstacle = function(random) {
 	referenceRaptor.width = 249;
 	referenceRaptor.height = 150;
 	referenceRaptor.choix = Math.round(Math.random() * 2);
-	referenceRaptor.srcSon = 'son/141.mp3';
+	referenceRaptor.idSon = 'raptor';
 
 
 	/////
@@ -186,7 +187,7 @@ var usineObstacle = function(random) {
 	var referencePtero = Object.create(referenceDinosaur);
 
 	referencePtero.y = 282;
-	referencePtero.energie = 80;
+	referencePtero.energie = 60;
 	referencePtero.src = "img/Dino/ptero.png";
 	referencePtero.className = 'containerPtero';
 	referencePtero.spriteX = [0, -128, -256, -384, -512];
@@ -194,7 +195,7 @@ var usineObstacle = function(random) {
 	referencePtero.spriteY = [0, -100];
 	referencePtero.width = 128;
 	referencePtero.height = 100;
-	referencePtero.srcSon = "son/16467.mp3";
+	referencePtero.idSon = "ptero";
 
 	// Retour de l'objet en fonction de math random
 	if (random == 1) {
@@ -208,15 +209,13 @@ var usineObstacle = function(random) {
 		tabObstacle.push(referenceRaptor);
 		return referenceRaptor;
 	}
-};
+}; // fin de la fonction usine
 
 
 var creationObstacle = function() {
 
 	setInterval(function() {
 		var typeObstacle = Math.round(Math.random() * 2);
-
-		// var nouvelObstacle = 
 		usineObstacle(typeObstacle).chainage();
 	}, 2000);
 
@@ -224,21 +223,13 @@ var creationObstacle = function() {
 
 //fonction usine balle
 
-var bulletHaiduken = function() {
-
+var usineBullet = function() {
 	var obs = document.createElement('div');
 	var img = document.createElement('img');
 
 
-	var ObjetHaiduken = {
-		x: $('#container').position().left + 100,
-		y: $('#container').position().top + 45,
-		className: 'containerBullet',
-		src: 'img/item.png',
-		spriteItemX: [0, -29, -58, -87, -116, -145, -174, -203, -232, -261],
-		spriteItemY: [0], //balle 
-		width: 29,
-		height: 13,
+	var ObjetBullet = {
+
 		elementHTML: obs,
 
 		creation: function() {
@@ -252,20 +243,51 @@ var bulletHaiduken = function() {
 			});
 
 			img.setAttribute('src', this.src);
-			$('.containerBullet').css({
-				'overflow': 'hidden',
-				'width': this.width + 'px',
-				'height': this.height + 'px',
-				'position': 'absolute',
-				'left': this.x + 'px', // retranchement des valeurs des positions du hero
-				'top': this.y + 'px',
-				'z-index': '100'
+			// if the hero is Crouching and want to shoot ! 
+			if (perso.isCrouching) {
+				$(this.elementHTML).css({
+					'overflow': 'hidden',
+					'width': this.width + 'px',
+					'height': this.height + 'px',
+					'position': 'absolute',
+					'left': this.x + 'px', // retranchement des valeurs des positions du hero
+					'top': this.y + 30 + 'px',
+					'z-index': '100'
 
-			});
+				});
+				// if the hero want to shoot and jump ! 
+				if (perso.isJumping) {
+					$(this.elementHTML).css({
+						'overflow': 'hidden',
+						'width': this.width + 'px',
+						'height': this.height + 'px',
+						'position': 'absolute',
+						'left': this.x + 'px', // retranchement des valeurs des positions du hero
+						'top': this.y + 'px',
+						'z-index': '100'
+					});
+				}
 
-			//sprite bullet
-			var moveBullet = function() {
+			} else {
+				$(this.elementHTML).css({
+					'overflow': 'hidden',
+					'width': this.width + 'px',
+					'height': this.height + 'px',
+					'position': 'absolute',
+					'left': this.x + 'px', // retranchement des valeurs des positions du hero
+					'top': this.y + 'px',
+					'z-index': '100'
 
+				});
+			}
+
+			
+			
+			return this;
+		},
+		//sprite bullet
+		moveBullet : function() {
+				var objetBullet = this // pour avoir une reference a l'objet meme dans une fonction 
 				var tActuel;
 				var tPrecedent;
 				var frameBullet = 0;
@@ -277,48 +299,46 @@ var bulletHaiduken = function() {
 
 					if (delai > 50) {
 						frameBullet++;
-						if (frameBullet == ObjetHaiduken.spriteItemX.length) {
+						if (frameBullet == objetBullet.spriteItemX.length) {
 							frameBullet = 0;
 						}
-						$(img).css('left', ObjetHaiduken.spriteItemX[frameBullet] + "px");
-						$(img).css('top', ObjetHaiduken.spriteItemY[0] + "px");
+						$(img).css('left', objetBullet.spriteItemX[frameBullet] + "px");
+						$(img).css('top', objetBullet.spriteItemY[0] + "px");
 						tPrecedent = tActuel;
 
-
 					}
-					// if (perso.isHaiduken) {
 					var animationRequestId = window.requestAnimationFrame(spriteBullet);
 
-					// }
 				};
 				spriteBullet();
-
-			};
-			moveBullet();
-			return this;
-		},
-
-
+				return this;
+			},
 
 		collisionObstacle: function() {
 			//On parcourt le tableau d'obstacle et si on trouve un obstacle aux prochaines coordonnées de la balle on le supprimer ou on déclenche une méthode qui le supprime.
 
 			for (var i = 0; i < tabObstacle.length; i++) {
-				if (tabObstacle[i] !== undefined) { // s'il existe et qu'il es vivant alors detection collision avec bullet
-					if (this.x + this.width >= tabObstacle[i].x && this.x + this.width <= tabObstacle[i].x + tabObstacle[i].width) {
+				if (tabObstacle[i] !== undefined) { // s'il existe et qu'il est vivant alors detection collision avec bullet
+
+					if (this.x + this.width >= tabObstacle[i].x && this.x + this.width <= tabObstacle[i].x + tabObstacle[i].width &&
+						// tester avec la valeur de height
+						this.y + this.height >= tabObstacle[i].y && this.y + this.height <= tabObstacle[i].y + tabObstacle[i].height)
+
+					{
 						// si dino derriere alors il peut quand meme tirer 
-						// ObjetHaiduken <= dino.x ca marche pas si derriere
+						// ObjetBullet <= dino.x ca marche pas si derriere
 
 						tabObstacle[i].boum();
-
 						return true;
 					}
+
 				}
 			}
 
 		},
 
 		animate: function() {
+			var objetBullet = this
 			if (this.collisionObstacle()) {
 
 				//suppression de la balle
@@ -326,19 +346,40 @@ var bulletHaiduken = function() {
 				delete this;
 
 			} else {
-				ObjetHaiduken.x += 15;
-				$(this.elementHTML).css('left', ObjetHaiduken.x);
+				this.x += 15;
+
+				$(this.elementHTML).css('left', this.x);
 
 				if ($(this.elementHTML).position().left >= $(window).width()) {
 					$(this.elementHTML).remove();
-
 				}
+
 				window.requestAnimationFrame(function() {
-					ObjetHaiduken.animate();
+					objetBullet.animate();
 				});
+
 			}
 		}
 	};
-	return ObjetHaiduken;
+
+	var Bullet = Object.create(ObjetBullet);
+
+	Bullet.x = $('#container').position().left + 100;
+	Bullet.y = $('#container').position().top + 45;
+	Bullet.className = 'containerBullet';
+	Bullet.src = 'img/item.png';
+	Bullet.spriteItemX = [0, -29, -58, -87, -116, -145, -174, -203, -232, -261];
+	Bullet.spriteItemY = [0]; //balle 
+	Bullet.width = 29;
+	Bullet.height = 13;
+
+	var Dynamite = Object.create(ObjetBullet);
+
+
+	return Bullet;
 
 };
+
+var ObjetBalleEnMouvement = function(){
+	usineBullet().creation().moveBullet().animate();
+	}
