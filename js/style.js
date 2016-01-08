@@ -29,7 +29,6 @@ $('document').ready(function() {
 			creationNuage();
 
 			//chagement des objets Background
-
 			creationBackground();
 
 			//chargement du compteur 
@@ -41,16 +40,16 @@ $('document').ready(function() {
 			// Positionnement générale de ryu! 
 			$('#game').append("<img id='contenu'></div>");
 			$('#contenu').attr('src', perso.src).wrap($('<div id="container"></div>')).css('position', 'absolute');
-		
+
 			perso.creation();
 
-/////
-// Test des Collisions //
-/////
+			/////
+			// Test des Collisions //
+			/////
 			// detecter les collisions du Hero avec les Dinos
-			perso.testCollision();	
+			perso.testCollision();
 			// detecter les collisions des balles avec les Dinos
-			
+
 			// Affichage de la vie 
 			$('#health').text(perso.energie)
 
@@ -58,8 +57,8 @@ $('document').ready(function() {
 			$('#score').text(perso.score);
 
 			//launch frame idle
-				perso.ruyFixed();
-			
+			perso.ruyFixed();
+
 
 
 			// var Obstacle = [usineObstacle(0), usineObstacle(1), usineObstacle()];
@@ -109,29 +108,32 @@ $('document').ready(function() {
 							// on lance la fonction usine retournant balle
 							ObjetBalleEnMouvement();
 
+						} else if (!perso.isHaiduken && !perso.isJumping && perso.isCrouching)
+						// Get Low
+						{
+							usineBullet().creation().animate();
+							perso.RyuHaiduken(); // remplacer le visuel correspondant par Crouching + shot
 						}
-						else if(!perso.isHaiduken && !perso.isJumping && perso.isCrouching)
-							// Get Low
-							{
-								usineBullet().creation().animate();
-								perso.RyuHaiduken(); // remplacer le visuel correspondant par Crouching + shot
-							}
 
-							// Get low and Shoot
-						else if(!perso.isHaiduken && !perso.isJumping && !perso.isCrouching && perso.isRunning)
-							
-							{
-								usineBullet().creation().animate();
-								perso.RyuHaiduken(); // remplacer le visuel correspondant par Crouching + shot
-							}
+						// Get low and Shoot
+						else if (!perso.isHaiduken && !perso.isJumping && !perso.isCrouching && perso.isRunning)
 
-							// Jump and Shoot 
-						else if(!perso.isHaiduken && perso.isJumping && !perso.isCrouching && !perso.isRunning)	{
+						{
+							usineBullet().creation().animate();
+							perso.RyuHaiduken(); // remplacer le visuel correspondant par Crouching + shot
+						}
 
-								usineBullet().creation().animate();
-								perso.RyuHaiduken();
-								console.log(perso.isHaiduken)
+						// Jump and Shoot 
+						else if (!perso.isHaiduken && perso.isJumping && !perso.isCrouching && !perso.isRunning) {
 
+							usineBullet().creation().animate();
+							perso.RyuHaiduken();
+
+						}
+						//Run and Shoot
+						else if (!perso.isHaiduken && !perso.isJumping && !perso.isCrouching && perso.isRunning) {
+							usineBullet().creation().animate();
+							perso.RyuHaiduken();
 						}
 
 						break;
@@ -141,6 +143,19 @@ $('document').ready(function() {
 						if (!perso.isCrouching && !perso.isHaiduken) {
 							perso.RyuCrouching()
 						}
+						break;
+
+					case 68: // d as Dynamite !!
+						if (!perso.isDynamiting) {
+
+							perso.isDynamiting = true;
+							// methode de shoot
+							perso.RyuHaiduken()
+
+							ObjetBalleEnMouvement();
+						}
+
+
 						break;
 
 				}
@@ -154,7 +169,7 @@ $('document').ready(function() {
 
 					case 32:
 						// if (perso.isHaiduken) {
-						
+
 
 						// }
 
@@ -184,13 +199,21 @@ $('document').ready(function() {
 
 						}
 
-
 						break;
 					case 40:
 
 						if (perso.isCrouching) {
 							perso.isCrouching = false;
 						}
+						break;
+
+					case 68: // d as Dynamite !!
+						if (perso.isDynamiting) {
+
+
+						}
+
+
 						break;
 				}
 

@@ -10,7 +10,7 @@ var usineObstacle = function(random) {
 	var colisionPositionPersoX = $('#container').position().left;
 	var colisionPositionPersoY = $('#container').position().top;
 
-	var referenceDinosaur = {
+	var ReferenceDinosaur = {
 		step: Math.round(Math.random() * 10) + 1, //c'est une soustraction qui lance l'animation si = 0 pas de déplacement !!!
 		x: window.innerWidth,
 		energie: null,
@@ -77,7 +77,7 @@ var usineObstacle = function(random) {
 					} else { // s'il est mort alors sprite dead
 
 						if (frame == dino.spriteX.length) {
-							console.log(dino.alive)
+							
 						}
 						$(img).css('top', dino.spriteY[1]);
 						$(img).css('left', dino.spriteXDead[frame] + "px");
@@ -146,7 +146,7 @@ var usineObstacle = function(random) {
 	//Diplo //
 	/////
 
-	var referenceDiplo = Object.create(referenceDinosaur);
+	var referenceDiplo = Object.create(ReferenceDinosaur);
 
 	referenceDiplo.y = 410;
 	referenceDiplo.spriteXDead = [0, -228, -456, -684, -912, -1140, -1368, -1596, -1824, -2052];
@@ -161,7 +161,7 @@ var usineObstacle = function(random) {
 	referenceDiplo.classSon = 'diplo';
 
 
-	var referenceRaptor = Object.create(referenceDinosaur);
+	var referenceRaptor = Object.create(ReferenceDinosaur);
 
 	/////
 	//Raptor //
@@ -184,7 +184,7 @@ var usineObstacle = function(random) {
 	/////
 	//Pterodactyle //
 	/////
-	var referencePtero = Object.create(referenceDinosaur);
+	var referencePtero = Object.create(ReferenceDinosaur);
 
 	referencePtero.y = 282;
 	referencePtero.energie = 60;
@@ -196,6 +196,11 @@ var usineObstacle = function(random) {
 	referencePtero.width = 128;
 	referencePtero.height = 100;
 	referencePtero.idSon = "ptero";
+
+	/////
+	//Peaks //
+	/////
+	var Peaks = Object.create(ReferenceDinosaur);
 
 	// Retour de l'objet en fonction de math random
 	if (random == 1) {
@@ -214,10 +219,11 @@ var usineObstacle = function(random) {
 
 var creationObstacle = function() {
 
+	
 	setInterval(function() {
 		var typeObstacle = Math.round(Math.random() * 2);
-		usineObstacle(typeObstacle).chainage();
-	}, 2000);
+		var nouvelObstacle = usineObstacle(typeObstacle).chainage();
+	}, 2000)
 
 };
 
@@ -227,16 +233,25 @@ var usineBullet = function() {
 	var obs = document.createElement('div');
 	var img = document.createElement('img');
 
-
 	var ObjetBullet = {
 
 		elementHTML: obs,
+		spriteItemY: [0, -13],
+		src: 'img/item.png',
+		x: $('#container').position().left + 100,
+		y: $('#container').position().top + 45,
+		width:null,
+		height:null,
+		// 0 --> bullet  
 
 		creation: function() {
 			$('#game').append($(this.elementHTML));
 			$(this.elementHTML).addClass(this.className);
 			$(this.elementHTML).append('<audio autoplay><source src="son/fusil.mp3"><source src="son/fusil.ogg"></audio>');
-			$('.containerBullet').append(img);
+			// astuce : on peut viser l'element par sa classe ou bien par this.elementHTML . Ici je choisis la classe
+			$('.' + this.className).append(img);
+
+			$(img).css({'position':'absolute', 'top':'-13px'});
 
 			$('.bullet').css({
 				'position': 'absolute'
@@ -281,38 +296,65 @@ var usineBullet = function() {
 				});
 			}
 
-			
-			
 			return this;
 		},
 		//sprite bullet
-		moveBullet : function() {
-				var objetBullet = this // pour avoir une reference a l'objet meme dans une fonction 
-				var tActuel;
-				var tPrecedent;
-				var frameBullet = 0;
-				var spriteBullet = function(actuel) {
-					tActuel = actuel;
-					tPrecedent = tPrecedent || actuel;
+		moveBullet: function() {
+			var objetBullet = this // pour avoir une reference a l'objet meme dans une fonction 
+			var tActuel;
+			var tPrecedent;
+			var frameBullet = 0;
+			var spriteBullet = function(actuel) {
+				tActuel = actuel;
+				tPrecedent = tPrecedent || actuel;
 
-					var delai = tActuel - tPrecedent;
+				var delai = tActuel - tPrecedent;
 
+				if (objetBullet.className == 'containerBullet') {
+
+					// if Bullet
 					if (delai > 50) {
+
 						frameBullet++;
 						if (frameBullet == objetBullet.spriteItemX.length) {
+
 							frameBullet = 0;
 						}
 						$(img).css('left', objetBullet.spriteItemX[frameBullet] + "px");
+
 						$(img).css('top', objetBullet.spriteItemY[0] + "px");
+
 						tPrecedent = tActuel;
 
 					}
-					var animationRequestId = window.requestAnimationFrame(spriteBullet);
+				} else {
+					//if dynamite
 
-				};
-				spriteBullet();
-				return this;
-			},
+					if (delai > 300) {
+
+						frameBullet++;
+						if (frameBullet == objetBullet.spriteItemX.length) {
+
+							frameBullet = 0;
+						}
+						$(img).css('left', objetBullet.spriteItemX[frameBullet] + "px");
+
+
+
+						$(img).css('top', '-13px');
+						console.log(-13)
+						tPrecedent = tActuel;
+
+					}
+
+				}
+
+				var animationRequestId = window.requestAnimationFrame(spriteBullet);
+
+			};
+			spriteBullet();
+			return this;
+		},
 
 		collisionObstacle: function() {
 			//On parcourt le tableau d'obstacle et si on trouve un obstacle aux prochaines coordonnées de la balle on le supprimer ou on déclenche une méthode qui le supprime.
@@ -340,7 +382,9 @@ var usineBullet = function() {
 		animate: function() {
 			var objetBullet = this
 			if (this.collisionObstacle()) {
-
+				if (perso.isDynamiting) {
+					
+				}
 				//suppression de la balle
 				$(this.elementHTML).remove();
 				delete this;
@@ -359,27 +403,38 @@ var usineBullet = function() {
 				});
 
 			}
-		}
-	};
+			return this;
+		},
+
+
+	}; // fin de objet parent
+
 
 	var Bullet = Object.create(ObjetBullet);
 
-	Bullet.x = $('#container').position().left + 100;
-	Bullet.y = $('#container').position().top + 45;
 	Bullet.className = 'containerBullet';
-	Bullet.src = 'img/item.png';
 	Bullet.spriteItemX = [0, -29, -58, -87, -116, -145, -174, -203, -232, -261];
-	Bullet.spriteItemY = [0]; //balle 
+
 	Bullet.width = 29;
 	Bullet.height = 13;
 
 	var Dynamite = Object.create(ObjetBullet);
 
+	Dynamite.className = 'containerDynamite';
+	Dynamite.spriteItemX = [0, -51, -102, -153, -204];
+	Dynamite.width = 51;
+	Dynamite.height = 38;
+	Dynamite.y= $('#container').position().top + 40;
+	Dynamite.x= $('#container').position().left + 20;
 
-	return Bullet;
-
-};
-
-var ObjetBalleEnMouvement = function(){
-	usineBullet().creation().moveBullet().animate();
+	if (perso.isDynamiting) {
+		return Dynamite;
+	} else {
+		return Bullet;
 	}
+	
+};	
+
+var ObjetBalleEnMouvement = function() {
+	usineBullet().creation().moveBullet().animate();
+};

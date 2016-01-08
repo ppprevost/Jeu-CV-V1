@@ -11,7 +11,6 @@ $('#intro').append('<audio autoplay><source src="son/trex_cri.mp3"><source src="
 
 	// $('#intro').append('<audio autoplay><source src="son/raptor-cuisine.mp3"><source src="son/raptor-cuisine.ogg"></audio>');
 
-
 	$('.launch').text("Start The Game");
 
 	var dinoArrival = $(window).width()+200;
@@ -47,9 +46,11 @@ dino2.attr('src','img/intro/ptero.png').addClass('perso-ptero').css({'left':dino
 
 var dino3 =$('img:nth-of-type(4)');
 dino3.attr('src','img/intro/raptor.png').addClass('perso-dino').css({'left':dinoArrival+'px','z-index':'12'});
+
 var dino4=$('img:nth-of-type(5)');
 dino4.attr('src','img/intro/raptor2.png').addClass('perso-dino').css({'left':dinoArrival+'px','top':'220px','z-index':'13'});
 var dino5 =$('img:nth-of-type(6)');
+
 dino5.attr('src','img/intro/pachy.png').addClass('perso-dino').css({'left':dinoArrival+'px','z-index':'13'});
 
 
