@@ -16,7 +16,6 @@
 			this.score = 0;
 			this.width = 116;
 			this.height = 100;
-
 			this.x = 200;
 			this.y = 454;
 			this.isCrouching = false; // Frame se baisser
@@ -110,18 +109,9 @@
 			this.RyuMove = function() {
 				this.isJumping = true;
 				var refPerso = this;
+				this.isJumpingUp = false;
 
-				var jump = function() {
 
-					$('#container').animate({
-						'top': '-=300px'
-					}, 200, function() {
-						$(this).delay(500).animate({
-							'top': '+=300px'
-						}, 200);
-					});
-
-				};
 
 				// var jumpUp = function() {
 				// 	refPerso.isJumpingUp = true;
@@ -140,6 +130,29 @@
 
 
 				// }
+
+				// var jump = function() {
+				// 	var jumpUp = function() {
+				// 		refPerso.isJumpingUp = true;
+				// 		refPerso.y -= 30;
+				// 		if (refPerso.y >= 200) {
+				// 		refPerso.isJumpingUp = false;
+				// 		jumpDown();
+				// 	}
+
+				// 	}
+				// 	var jumpDown = function() {
+
+				// 		refPerso.y += 30;
+				// 	}
+
+				// }
+				// 
+				var jump = function(){
+					$('#container').animate({'top':perso.y - 200 +'px'},300)
+				}
+				
+
 
 				var jumpMove = function() {
 
@@ -165,15 +178,20 @@
 
 					if (delai > 70) {
 
+						
+
+
 						if (!refPerso.isHaiduken) {
 
 							frameMove++;
 							if (frameMove == refPerso.spriteX.length) {
 								frameMove = 0;
 							}
+
 							$('#contenu').css('left', refPerso.spriteX[frameMove] + "px");
 							$('#contenu').css('top', refPerso.spriteY[1] + "px");
 						}
+						// $('#container').css('top', refPerso.y)
 						tPrecedent = tActuel;
 
 					}
@@ -189,13 +207,13 @@
 					}
 
 				};
-
 				if (!refPerso.isRunning) {
-					jump();
-					// jumpUp();
-				} else {
-					jumpMove();
-				}
+							jump();
+							// jumpUp();
+						} else {
+							jumpMove();
+						}
+
 				setTimeout(function() {
 					// met a flase le jump a la fin du saut
 					refPerso.isJumping = false;

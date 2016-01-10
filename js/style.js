@@ -76,8 +76,9 @@ $('document').ready(function() {
 
 					case 38: //haut
 
-						if (!perso.isJumping) {
+						if (!perso.isJumping ) {
 							perso.RyuMove();
+							perso.isJumpingUp = true;
 						}
 
 						break;

@@ -47,7 +47,15 @@ var usineObstacle = function(random) {
 				'height': this.height + "px",
 				'overflow': 'hidden'
 			});
-			$(this.elementHTML).append('<audio autoplay><source src=' + this.srcSon + '></audio>');
+
+			if (this.className == 'containerPtero') {
+				document.getElementById('ptero').play();
+			} else if (this.className == 'containerRaptor') {
+				document.getElementById('raptor').play();
+			} else if (this.className == 'containerDiplo') {
+				document.getElementById('diplo').play();
+			}
+
 			/////
 			//Dinosaur Frame  //
 			/////
@@ -77,7 +85,7 @@ var usineObstacle = function(random) {
 					} else { // s'il est mort alors sprite dead
 
 						if (frame == dino.spriteX.length) {
-							
+
 						}
 						$(img).css('top', dino.spriteY[1]);
 						$(img).css('left', dino.spriteXDead[frame] + "px");
@@ -93,6 +101,7 @@ var usineObstacle = function(random) {
 		// probleme de reference a l'objet ==> soit on fait une reference avec la var animation soir on sot de l'objet la methode. 
 
 		animate: function() {
+
 
 			this.x = this.x - this.step;
 			this.elementHTML.style.left = this.x + 'px';
@@ -115,7 +124,8 @@ var usineObstacle = function(random) {
 			return this;
 		},
 		boum: function() {
-			// stop la methode animate et lance la methode boum
+			//alive// stop la methode animate et lance la methode boum
+
 
 			this.energie -= 60;
 			if (this.energie <= 0) {
@@ -136,8 +146,32 @@ var usineObstacle = function(random) {
 				});
 			}
 		},
+		boumD: function() {
+
+			$('#score').text(perso.score);
+			for (var i = 0; i < tabObstacle.length; i++) {
+				tabObstacle[i].energie -= 500;
+				if (tabObstacle[i].energie <= 0) {
+					// this.alive = false;
+
+					$(tabObstacle[i].elementHTML).fadeOut(2000, function() {
+						$(tabObstacle[i].elementHTML).remove();
+						tabObstacle[i].alive = false;
+						delete tabObstacle[i];
+						tabObstacle.splice(0, tabObstacle.length);
+					})
+				}
+			}
+
+
+
+		},
 		chainage: function() {
-			this.creation().animate().moveDinosaur();
+			if (this.className != 'spike') { // spike ne possede pas la methode move Dinosaur
+				this.creation().animate().moveDinosaur();
+			} else {
+				this.creation().animate()
+			}
 		}
 
 	};
@@ -193,6 +227,7 @@ var usineObstacle = function(random) {
 	referencePtero.spriteX = [0, -128, -256, -384, -512];
 	// 	//0 -> Attack  -100 -> Run
 	referencePtero.spriteY = [0, -100];
+	referencePtero.spriteXDead = [];
 	referencePtero.width = 128;
 	referencePtero.height = 100;
 	referencePtero.idSon = "ptero";
@@ -200,7 +235,16 @@ var usineObstacle = function(random) {
 	/////
 	//Peaks //
 	/////
-	var Peaks = Object.create(ReferenceDinosaur);
+	var referencePeaks = Object.create(ReferenceDinosaur);
+
+	referencePeaks.y = 421;
+	referencePeaks.energie = 500;
+	referencePeaks.src = "img/dino/Spike.png";
+	referencePeaks.className = "spike"
+	referencePeaks.width = 128;
+	referencePeaks.height = 128;
+	referencePeaks.step = 3
+
 
 	// Retour de l'objet en fonction de math random
 	if (random == 1) {
@@ -210,18 +254,24 @@ var usineObstacle = function(random) {
 	} else if (random == 2) {
 		tabObstacle.push(referencePtero);
 		return referencePtero;
+
+	} else if (random == 3) {
+		tabObstacle.push(referencePeaks)
+		return referencePeaks;
 	} else {
 		tabObstacle.push(referenceRaptor);
 		return referenceRaptor;
 	}
+
+
 }; // fin de la fonction usine
 
 
 var creationObstacle = function() {
 
-	
+
 	setInterval(function() {
-		var typeObstacle = Math.round(Math.random() * 2);
+		var typeObstacle = Math.round(Math.random() * 4);
 		var nouvelObstacle = usineObstacle(typeObstacle).chainage();
 	}, 2000)
 
@@ -240,18 +290,34 @@ var usineBullet = function() {
 		src: 'img/item.png',
 		x: $('#container').position().left + 100,
 		y: $('#container').position().top + 45,
-		width:null,
-		height:null,
+		width: null,
+		height: null,
 		// 0 --> bullet  
 
 		creation: function() {
 			$('#game').append($(this.elementHTML));
 			$(this.elementHTML).addClass(this.className);
-			$(this.elementHTML).append('<audio autoplay><source src="son/fusil.mp3"><source src="son/fusil.ogg"></audio>');
+
+			//Play sound when you pull the trigger
+			if (this.className == 'containerBullet') {
+				var sonRifle = document.getElementsByClassName('rifle');
+				for (var i = 0; i < sonRifle.length; i++) {
+					sonRifle[i].pause()
+					sonRifle[i].currentTime = 0;
+					sonRifle[i].play()
+				}
+
+			}
+
 			// astuce : on peut viser l'element par sa classe ou bien par this.elementHTML . Ici je choisis la classe
 			$('.' + this.className).append(img);
 
-			$(img).css({'position':'absolute', 'top':'-13px'});
+
+			//probleme image dynamite qui s'affichait pas bien ! 
+			$(img).css({
+				'position': 'absolute',
+				'top': '-13px'
+			});
 
 			$('.bullet').css({
 				'position': 'absolute'
@@ -342,7 +408,7 @@ var usineBullet = function() {
 
 
 						$(img).css('top', '-13px');
-						console.log(-13)
+
 						tPrecedent = tActuel;
 
 					}
@@ -369,8 +435,12 @@ var usineBullet = function() {
 					{
 						// si dino derriere alors il peut quand meme tirer 
 						// ObjetBullet <= dino.x ca marche pas si derriere
+						if (perso.isDynamiting) {
+							tabObstacle[i].boumD();
+						} else {
+							tabObstacle[i].boum();
+						}
 
-						tabObstacle[i].boum();
 						return true;
 					}
 
@@ -382,8 +452,11 @@ var usineBullet = function() {
 		animate: function() {
 			var objetBullet = this
 			if (this.collisionObstacle()) {
+
 				if (perso.isDynamiting) {
-					
+
+					usineExplode().creation().animate()
+
 				}
 				//suppression de la balle
 				$(this.elementHTML).remove();
@@ -424,17 +497,109 @@ var usineBullet = function() {
 	Dynamite.spriteItemX = [0, -51, -102, -153, -204];
 	Dynamite.width = 51;
 	Dynamite.height = 38;
-	Dynamite.y= $('#container').position().top + 40;
-	Dynamite.x= $('#container').position().left + 20;
+	Dynamite.y = $('#container').position().top + 40;
+	Dynamite.x = $('#container').position().left + 20;
+
 
 	if (perso.isDynamiting) {
 		return Dynamite;
 	} else {
 		return Bullet;
 	}
-	
-};	
+
+};
 
 var ObjetBalleEnMouvement = function() {
 	usineBullet().creation().moveBullet().animate();
+};
+
+
+
+var usineExplode = function() {
+	var obs = document.createElement('div');
+	var img = document.createElement('img');
+
+	var Explode = {
+
+		elementHTML: obs,
+		spriteItemY: [0, -13],
+		src: 'img/dynamite.png',
+		x: tabObstacle.x,
+		className: 'Explode',
+		y: tabObstacle.y,
+		width: 198,
+		spriteX: [0, -198, -396, -594, -792, -980],
+		height: 173,
+		// 0 --> bullet  
+
+		creation: function() {
+			for (var i = 0; i < tabObstacle.length; i++) {
+				$('#game').append($(this.elementHTML));
+				$(this.elementHTML).addClass(this.className);
+				$('.' + this.className).append(img);
+				img.setAttribute('src', this.src);
+
+
+				$(this.elementHTML).css({
+					'overflow': 'hidden',
+					'width': this.width + 'px',
+					'height': this.height + 'px',
+					'position': 'absolute',
+					'left': tabObstacle[i].x + 'px', // retranchement des valeurs des positions du hero
+					'top': tabObstacle[i].y + 'px',
+					'z-index': '800'
+
+				});
+
+			};
+
+			$(img).css({
+				'position': 'absolute',
+
+			});
+
+			return this;
+		},
+		animate: function() {
+			var tActuel;
+			var tPrecedent;
+			var frame = 0;
+			var that = this; // correspond bien a l'objet a l'interieur de la fonction
+			var spriteExplode = function(actuel) {
+				// console.log(this); // correspond a rien ou a la methode qui n'est pas un objet 
+				tActuel = actuel;
+				tPrecedent = tPrecedent || actuel;
+				var delai = tActuel - tPrecedent;
+				if (delai > 200) {
+					tPrecedent = tActuel;
+					frame++;
+					// s'il est vivant alors sprite Run
+					if (frame == that.spriteX.length) {
+
+					}
+					$(img).css('top', 0);
+					$(img).css('left', that.spriteX[frame] + "px");
+
+				}
+
+				window.requestAnimationFrame(spriteExplode);
+
+			};
+			spriteExplode();
+			//Explosion sound 
+
+			document.getElementById('explosion').play();
+
+
+			if (!tabObstacle.alive) {
+				$(this.elementHTML).fadeOut(1000, function() {
+					$(this.elementHTML).remove();
+				})
+			}
+
+		}
+
+
+	};
+	return Explode
 };
