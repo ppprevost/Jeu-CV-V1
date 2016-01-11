@@ -26,7 +26,7 @@ var usineObstacle = function(random) {
 
 		elementHTML: obs,
 		creation: function() { // on crée le dinosaur et on lui affecte une position initial et ses sprites
-			document.body.appendChild(this.elementHTML);
+			$('#obstacle').append($(this.elementHTML));
 			this.elementHTML.style.top = this.y + "px";
 			this.elementHTML.style.left = this.x + "px";
 			this.elementHTML.appendChild(img);
@@ -50,10 +50,14 @@ var usineObstacle = function(random) {
 
 			if (this.className == 'containerPtero') {
 				document.getElementById('ptero').play();
+				document.getElementById('ptero').volume = 0.5
 			} else if (this.className == 'containerRaptor') {
 				document.getElementById('raptor').play();
+				document.getElementById('raptor').volume = 0.5
 			} else if (this.className == 'containerDiplo') {
 				document.getElementById('diplo').play();
+				document.getElementById('diplo').volume = 0.5;
+
 			}
 
 			/////
@@ -147,21 +151,27 @@ var usineObstacle = function(random) {
 			}
 		},
 		boumD: function() {
-
+			perso.score += this.energie *200
 			$('#score').text(perso.score);
 			for (var i = 0; i < tabObstacle.length; i++) {
-				tabObstacle[i].energie -= 500;
-				if (tabObstacle[i].energie <= 0) {
-					// this.alive = false;
+				
+				// tabObstacle[i].alive = false;
 
+				if (tabObstacle[i]) {
+					tabObstacle[i].alive = false;
 					$(tabObstacle[i].elementHTML).fadeOut(2000, function() {
-						$(tabObstacle[i].elementHTML).remove();
-						tabObstacle[i].alive = false;
-						delete tabObstacle[i];
-						tabObstacle.splice(0, tabObstacle.length);
-					})
+						$(this).remove()
+
+						// tabObstacle[i] = null;
+					});
+					// setTimeout(function(){
+
+					// 	$(tabObstacle[i].elementHTML).remove();
+					// },2000)
 				}
+
 			}
+			tabObstacle = [];
 
 
 
@@ -237,13 +247,14 @@ var usineObstacle = function(random) {
 	/////
 	var referencePeaks = Object.create(ReferenceDinosaur);
 
-	referencePeaks.y = 421;
+	referencePeaks.y = 484;
 	referencePeaks.energie = 500;
 	referencePeaks.src = "img/dino/Spike.png";
 	referencePeaks.className = "spike"
 	referencePeaks.width = 128;
 	referencePeaks.height = 128;
-	referencePeaks.step = 3
+	referencePeaks.step = 3;
+	$('.spike').css('z-index', '35')
 
 
 	// Retour de l'objet en fonction de math random
@@ -292,6 +303,7 @@ var usineBullet = function() {
 		y: $('#container').position().top + 45,
 		width: null,
 		height: null,
+		stepy : Math.round(Math.random()),
 		// 0 --> bullet  
 
 		creation: function() {
@@ -305,6 +317,7 @@ var usineBullet = function() {
 					sonRifle[i].pause()
 					sonRifle[i].currentTime = 0;
 					sonRifle[i].play()
+					sonRifle[i].volume=0.2;
 				}
 
 			}
@@ -436,6 +449,7 @@ var usineBullet = function() {
 						// si dino derriere alors il peut quand meme tirer 
 						// ObjetBullet <= dino.x ca marche pas si derriere
 						if (perso.isDynamiting) {
+
 							tabObstacle[i].boumD();
 						} else {
 							tabObstacle[i].boum();
@@ -464,8 +478,11 @@ var usineBullet = function() {
 
 			} else {
 				this.x += 15;
+				this.y -= this.stepy;
+					
 
-				$(this.elementHTML).css('left', this.x);
+				$(this.elementHTML).css('left', this.x+'px');
+				$(this.elementHTML).css('top', this.y+'px');
 
 				if ($(this.elementHTML).position().left >= $(window).width()) {
 					$(this.elementHTML).remove();
@@ -514,7 +531,7 @@ var ObjetBalleEnMouvement = function() {
 };
 
 
-
+// Dynamite explosion 
 var usineExplode = function() {
 	var obs = document.createElement('div');
 	var img = document.createElement('img');
@@ -550,7 +567,6 @@ var usineExplode = function() {
 					'z-index': '800'
 
 				});
-
 			};
 
 			$(img).css({
@@ -589,7 +605,7 @@ var usineExplode = function() {
 			//Explosion sound 
 
 			document.getElementById('explosion').play();
-
+			document.getElementById('explosion').volume = 0.7;
 
 			if (!tabObstacle.alive) {
 				$(this.elementHTML).fadeOut(1000, function() {

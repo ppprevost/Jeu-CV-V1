@@ -54,6 +54,7 @@ var usineNuage = function() {
 
 	var referenceNuage = {
 		y: Math.floor(Math.random() * 200),
+		step: Math.round(Math.random() * 10) + 1,
 		x: 2000,
 		width: 100,
 		height: 100,
@@ -68,7 +69,7 @@ var usineNuage = function() {
 	};
 
 	referenceNuage.animate = function() {
-		referenceNuage.x = referenceNuage.x - 4;
+		referenceNuage.x = referenceNuage.x - referenceNuage.step;
 
 
 		if (referenceNuage.x <= -4) {
@@ -159,10 +160,8 @@ Compteur
 var creationTimer = function() {
 
 	$('#compteur').prepend("<div id='timer'></div>");
-	// $('#timer').html("00 : 00");
-	$('#timer').css({
-				'font-size':'3em'
-		})
+	$('#timer').html("00 : 00");
+	
 	var seconde = 0;
 	var minute = 0;
 
@@ -178,9 +177,8 @@ var creationTimer = function() {
 		}
 		if (seconde >= 10 && minute < 10) {
 			$('#timer').html("0" + minute + ": " + seconde)
-			$('#timer').append(" Bravo vous avez tenu " + seconde + " secondes")
+			$('#timer').append("\n Bravo vous avez tenu " + seconde + " secondes")
 		}
-
 
 
 	};

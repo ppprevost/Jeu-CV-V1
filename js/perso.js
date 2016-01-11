@@ -14,6 +14,7 @@
 			this.isRunningLeft = false;
 			this.isConflict = false; // test la collision
 			this.score = 0;
+			this.isDying = false // Hero Die
 			this.width = 116;
 			this.height = 100;
 			this.x = 200;
@@ -60,6 +61,22 @@
 								// des conflit on supprime l'bstacle du tableau
 								tabObstacle.splice(i, 1);
 								$('#health').text(this.energie)
+								if (refPerso.energie <= 0) {
+									refPerso.RyuDie();
+								}
+
+								// setTimeout(function() {
+								// 	var begin = confirm('Voulez-vous recommencer?, cliquez sur annuler pour telecharger mon CV');
+								// 	if (begin) {
+								// 		$('#obstacle').remove();
+								// 		tabObstacle = [];
+
+								// 		intro();
+								// 	} else {
+
+								// 	}
+								// }, 200)
+
 							}
 						}
 					}
@@ -92,7 +109,8 @@
 						}
 						$('#contenu').css('left', refPerso.spriteX[frameFixed] + "px");
 						$('#contenu').css('top', refPerso.spriteY[0] + "px");
-						// $('#contenu').css('width', refPerso.idle[frameFixed].w + "px");
+						// Pour regler la taille du sprite
+						//  $('#contenu').css('width', refPerso.idle[frameFixed].w + "px");
 						// $('#contenu').css('height', refPerso.idle[frameFixed].h + "px");
 
 					}
@@ -110,63 +128,18 @@
 				this.isJumping = true;
 				var refPerso = this;
 				this.isJumpingUp = false;
+				this.isJumpingDown = false;
 
 
-
-				// var jumpUp = function() {
-				// 	refPerso.isJumpingUp = true;
-				// 	$('#container').animate({
-				// 		'top': '-=7px'
-				// 	}, 20)
-				// 	if($('#container').position().top >= 200){
-				// 		refPerso.isJumpingUp=false;
-				// 	}
-
-				// }
-				// var jumpDown = function(){
-				// 	$('#container').animate({
-				// 		'top': '+=7px'
-				// 	}, 20)
-
-
-				// }
-
-				// var jump = function() {
-				// 	var jumpUp = function() {
-				// 		refPerso.isJumpingUp = true;
-				// 		refPerso.y -= 30;
-				// 		if (refPerso.y >= 200) {
-				// 		refPerso.isJumpingUp = false;
-				// 		jumpDown();
-				// 	}
-
-				// 	}
-				// 	var jumpDown = function() {
-
-				// 		refPerso.y += 30;
-				// 	}
-
-				// }
-				// 
-				var jump = function(){
-					$('#container').animate({'top':perso.y - 200 +'px'},300)
-				}
-				
-
-
-				var jumpMove = function() {
-
+				var jumpDown = function() {
 					$('#container').animate({
-						'top': '-=300px',
-						'left': '+=100px'
-					}, 200, function() {
-						$(this).delay(200).animate({
-							'top': '+=300px',
-							'left': '+=100px'
-						}, 200);
-					});
+						'top': '+=7px'
+					}, 20)
 
-				};
+
+				}
+
+
 				var tActuel;
 				var tPrecedent;
 				var frameMove = 0;
@@ -175,11 +148,54 @@
 					tPrecedent = tPrecedent || actuel;
 
 					var delai = tActuel - tPrecedent;
+					var jump = function() {
 
-					if (delai > 70) {
+						if (refPerso.isJumpingUp) {
+							refPerso.y -= 15;
+							if (refPerso.y <= 200) {
+								refPerso.isJumpingUp = false;
 
-						
+							}
+						}
 
+
+						if (!refPerso.isJumpingUp) {
+							refPerso.y += 15;
+							if (refPerso.y >= 454) {
+								refPerso.isJumping = false;
+							}
+						}
+
+					};
+					var jumpMove = function() {
+						if (refPerso.isJumpingUp) {
+							refPerso.y -= 15;
+							refPerso.x += 3
+							if (refPerso.y <= 200) {
+								refPerso.isJumpingUp = false;
+
+							}
+						}
+
+
+						if (!refPerso.isJumpingUp) {
+							refPerso.y += 15;
+
+							if (refPerso.y >= 454) {
+								refPerso.isJumping = false;
+							}
+						}
+
+					}
+
+					if (delai > 40) {
+						tPrecedent = tActuel;
+
+						if (!refPerso.isRunning) { // saut verticale
+							jump();
+						} else {
+							jumpMove();
+						}
 
 						if (!refPerso.isHaiduken) {
 
@@ -191,10 +207,10 @@
 							$('#contenu').css('left', refPerso.spriteX[frameMove] + "px");
 							$('#contenu').css('top', refPerso.spriteY[1] + "px");
 						}
-						// $('#container').css('top', refPerso.y)
-						tPrecedent = tActuel;
+						$('#container').css('top', refPerso.y)
 
 					}
+
 					if (refPerso.isJumping) {
 						window.requestAnimationFrame(spriteJumping);
 						// window.requestAnimationFrame(jumpUp);
@@ -207,23 +223,19 @@
 					}
 
 				};
-				if (!refPerso.isRunning) {
-							jump();
-							// jumpUp();
-						} else {
-							jumpMove();
-						}
 
-				setTimeout(function() {
-					// met a flase le jump a la fin du saut
-					refPerso.isJumping = false;
-				}, 900); // temps du saut
+
+				// setTimeout(function() {
+				// 	// met a flase le jump a la fin du saut
+				// 	refPerso.isJumping = false;
+				// }, 900); // temps du saut
 				spriteJumping();
 
 			};
 			// attaque au fusil
 			this.RyuHaiduken = function() {
-				this.isHaiduken = true;
+				perso.isHaiduken = true;
+				perso.isDynamiting = false;
 				var tActuel;
 				var tPrecedent;
 				var frameHaiduken = 0;
@@ -234,8 +246,11 @@
 					tActuel = actuel;
 					tPrecedent = tPrecedent || actuel;
 					var delai = tActuel - tPrecedent;
-
-					if (delai > 70) {
+					var tps = 70;
+					if (perso.isCrouching) { // animation - rapide
+						tps = 120;
+					}
+					if (delai > tps) {
 						frameHaiduken++;
 						// si le perso lance de la Dynamite
 						if (refPerso.isDynamiting) {
@@ -287,7 +302,7 @@
 
 						tPrecedent = tActuel;
 					}
-					if (refPerso.isHaiduken || refPerso.isDynamiting) {
+					if (refPerso.isHaiduken) {
 						var animationRequestId = window.requestAnimationFrame(spriteHaiduken);
 
 						refPerso.enAttente = false;
@@ -301,10 +316,90 @@
 				spriteHaiduken();
 				setTimeout(function() {
 					refPerso.isHaiduken = false;
-					perso.isDynamiting = false
+
 				}, 800)
 			};
+			this.RyuDynamite = function() {
+				this.isDynamiting = true;
+				this.isHaiduken = false;
+				var tActuel;
+				var tPrecedent;
+				var frameHaiduken = 0;
+				var refPerso = this;
 
+				var spriteDynamite = function(actuel) {
+
+					tActuel = actuel;
+					tPrecedent = tPrecedent || actuel;
+					var delai = tActuel - tPrecedent;
+
+					if (delai > 70) {
+						frameHaiduken++;
+						// si le perso lance de la Dynamite
+						if (refPerso.enAttente) {
+							if (frameHaiduken == 8) {
+								frameHaiduken = 0;
+							}
+							$('#contenu').css('left', refPerso.spriteX[frameHaiduken] + "px");
+							$('#contenu').css('top', refPerso.spriteY[10] + "px");
+
+						}
+
+
+						// tirer des balles 
+						//Run and Shoot
+						if (refPerso.isRunning) {
+
+							if (frameHaiduken == 8) {
+								frameHaiduken = 0;
+
+							}
+							$('#contenu').css('left', refPerso.spriteX[frameHaiduken] + "px");
+							$('#contenu').css('top', refPerso.spriteY[10] + "px");
+
+						} else if (perso.isCrouching) {
+							// Crouch and Shoot
+
+							if (frameHaiduken == 5) {
+								frameHaiduken = 0;
+							}
+							$('#contenu').css('left', refPerso.spriteX[frameHaiduken] + "px");
+							$('#contenu').css('top', refPerso.spriteY[7] + "px");
+
+						} else if (perso.isJumping) {
+							// jump and shoot
+							if (frameHaiduken == refPerso.spriteX.length) {
+								frameHaiduken = 0;
+							}
+							$('#contenu').css('left', refPerso.spriteX[frameHaiduken] + "px");
+							$('#contenu').css('top', refPerso.spriteY[9] + "px");
+						} else {
+							// Walk and Shoot
+							if (frameHaiduken == refPerso.spriteX.length) {
+								frameHaiduken = 0;
+							}
+							$('#contenu').css('left', refPerso.spriteX[frameHaiduken] + "px");
+							$('#contenu').css('top', refPerso.spriteY[3] + "px");
+
+						}
+					}
+
+					tPrecedent = tActuel;
+
+					if (refPerso.isDynamiting) {
+						var animationRequestId = window.requestAnimationFrame(spriteDynamite);
+						refPerso.enAttente = false;
+
+					} else {
+						refPerso.ruyFixed();
+					}
+
+				};
+				spriteDynamite();
+				setTimeout(function() {
+					perso.isDynamiting = false
+				}, 3000)
+			};
 
 			// Running right
 			this.RyuRunning = function() {
@@ -334,7 +429,9 @@
 						if (frameRunning == 8) {
 							frameRunning = 0;
 						}
-						if (!refPerso.isHaiduken) {
+
+						// si il ne saute pas et qu'il ne sort pas son fusil ! 
+						if (!refPerso.isHaiduken && !refPerso.isJumping) {
 							$('#contenu').css('left', refPerso.spriteX[frameRunning] + "px");
 
 							$('#contenu').css('top', refPerso.spriteY[4] + "px");
@@ -405,9 +502,8 @@
 
 					if (delai > 70) {
 						frameCrouching++;
-
 						$('#contenu').css('left', refPerso.spriteX[frameCrouching] + "px");
-						$('#contenu').css('top', refPerso.spriteY[5] + "px");
+						$('#contenu').css('top', refPerso.spriteY[9] + "px");
 						tPrecedent = tActuel;
 					}
 					if (refPerso.isHurting) {
@@ -426,6 +522,32 @@
 			};
 
 			//perso is ding
+			this.RyuDie = function() {
+				this.isDying = true;
+				this.enAttente = false;
+				var tActuel;
+				var tPrecedent;
+				var frameCrouching = 0;
+				var refPerso = this;
+				console.log('fin du jeu')
+				var spriteDie = function(actuel) {
+					tActuel = actuel;
+					tPrecedent = tPrecedent || actuel;
 
+					var delai = tActuel - tPrecedent;
+					if (delai > 70) {
+						frameCrouching++;
 
-		}; // Hurt
+						$('#contenu').css('left', refPerso.spriteX[frameCrouching] + "px");
+						$('#contenu').css('top', refPerso.spriteY[5] + "px");
+						tPrecedent = tActuel;
+					}
+					if (refPerso.idDying) {
+						var animationRequestId = window.requestAnimationFrame(spriteDie);
+
+					}
+				};
+				spriteDie();
+			};
+
+		}; // end of Object

@@ -3,6 +3,8 @@
 <head>
 	<meta charset = "utf-8">
 	<title></title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
 	<link rel="stylesheet" href="style.css">
 
 	<!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
@@ -10,6 +12,7 @@
 	</script>
 	<script src="jquery-ui/jquery-ui/jquery-ui.min.js">
 	</script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 	<script src ="js/intro.js"></script>
 	<script src ="js/background.js"></script>
 	<script src ="js/obstacle.js"></script>
@@ -19,29 +22,66 @@
 </head>
 
 <div id="game">
-	<div id="compteur">
-		<div id="health"></div>
-		<div id="score"></div>
+	
+	<div id="misc" class="container">
+		
+		<div class="row">
+			<div class="col-xs-4 text-center">
+				<div class="glyphicon glyphicon-time" aria-hidden="true"></div><span>Surviving Time</span>
+				<div id="compteur"></div>
+			</div>
+			<div class="col-xs-4 text-center">
+				<div class="glyphicon glyphicon-heart"></div>
+				<span>Health</span>
+				<div id="health"></div>
+			</div>
+			<div class="col-xs-4 text-center">
+				<div class="glyphicon glyphicon-usd"></div>
+				<span >Score</span>
+				<div id="score"></div>
+			</div>	
+		</div>
+
 	</div>
+
 	<div id="sound">
 		<audio id ='ptero'><source src='son/16456.mp3'></audio>
 		<audio id = 'raptor'><source src='son/141.mp3'></audio>
 		<audio id = 'diplo'><source src='son/16467.mp3'></audio>	
-		<audio class='rifle'><source src="son/fusil.mp3"><source src="son/fusil.ogg"></audio>
-		<audio id='explosion'><source src="son/1428.mp3"><source src="son/fusil.ogg"></audio>
+		<audio class='rifle'><source src="son/fusil.mp3"></audio>
+		<audio id='explosion'><source src="son/1428.mp3"></audio>
+		<audio id='main'><source src="son/main.mp3"><source src="son/main.ogg"></audio>
 	</div>
 
 	<div class="launch">Start the Game !</div>
-
+	<div id="obstacle"></div>
 	<div id="background"></div>
 	<div class="nuage">
 
 	</div>
 
-	<!-- <img id="contenu"/> -->
-
 
 
 </div>
+<div id="skill" class="container">
+	<div class="row">
+	<img class="col-xs-12 col-md-6" src="img/competences/logo_html5.png" alt="">
+	<img class="col-xs-12 col-md-6" src="img/competences/jquery-logo.jpg" alt="">
+	</div>
+	<div class="row">
+		<img class="col-xs-12 col-md-6" src="img/competences/angularjs-logo.png" alt="">
+		<img class="col-xs-12 col-md-6" src="img/competences/jquery-logo.jpg" alt="">
+	</div>	
+	<div class="row">
+		<img class="col-xs-12 col-md-6" src="img/competences/mongodb-logo-rgb.jpeg" alt="">
+		<img class="col-xs-12 col-md-6" src="img/Meteor_framework_logo.png" alt="">
+	</div>
+	<div class="row">
+		<img class="col-xs-12 col-md-6" src="img/competences/nodejs-logo.png" alt="">
+		<img class="col-xs-12 col-md-6" src="img/competences/mongodb-logo-rgb.jpeg" alt="">
+	</div>
+	
+</div>
+
 </html>
 
