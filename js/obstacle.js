@@ -50,13 +50,13 @@ var usineObstacle = function(random) {
 
 			if (this.className == 'containerPtero') {
 				document.getElementById('ptero').play();
-				document.getElementById('ptero').volume = 0.5
+				document.getElementById('ptero').volume = 0.3
 			} else if (this.className == 'containerRaptor') {
 				document.getElementById('raptor').play();
-				document.getElementById('raptor').volume = 0.5
+				document.getElementById('raptor').volume = 0.3
 			} else if (this.className == 'containerDiplo') {
 				document.getElementById('diplo').play();
-				document.getElementById('diplo').volume = 0.5;
+				document.getElementById('diplo').volume = 0.3;
 
 			}
 
@@ -151,23 +151,18 @@ var usineObstacle = function(random) {
 			}
 		},
 		boumD: function() {
-			perso.score += this.energie *200
+			perso.score += this.energie * 200
 			$('#score').text(perso.score);
 			for (var i = 0; i < tabObstacle.length; i++) {
-				
-				// tabObstacle[i].alive = false;
+
 
 				if (tabObstacle[i]) {
 					tabObstacle[i].alive = false;
 					$(tabObstacle[i].elementHTML).fadeOut(2000, function() {
 						$(this).remove()
-
-						// tabObstacle[i] = null;
+						delete this;
 					});
-					// setTimeout(function(){
 
-					// 	$(tabObstacle[i].elementHTML).remove();
-					// },2000)
 				}
 
 			}
@@ -248,8 +243,8 @@ var usineObstacle = function(random) {
 	var referencePeaks = Object.create(ReferenceDinosaur);
 
 	referencePeaks.y = 484;
-	referencePeaks.energie = 500;
-	referencePeaks.src = "img/dino/Spike.png";
+	referencePeaks.energie = 300;
+	referencePeaks.src = "img/Dino/spike.png";
 	referencePeaks.className = "spike"
 	referencePeaks.width = 128;
 	referencePeaks.height = 128;
@@ -303,7 +298,7 @@ var usineBullet = function() {
 		y: $('#container').position().top + 45,
 		width: null,
 		height: null,
-		stepy : Math.round(Math.random()),
+		stepy: Math.round(Math.random()),
 		// 0 --> bullet  
 
 		creation: function() {
@@ -317,7 +312,7 @@ var usineBullet = function() {
 					sonRifle[i].pause()
 					sonRifle[i].currentTime = 0;
 					sonRifle[i].play()
-					sonRifle[i].volume=0.2;
+					sonRifle[i].volume = 0.1;
 				}
 
 			}
@@ -449,7 +444,6 @@ var usineBullet = function() {
 						// si dino derriere alors il peut quand meme tirer 
 						// ObjetBullet <= dino.x ca marche pas si derriere
 						if (perso.isDynamiting) {
-
 							tabObstacle[i].boumD();
 						} else {
 							tabObstacle[i].boum();
@@ -479,10 +473,10 @@ var usineBullet = function() {
 			} else {
 				this.x += 15;
 				this.y -= this.stepy;
-					
 
-				$(this.elementHTML).css('left', this.x+'px');
-				$(this.elementHTML).css('top', this.y+'px');
+
+				$(this.elementHTML).css('left', this.x + 'px');
+				$(this.elementHTML).css('top', this.y + 'px');
 
 				if ($(this.elementHTML).position().left >= $(window).width()) {
 					$(this.elementHTML).remove();
@@ -516,10 +510,13 @@ var usineBullet = function() {
 	Dynamite.height = 38;
 	Dynamite.y = $('#container').position().top + 40;
 	Dynamite.x = $('#container').position().left + 20;
+	
 
 
 	if (perso.isDynamiting) {
+		
 		return Dynamite;
+
 	} else {
 		return Bullet;
 	}
@@ -541,28 +538,28 @@ var usineExplode = function() {
 		elementHTML: obs,
 		spriteItemY: [0, -13],
 		src: 'img/dynamite.png',
-		x: tabObstacle.x,
+		x: 50,
 		className: 'Explode',
-		y: tabObstacle.y,
+		y: 50,
 		width: 198,
 		spriteX: [0, -198, -396, -594, -792, -980],
 		height: 173,
 		// 0 --> bullet  
 
 		creation: function() {
-			for (var i = 0; i < tabObstacle.length; i++) {
+			
 				$('#game').append($(this.elementHTML));
 				$(this.elementHTML).addClass(this.className);
 				$('.' + this.className).append(img);
 				img.setAttribute('src', this.src);
 
-
+for (var i = 0; i < tabObstacle.length; i++) {
 				$(this.elementHTML).css({
 					'overflow': 'hidden',
 					'width': this.width + 'px',
 					'height': this.height + 'px',
 					'position': 'absolute',
-					'left': tabObstacle[i].x + 'px', // retranchement des valeurs des positions du hero
+					'left': tabObstacle[i].x + 'px',
 					'top': tabObstacle[i].y + 'px',
 					'z-index': '800'
 
@@ -591,30 +588,34 @@ var usineExplode = function() {
 					frame++;
 					// s'il est vivant alors sprite Run
 					if (frame == that.spriteX.length) {
-
+						frame=0;
 					}
 					$(img).css('top', 0);
 					$(img).css('left', that.spriteX[frame] + "px");
 
 				}
+				
 
-				window.requestAnimationFrame(spriteExplode);
+				if(perso.isDynamiting){
+					window.requestAnimationFrame(spriteExplode);
+				}
+				
 
 			};
 			spriteExplode();
 			//Explosion sound 
 
 			document.getElementById('explosion').play();
-			document.getElementById('explosion').volume = 0.7;
+			document.getElementById('explosion').volume = 0.5;
 
 			if (!tabObstacle.alive) {
 				$(this.elementHTML).fadeOut(1000, function() {
 					$(this.elementHTML).remove();
+					delete this;
 				})
 			}
 
 		}
-
 
 	};
 	return Explode

@@ -7,9 +7,13 @@ $('document').ready(function() {
 	//declencheur du jeu
 	$('.launch').click(function() {
 			//suppression du dom de l'intro
+			document.getElementById('introSon').pause()
 			$(this).remove();
 			$('#intro').remove();
-			launchGame();
+			
+				launchGame();
+
+			
 
 		}) //click
 
@@ -30,7 +34,8 @@ $('document').ready(function() {
 		//lancement du son
 		var main = document.getElementById('main');
 		main.play()
-		main.volume = 0.1;
+		main.loop = true;
+		main.volume = 0.07;
 
 		// Chargement du terrain
 		Field().creation().animate();
@@ -74,6 +79,9 @@ $('document').ready(function() {
 
 		// Affichage du score 
 		$('#score').text(perso.score);
+
+		//Affichage de la dynamite
+		$('#supply').html(perso.supply);
 
 		//launch frame idle
 		perso.ruyFixed();
@@ -168,12 +176,11 @@ $('document').ready(function() {
 					break;
 
 				case 68: // d as Dynamite !!
-					if (!perso.isDynamiting) {
+					if (!perso.isDynamiting && perso.supply>0) {
 
-						perso.isDynamiting = true;
+						
 						// methode de shoot
 						perso.RyuDynamite()
-
 						ObjetBalleEnMouvement();
 					}
 

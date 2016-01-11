@@ -9,6 +9,8 @@ var Field = function() {
 	$(bush).css({
 		'z-index': '5',
 		'position': 'absolute',
+		'overflow': 'hidden',
+
 	});
 
 	var reference = {
@@ -161,7 +163,7 @@ var creationTimer = function() {
 
 	$('#compteur').prepend("<div id='timer'></div>");
 	$('#timer').html("00 : 00");
-	
+
 	var seconde = 0;
 	var minute = 0;
 
@@ -177,14 +179,50 @@ var creationTimer = function() {
 		}
 		if (seconde >= 10 && minute < 10) {
 			$('#timer').html("0" + minute + ": " + seconde)
-			$('#timer').append("\n Bravo vous avez tenu " + seconde + " secondes")
+			$('#timer').append("\n Bravo vous avez tenu " + seconde + " secondes et " + minute + " minute(s)")
 		}
 
+		/////
+		//Affichage des compétences //
+		/////
+
+		if (seconde >= 10 && seconde < 15 && minute == 0) {
+			$('#skill .html5').show(300);
+			$('.nextskill').html('New Skill : ' + $('.html5').attr('alt'))
+		} else if (seconde >= 15 && seconde < 20 && minute == 0) {
+			$('#skill .jquery').show(300)
+			$('.nextskill').html('New Skill : ' + $('.jquery').attr('alt'))
+		} else if (seconde >= 20 && seconde < 30 && minute == 0) {
+			$('#skill .angular').show(300);
+			$('.nextskill').html('Congratulations! New Skill : ' + $('.angular').attr('alt'));
+		} else if (seconde >= 30 && seconde < 40 && minute == 0) {
+			$('#skill .bootstrap').show(300);
+			$('.nextskill').html('Congratulations! New Skill : ' + $('.bootstrap').attr('alt'));
+		} else if (seconde >= 40 && seconde < 50 && minute == 0) {
+			$('#skill .mongodb').show(300);
+			$('.nextskill').html('Congratulations! New Skill : ' + $('.mongodb').attr('alt'))
+		} else if (seconde >= 50 && minute == 0) {
+			$('#skill .analytics').show(300);
+			$('.nextskill').html('Congratulations! New Skill : ' + $('.analytics').attr('alt'));
+		} else if (seconde >= 00 && seconde < 10 && minute == 1) {
+			$('#skill .nodejs').show(300);
+			$('.nextskill').html('Congratulations! New Skill : ' + $('.nodejs').attr('alt'));
+
+		} else if (seconde >= 20 && seconde < 25 && minute == 1) {
+			$('#skill .meteor').show(300);
+			$('.nextskill').html('Congratulations! New Skill : ' + $('.meteor').attr('alt'));
+		} else if (seconde >= 25 && minute == 1){
+			$('.nextskill').html(' You made it ! You survive')
+		}
+	
+		// you die ! 
+		if (perso.energie <= 0) {
+			clearInterval(launchchrono)
+			$('.nextskill').html('Ohhhhh You loose ! Refresh to start again !')
+		}
 
 	};
 
-	setInterval(chrono, 1000);
+	var launchchrono = setInterval(chrono, 1000);
 
 };
-
-

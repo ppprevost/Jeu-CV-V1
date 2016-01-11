@@ -5,8 +5,9 @@ var intro = function(){
 	$('#intro').append("<div></div>");
 
 //son T rex
-
-$('#intro').append('<audio autoplay><source src="son/trex_cri.mp3"><source src="son/trex_cri.ogg"></audio>');
+	document.getElementById('introSon').play()
+	document.getElementById('introSon').volume = 0.1
+	
 
 
 	// $('#intro').append('<audio autoplay><source src="son/raptor-cuisine.mp3"><source src="son/raptor-cuisine.ogg"></audio>');
