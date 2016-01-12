@@ -51,8 +51,8 @@ var ObjetRyu = function() {
 					if (this.isConflict) {
 						this.energie -= 10;
 						if (!perso.isHurting) {
-							// this.RyuHurt();
-							this.isHurting = true;
+							this.RyuHurt();
+
 						}
 
 						this.isConflict = false;
@@ -64,18 +64,8 @@ var ObjetRyu = function() {
 							//Sonne le glas
 						if (refPerso.energie <= 0) {
 							refPerso.RyuDie();
-							//supprimer les élements du Dom
-							setTimeout(function() {
-
-								$('#obstacle').remove();
-								
-								tabObstacle = [];
-								$('#sound').remove()
-								$('.nuage').remove()
-							}, 2000)
 
 						}
-
 					}
 				}
 			}
@@ -84,9 +74,7 @@ var ObjetRyu = function() {
 				refPerso.testCollision();
 			}, 100);
 		},
-		this.recupDynamite = function() {
-
-		}
+		
 		// Perso Idle
 	this.ruyFixed = function() {
 		this.enAttente = true;
@@ -132,16 +120,6 @@ var ObjetRyu = function() {
 		this.isJumpingUp = false;
 		this.isJumpingDown = false;
 
-
-		var jumpDown = function() {
-			$('#container').animate({
-				'top': '+=7px'
-			}, 20)
-
-
-		}
-
-
 		var tActuel;
 		var tPrecedent;
 		var frameMove = 0;
@@ -159,20 +137,17 @@ var ObjetRyu = function() {
 
 					}
 				}
-
-
 				if (!refPerso.isJumpingUp) {
 					refPerso.y += 15;
 					if (refPerso.y >= 454) {
 						refPerso.isJumping = false;
 					}
 				}
-
 			};
 			var jumpMove = function() {
 				if (refPerso.isJumpingUp) {
 					refPerso.y -= 15;
-					refPerso.x += 3
+					refPerso.x += 2
 					if (refPerso.y <= 200) {
 						refPerso.isJumpingUp = false;
 
@@ -190,7 +165,8 @@ var ObjetRyu = function() {
 
 			}
 
-			if (delai > 35) {
+			if (delai > 30) {
+
 				tPrecedent = tActuel;
 
 				if (!refPerso.isRunning) { // saut verticale
@@ -199,12 +175,13 @@ var ObjetRyu = function() {
 					jumpMove();
 				}
 
-				if (!refPerso.isHaiduken) {
 
-					frameMove++;
-					if (frameMove == refPerso.spriteX.length) {
-						frameMove = 0;
-					}
+
+				frameMove++;
+				if (frameMove == refPerso.spriteX.length) {
+					frameMove = 0;
+				}
+				if (!refPerso.isHaiduken && !refPerso.isHurting) {
 
 					$('#contenu').css('left', refPerso.spriteX[frameMove] + "px");
 					$('#contenu').css('top', refPerso.spriteY[1] + "px");
@@ -214,6 +191,7 @@ var ObjetRyu = function() {
 			}
 
 			if (refPerso.isJumping) {
+
 				window.requestAnimationFrame(spriteJumping);
 				// window.requestAnimationFrame(jumpUp);
 
@@ -221,6 +199,7 @@ var ObjetRyu = function() {
 
 				//remise a 0
 			} else {
+
 				refPerso.ruyFixed();
 			}
 
@@ -257,44 +236,46 @@ var ObjetRyu = function() {
 				// si le perso lance de la Dynamite
 
 
+				// si le perso n'est pas bléssé
+				if (!refPerso.isHurting) {
 
-				// tirer des balles 
-				//Run and Shoot
-				if (refPerso.isRunning) {
+					// tirer des balles 
+					//Run and Shoot
+					if (refPerso.isRunning) {
 
-					if (frameHaiduken == 8) {
-						frameHaiduken = 0;
+						if (frameHaiduken == 8) {
+							frameHaiduken = 0;
+
+						}
+						$('#contenu').css('left', refPerso.spriteX[frameHaiduken] + "px");
+						$('#contenu').css('top', refPerso.spriteY[6] + "px");
+
+					} else if (perso.isCrouching) {
+						// Crouch and Shoot
+
+						if (frameHaiduken == 5) {
+							frameHaiduken = 0;
+						}
+						$('#contenu').css('left', refPerso.spriteX[frameHaiduken] + "px");
+						$('#contenu').css('top', refPerso.spriteY[7] + "px");
+
+					} else if (perso.isJumping) {
+						// jump and shoot
+						if (frameHaiduken == refPerso.spriteX.length) {
+							frameHaiduken = 0;
+						}
+						$('#contenu').css('left', refPerso.spriteX[frameHaiduken] + "px");
+						$('#contenu').css('top', refPerso.spriteY[9] + "px");
+					} else {
+						// Walk and Shoot
+						if (frameHaiduken == refPerso.spriteX.length) {
+							frameHaiduken = 0;
+						}
+						$('#contenu').css('left', refPerso.spriteX[frameHaiduken] + "px");
+						$('#contenu').css('top', refPerso.spriteY[3] + "px");
 
 					}
-					$('#contenu').css('left', refPerso.spriteX[frameHaiduken] + "px");
-					$('#contenu').css('top', refPerso.spriteY[6] + "px");
-
-				} else if (perso.isCrouching) {
-					// Crouch and Shoot
-
-					if (frameHaiduken == 5) {
-						frameHaiduken = 0;
-					}
-					$('#contenu').css('left', refPerso.spriteX[frameHaiduken] + "px");
-					$('#contenu').css('top', refPerso.spriteY[7] + "px");
-
-				} else if (perso.isJumping) {
-					// jump and shoot
-					if (frameHaiduken == refPerso.spriteX.length) {
-						frameHaiduken = 0;
-					}
-					$('#contenu').css('left', refPerso.spriteX[frameHaiduken] + "px");
-					$('#contenu').css('top', refPerso.spriteY[9] + "px");
-				} else {
-					// Walk and Shoot
-					if (frameHaiduken == refPerso.spriteX.length) {
-						frameHaiduken = 0;
-					}
-					$('#contenu').css('left', refPerso.spriteX[frameHaiduken] + "px");
-					$('#contenu').css('top', refPerso.spriteY[3] + "px");
-
 				}
-
 
 
 				tPrecedent = tActuel;
@@ -326,7 +307,6 @@ var ObjetRyu = function() {
 		var refPerso = this;
 		$('#supply').html(perso.supply);
 
-
 		var spriteDynamite = function(actuel) {
 
 			tActuel = actuel;
@@ -336,18 +316,18 @@ var ObjetRyu = function() {
 			if (delai > 70) {
 				frameHaiduken++;
 				// si le perso lance de la Dynamite
+				if (!perso.isJumping && !perso.isCrouching) {
+					if (frameHaiduken <= 7) {
+						$('#contenu').css('left', refPerso.spriteX[frameHaiduken] + "px");
+						$('#contenu').css('top', refPerso.spriteY[10] + "px");
+					}
 
-				if (frameHaiduken == 8) {
-					frameHaiduken = 0;
 				}
-				$('#contenu').css('left', refPerso.spriteX[frameHaiduken] + "px");
-				$('#contenu').css('top', refPerso.spriteY[10] + "px");
 
-
-
+				tPrecedent = tActuel;
 			}
 
-			tPrecedent = tActuel;
+
 
 			if (refPerso.isDynamiting) {
 
@@ -362,7 +342,7 @@ var ObjetRyu = function() {
 		spriteDynamite();
 		setTimeout(function() {
 			perso.isDynamiting = false
-		}, 3000)
+		}, 2000)
 	};
 
 	// Running right
@@ -382,11 +362,14 @@ var ObjetRyu = function() {
 
 			if (delai > 70) {
 
-				if (refPerso.isRunningLeft) {
-					refPerso.x -= 5;
-				} else {
-					refPerso.x += 5;
+				if (!refPerso.isCrouching) {
+					if (refPerso.isRunningLeft) {
+						refPerso.x -= 5;
+					} else {
+						refPerso.x += 5;
+					}
 				}
+
 
 				$('#container').css('left', refPerso.x);
 				frameRunning++;
@@ -394,8 +377,8 @@ var ObjetRyu = function() {
 					frameRunning = 0;
 				}
 
-				// si il ne saute pas et qu'il ne sort pas son fusil ! 
-				if (!refPerso.isHaiduken && !refPerso.isJumping) {
+				// si il ne saute pas, qu'il ne sort pas son fusil et qu'il n'est pas en train d'être blessé ! 
+				if (!refPerso.isHaiduken && !refPerso.isJumping && !refPerso.isHurting && !refPerso.isDynamiting && !refPerso.isCrouching) {
 					$('#contenu').css('left', refPerso.spriteX[frameRunning] + "px");
 
 					$('#contenu').css('top', refPerso.spriteY[4] + "px");
@@ -453,7 +436,7 @@ var ObjetRyu = function() {
 
 	this.RyuHurt = function() {
 		this.isHurting = true;
-
+		this.enAttente = false;
 		var tActuel;
 		var tPrecedent;
 		var frameCrouching = 0;
@@ -466,23 +449,30 @@ var ObjetRyu = function() {
 
 			if (delai > 70) {
 				frameCrouching++;
+
+
+
 				$('#contenu').css('left', refPerso.spriteX[frameCrouching] + "px");
-				$('#contenu').css('top', refPerso.spriteY[9] + "px");
+
+				$('#contenu').css('top', refPerso.spriteY[5] + "px");
 				tPrecedent = tActuel;
+
+
 			}
 			if (refPerso.isHurting) {
 				var animationRequestId = window.requestAnimationFrame(spriteHurting);
-				this.enAttente = false;
-
+				perso.enAttente = false;
 			} else {
-				refPerso.ruyFixed();
+				refPerso.ruyFixed()
 			}
 
 		};
 		spriteHurting();
 		setTimeout(function() {
+			refPerso.isHurting = false;
 
-		}, 1000);
+		}, 800);
+
 	};
 
 	//perso is ding

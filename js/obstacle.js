@@ -1,6 +1,7 @@
 // pour tester les collisions je mets les objets obstacles dans ce tableau. Nous testerons par la suite les collisions avec l'usine Bullet
 var tabObstacle = [];
 
+
 var usineObstacle = function(random) {
 
 	var obs = document.createElement('div');
@@ -49,8 +50,8 @@ var usineObstacle = function(random) {
 			});
 
 			//reglage des sons si pas mort	
-			
-			if(!perso.isDying){
+
+			if (!perso.isDying && sonOn) {
 				if (this.className == 'containerPtero') {
 					document.getElementById('ptero').play();
 					document.getElementById('ptero').volume = 0.3
@@ -61,6 +62,7 @@ var usineObstacle = function(random) {
 					document.getElementById('diplo').play();
 					document.getElementById('diplo').volume = 0.3;
 				}
+				
 			};
 
 			/////
@@ -225,9 +227,12 @@ var usineObstacle = function(random) {
 			};
 			spriteExplode();
 			//Explosion sound 
+			if (sonOn) {
+				document.getElementById('explosion').play();
+				document.getElementById('explosion').volume = 0.5;
 
-			document.getElementById('explosion').play();
-			document.getElementById('explosion').volume = 0.5;
+			}
+
 
 
 			$(obs).fadeOut(1000, function() {
@@ -341,17 +346,19 @@ var usineObstacle = function(random) {
 
 var creationObstacle = function() {
 
-	// si il est pas mort on lance des dino (evite le bug a la fin du jeu)
-	if (!perso.isDying) {
-		setInterval(function() {
+	// si il est pas mort on lance des dino (evite le bug a la fin du jeu
+
+	setInterval(function() {
+		if (!perso.isDying || win) {
 			var typeObstacle = Math.round(Math.random() * 4);
 			var nouvelObstacle = usineObstacle(typeObstacle).chainage();
-		}, 2000)
+		}
+	}, 2000);
 
-	}
 
 
 };
+
 
 //fonction usine balle
 
@@ -376,7 +383,7 @@ var usineBullet = function() {
 			$(this.elementHTML).addClass(this.className);
 
 			//Play sound when you pull the trigger
-			if (this.className == 'containerBullet') {
+			if (this.className == 'containerBullet' && sonOn) {
 				var sonRifle = document.getElementsByClassName('rifle');
 				for (var i = 0; i < sonRifle.length; i++) {
 					sonRifle[i].pause()

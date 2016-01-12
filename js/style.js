@@ -4,19 +4,37 @@ $('document').ready(function() {
 	//introduction jeu intro.js
 	intro();
 
-// lance un rafraichissement de la page des lors que l'on clique sur le bouton 
-$('.startAgain').click(function() {
-	location.reload();
-});
+	// lance un rafraichissement de la page des lors que l'on clique sur le bouton 
+	$('.startAgain').click(function() {
+		location.reload();
+	});
+
+	$('.sound').click(function() {
+
+		if (sonOn) {
+			sonOn = false;
+			$(this).html('Sound off')
+		} else {
+			sonOn = true;
+			$(this).html('Sound on');
+		}
+	})
 
 	//declencheur du jeu
 	$('.launch').click(function() {
 			//suppression du dom de l'intro
 			document.getElementById('introSon').pause();
-			$(this).remove();
-			$('.how-to-play').remove();
-			$('#intro').remove();
-			delete this;
+			$(this).hide(1500, function() {
+				$(this).remove();
+			});
+
+			$('.how-to-play').hide(1500, function() {
+				$('.how-to-play').remove();
+			});
+			$('#intro').hide(1500, function() {
+				$('#intro').remove();
+			});
+
 			launchGame();
 
 
@@ -36,16 +54,23 @@ $('.startAgain').click(function() {
 		// 	alert('Jeu mis en pause, appuyer sur ok pour continuer');
 		// 	timeOut = '';
 		// });
-
-		//lancement du son
 		var main = document.getElementById('main');
-		main.play()
-		main.loop = true;
-		main.volume = 0.07;
+		setInterval(function() {
+			//lancement du son
+				if (sonOn & !perso.isDying) {
+					main.play()
+					main.loop = true;
+					main.volume = 0.07;
+				} //stopper le son
+				else {
+					main.pause()
+				}
+			},200)
+			
 
 		// Chargement du terrain
 		Field().creation().animate();
-		
+
 
 		//Chargement des nuages
 		var Clouds = [usineNuage(), usineNuage(), usineNuage()];
@@ -110,34 +135,34 @@ $('.startAgain').click(function() {
 
 				case 38: //haut
 
-				if (!perso.isJumping) {
-					perso.RyuMove();
-					perso.isJumpingUp = true;
-				}
+					if (!perso.isJumping) {
+						perso.RyuMove();
+						perso.isJumpingUp = true;
+					}
 
-				break;
+					break;
 				case 39: //droite
-				e.preventDefault();
-				if (!perso.isRunning && !perso.isJumping) {
+					e.preventDefault();
+					if (!perso.isRunning && !perso.isJumping) {
 
-					perso.RyuRunning();
+						perso.RyuRunning();
 
-				}
+					}
 
-				break;
+					break;
 
 				case 37: //gauche
-				e.preventDefault();
-				if (!perso.isRunning && !perso.isJumping) {
-					perso.isRunningLeft = true;
-					perso.RyuRunning();
+					e.preventDefault();
+					if (!perso.isRunning && !perso.isJumping && !perso.isCrouching) {
+						perso.isRunningLeft = true;
+						perso.RyuRunning();
 
-				}
+					}
 
-				break;
+					break;
 				case 32: //espace
-				e.preventDefault();
-				if (!perso.isHaiduken && !perso.isJumping && !perso.isCrouching) {
+					e.preventDefault();
+					if (!perso.isHaiduken && !perso.isJumping && !perso.isCrouching) {
 						// on lance l'animation du Hero avec son fusil
 						perso.RyuHaiduken();
 						// on lance la fonction usine retournant balle
@@ -179,14 +204,14 @@ $('.startAgain').click(function() {
 					break;
 
 				case 40: // bas
-				e.preventDefault();
-				if (!perso.isCrouching && !perso.isHaiduken) {
-					perso.RyuCrouching()
-				}
-				break;
+					e.preventDefault();
+					if (!perso.isCrouching && !perso.isHaiduken) {
+						perso.RyuCrouching()
+					}
+					break;
 
 				case 68: // d as Dynamite !!
-				if (!perso.isDynamiting && perso.supply > 0) {
+					if (!perso.isDynamiting && perso.supply > 0) {
 
 
 						// methode de shoot
@@ -196,23 +221,23 @@ $('.startAgain').click(function() {
 
 					break;
 
-				}
+			}
 
-			}, false);
+		}, false);
 
-document.addEventListener('keyup', function(e) {
+		document.addEventListener('keyup', function(e) {
 
 
-	switch (e.keyCode) {
+			switch (e.keyCode) {
 
-		case 32:
+				case 32:
 					// if (perso.isHaiduken) {
 
 
 					// }
 
 					break;
-					case 38:
+				case 38:
 					if (perso.isJumping) {
 
 						// c'est le delay d'apres saut qui fait passer la variable is jumping en false
@@ -220,7 +245,7 @@ document.addEventListener('keyup', function(e) {
 					}
 
 					break;
-					case 39:
+				case 39:
 					e.preventDefault();
 					if (perso.isRunning) {
 						perso.isRunning = false;
@@ -229,7 +254,7 @@ document.addEventListener('keyup', function(e) {
 
 					break;
 
-					case 37:
+				case 37:
 					e.preventDefault();
 					if (perso.isRunning) {
 						perso.isRunningLeft = false;
@@ -238,7 +263,7 @@ document.addEventListener('keyup', function(e) {
 					}
 
 					break;
-					case 40:
+				case 40:
 
 					if (perso.isCrouching) {
 						perso.isCrouching = false;
@@ -246,13 +271,13 @@ document.addEventListener('keyup', function(e) {
 					break;
 
 				case 68: // d as Dynamite !!
-				if (perso.isDynamiting) {
+					if (perso.isDynamiting) {
 
 
-				}
+					}
 
 
-				break;
+					break;
 			}
 
 

@@ -1,3 +1,5 @@
+//creation des backgrounds, du timer et des conditions de temps pour l'affichage des competences et la mort ou la victoire
+
 /////
 // Terre//
 /////
@@ -161,7 +163,7 @@ var creationBackground = function() {
 /*
 Background Timer 
  */
-
+var win;
 var creationTimer = function() {
 
 	$('#compteur').prepend("<div id='timer'></div>");
@@ -182,7 +184,7 @@ var creationTimer = function() {
 		}
 		if (seconde >= 10 && minute < 10) {
 			$('#timer').html("0" + minute + ": " + seconde)
-			// $('#timer').append("<p> Bravo vous avez tenu " + seconde + " secondes et " + minute + " minute(s)</p>")
+				// $('#timer').append("<p> Bravo vous avez tenu " + seconde + " secondes et " + minute + " minute(s)</p>")
 		}
 
 		/////
@@ -214,17 +216,45 @@ var creationTimer = function() {
 		} else if (seconde >= 20 && seconde < 25 && minute == 1) {
 			$('#skill .meteor').show(300);
 			$('.nextskill').html('Congratulations! New Skill : ' + $('.meteor').attr('alt'));
+
+			//You win ! 
 		} else if (seconde >= 25 && minute == 1) {
-			var win = true;
+			win = true;
+			clearInterval(launchChrono);
 			$('.nextskill').html(' You made it ! You survive')
 			$('.endGame').fadeIn('slow')
-			$('.endGame').html('<p>Congratulations, you survive in the middle of the dinosaur jungle. Please see bellow my skill</p> ')
+			$('.endGame').html('<p>Congratulations, you survive in the middle of the dinosaur jungle. Please see my skills below</p> ');
+			tabObstacle = [];
+			$('#obstacle').remove()
+
 		}
+
+
+		//demander a camille
+		// tabCompetences = [' .html5', ' .jquery', ' .angular', ' .bootstrap', ' .mongodb', ' .analytics', ' .nodejs', ' .meteor'];
+
+		// var d = 0;
+		// var testTimer = function() {
+
+		// 			$('#skill' + tabCompetences[d]).show(300);
+		// 			$('.nextskill').html('New Skill : ' + $(tabCompetences[d]).attr('alt'));
+		// 			console.log(d)
+		// 			d++;
+
+		// }
+		// if seconde <25 && minute ==1
+		// if (d < tabCompetences.length) {
+		// var intervalle = setInterval(testTimer,2000)
+		// }
+		// if(d == tabCompetences.length){
+		// 	clearInterval(intervalle)
+		// }
+
 
 		// you die ! 
 		if (perso.energie <= 0 && !win) {
 
-			clearInterval(launchchrono)
+			clearInterval(launchChrono);
 			$('.nextskill').html('Ohhhhh You loose ! Refresh to start again !');
 			// affichage du message de mort et possibilité de recommencer
 			$('.endGame').fadeIn('slow');
@@ -234,17 +264,26 @@ var creationTimer = function() {
 				'cursor': 'pointer'
 
 			});
+			//supprimer les élements du Dom
+			setTimeout(function() {
 
+				tabObstacle = [];
+				$('#sound').remove()
+				$('.nuage').remove()
+			}, 2000)
 		}
 		// lance un rafraichissement de la page des lors que l'on clique sur le bouton 
 		$('.startAgain').click(function() {
 			location.reload();
 		});
-
+		
 	};
 
-	var launchchrono = setInterval(chrono, 1000);
+
+	var launchChrono = setInterval(chrono, 1000);
 
 };
 
-	
+//declaration de variable son
+var sonOn = true;
+// Arreter le son
