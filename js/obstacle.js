@@ -48,17 +48,20 @@ var usineObstacle = function(random) {
 				'overflow': 'hidden'
 			});
 
-			if (this.className == 'containerPtero') {
-				document.getElementById('ptero').play();
-				document.getElementById('ptero').volume = 0.3
-			} else if (this.className == 'containerRaptor') {
-				document.getElementById('raptor').play();
-				document.getElementById('raptor').volume = 0.3
-			} else if (this.className == 'containerDiplo') {
-				document.getElementById('diplo').play();
-				document.getElementById('diplo').volume = 0.3;
-
-			}
+			//reglage des sons si pas mort	
+			
+			if(!perso.isDying){
+				if (this.className == 'containerPtero') {
+					document.getElementById('ptero').play();
+					document.getElementById('ptero').volume = 0.3
+				} else if (this.className == 'containerRaptor') {
+					document.getElementById('raptor').play();
+					document.getElementById('raptor').volume = 0.3
+				} else if (this.className == 'containerDiplo') {
+					document.getElementById('diplo').play();
+					document.getElementById('diplo').volume = 0.3;
+				}
+			};
 
 			/////
 			//Dinosaur Frame  //
@@ -153,21 +156,84 @@ var usineObstacle = function(random) {
 		boumD: function() {
 			perso.score += this.energie * 200
 			$('#score').text(perso.score);
+
 			for (var i = 0; i < tabObstacle.length; i++) {
-
-
 				if (tabObstacle[i]) {
+					tabObstacle[i].explode();
 					tabObstacle[i].alive = false;
 					$(tabObstacle[i].elementHTML).fadeOut(2000, function() {
-						$(this).remove()
+						$(this).remove();
+
 						delete this;
 					});
 
 				}
 
 			}
+
 			tabObstacle = [];
 
+		},
+		explode: function() {
+			var obs = document.createElement('div');
+			var img = document.createElement('img');
+
+			$('#game').append(obs);
+			$(obs).addClass('explode');
+			$(obs).append(img);
+			img.setAttribute('src', 'img/dynamite.png');
+
+
+			$(obs).css({
+				'overflow': 'hidden',
+				'width': 198 + 'px',
+				'height': 173 + 'px',
+				'position': 'absolute',
+				'left': this.x + 'px',
+				'top': this.y + 'px',
+				'z-index': '800'
+
+			});
+			$(img).css({
+				'position': 'absolute',
+			});
+			var spriteX = [0, -198, -396, -594, -792, -980];
+
+
+			var tActuel;
+			var tPrecedent;
+			var frame = 0;
+			var spriteExplode = function(actuel) {
+
+				tActuel = actuel;
+				tPrecedent = tPrecedent || actuel;
+				var delai = tActuel - tPrecedent;
+				if (delai > 200) {
+					tPrecedent = tActuel;
+					frame++;
+					if (frame == spriteX.length) {
+						frame = 0;
+					}
+					$(img).css('top', 0);
+					$(img).css('left', spriteX[frame] + "px");
+				}
+				if (perso.isDynamiting) {
+					window.requestAnimationFrame(spriteExplode);
+				}
+
+
+			};
+			spriteExplode();
+			//Explosion sound 
+
+			document.getElementById('explosion').play();
+			document.getElementById('explosion').volume = 0.5;
+
+
+			$(obs).fadeOut(1000, function() {
+				$(this).remove();
+				delete this;
+			})
 
 
 		},
@@ -275,11 +341,15 @@ var usineObstacle = function(random) {
 
 var creationObstacle = function() {
 
+	// si il est pas mort on lance des dino (evite le bug a la fin du jeu)
+	if (!perso.isDying) {
+		setInterval(function() {
+			var typeObstacle = Math.round(Math.random() * 4);
+			var nouvelObstacle = usineObstacle(typeObstacle).chainage();
+		}, 2000)
 
-	setInterval(function() {
-		var typeObstacle = Math.round(Math.random() * 4);
-		var nouvelObstacle = usineObstacle(typeObstacle).chainage();
-	}, 2000)
+	}
+
 
 };
 
@@ -461,11 +531,7 @@ var usineBullet = function() {
 			var objetBullet = this
 			if (this.collisionObstacle()) {
 
-				if (perso.isDynamiting) {
 
-					usineExplode().creation().animate()
-
-				}
 				//suppression de la balle
 				$(this.elementHTML).remove();
 				delete this;
@@ -510,11 +576,11 @@ var usineBullet = function() {
 	Dynamite.height = 38;
 	Dynamite.y = $('#container').position().top + 40;
 	Dynamite.x = $('#container').position().left + 20;
-	
+
 
 
 	if (perso.isDynamiting) {
-		
+
 		return Dynamite;
 
 	} else {
@@ -525,98 +591,4 @@ var usineBullet = function() {
 
 var ObjetBalleEnMouvement = function() {
 	usineBullet().creation().moveBullet().animate();
-};
-
-
-// Dynamite explosion 
-var usineExplode = function() {
-	var obs = document.createElement('div');
-	var img = document.createElement('img');
-
-	var Explode = {
-
-		elementHTML: obs,
-		spriteItemY: [0, -13],
-		src: 'img/dynamite.png',
-		x: 50,
-		className: 'Explode',
-		y: 50,
-		width: 198,
-		spriteX: [0, -198, -396, -594, -792, -980],
-		height: 173,
-		// 0 --> bullet  
-
-		creation: function() {
-			
-				$('#game').append($(this.elementHTML));
-				$(this.elementHTML).addClass(this.className);
-				$('.' + this.className).append(img);
-				img.setAttribute('src', this.src);
-
-for (var i = 0; i < tabObstacle.length; i++) {
-				$(this.elementHTML).css({
-					'overflow': 'hidden',
-					'width': this.width + 'px',
-					'height': this.height + 'px',
-					'position': 'absolute',
-					'left': tabObstacle[i].x + 'px',
-					'top': tabObstacle[i].y + 'px',
-					'z-index': '800'
-
-				});
-			};
-
-			$(img).css({
-				'position': 'absolute',
-
-			});
-
-			return this;
-		},
-		animate: function() {
-			var tActuel;
-			var tPrecedent;
-			var frame = 0;
-			var that = this; // correspond bien a l'objet a l'interieur de la fonction
-			var spriteExplode = function(actuel) {
-				// console.log(this); // correspond a rien ou a la methode qui n'est pas un objet 
-				tActuel = actuel;
-				tPrecedent = tPrecedent || actuel;
-				var delai = tActuel - tPrecedent;
-				if (delai > 200) {
-					tPrecedent = tActuel;
-					frame++;
-					// s'il est vivant alors sprite Run
-					if (frame == that.spriteX.length) {
-						frame=0;
-					}
-					$(img).css('top', 0);
-					$(img).css('left', that.spriteX[frame] + "px");
-
-				}
-				
-
-				if(perso.isDynamiting){
-					window.requestAnimationFrame(spriteExplode);
-				}
-				
-
-			};
-			spriteExplode();
-			//Explosion sound 
-
-			document.getElementById('explosion').play();
-			document.getElementById('explosion').volume = 0.5;
-
-			if (!tabObstacle.alive) {
-				$(this.elementHTML).fadeOut(1000, function() {
-					$(this.elementHTML).remove();
-					delete this;
-				})
-			}
-
-		}
-
-	};
-	return Explode
 };

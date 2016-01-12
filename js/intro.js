@@ -3,21 +3,19 @@ var intro = function(){
 	
 	$('#game').prepend("<div id='intro'></div>");
 	$('#intro').append("<div></div>");
+	
 
 //son T rex
 	document.getElementById('introSon').play()
 	document.getElementById('introSon').volume = 0.1
+
+
 	
-
-
-	// $('#intro').append('<audio autoplay><source src="son/raptor-cuisine.mp3"><source src="son/raptor-cuisine.ogg"></audio>');
-
-	$('.launch').text("Start The Game");
 
 	var dinoArrival = $(window).width()+200;
 	for (var i = 0; i < 7; i++) {
 		$("#intro").prepend("<img>");
-		// $('#game').css({'position':'relative'});
+		
 
 	}
 
@@ -81,6 +79,26 @@ $('.perso-hunter').css({
 	width:'350px'
 });
 
-};
+// Explications du jeu
+$('.how-to-play').click(function() {
+
+		if ($('.explanations').css('display') == 'none') {
+			$('.explanations').fadeIn('slow', function() {
+				$(document).click(function() {
+					if ($('.explanations').css('display') == 'block') {
+						
+						$(document).off('click');
+						$('.explanations').fadeOut('slow');
+					}
+
+				});
+			});
+			$('.explanations').html('<p>Use "Up", "Left", "Down", "Right" to move,<p/><p> "D" for Dynamiting and "Space" to Shoot </p><p>Are you ready to survive?</p>');
+		}
+
+	});
+
+
+}; // end of intro
 
 

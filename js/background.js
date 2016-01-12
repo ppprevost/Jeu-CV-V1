@@ -44,6 +44,7 @@ var Field = function() {
 	return reference;
 };
 
+
 /////
 //Nuage //
 /////
@@ -53,6 +54,7 @@ var usineNuage = function() {
 	var nuage = document.createElement('img');
 	nuage.src = "img/Nuage.png";
 	nuage.style.position = "absolute";
+	nuage.style.zIndex = 0;
 
 	var referenceNuage = {
 		y: Math.floor(Math.random() * 200),
@@ -89,6 +91,7 @@ var usineNuage = function() {
 	return referenceNuage;
 };
 
+// affichaga aléatoire des éléments en background
 var usineBackground = function() {
 
 
@@ -156,7 +159,7 @@ var creationBackground = function() {
 };
 
 /*
-Compteur 
+Background Timer 
  */
 
 var creationTimer = function() {
@@ -179,7 +182,7 @@ var creationTimer = function() {
 		}
 		if (seconde >= 10 && minute < 10) {
 			$('#timer').html("0" + minute + ": " + seconde)
-			$('#timer').append("\n Bravo vous avez tenu " + seconde + " secondes et " + minute + " minute(s)")
+			// $('#timer').append("<p> Bravo vous avez tenu " + seconde + " secondes et " + minute + " minute(s)</p>")
 		}
 
 		/////
@@ -211,18 +214,37 @@ var creationTimer = function() {
 		} else if (seconde >= 20 && seconde < 25 && minute == 1) {
 			$('#skill .meteor').show(300);
 			$('.nextskill').html('Congratulations! New Skill : ' + $('.meteor').attr('alt'));
-		} else if (seconde >= 25 && minute == 1){
+		} else if (seconde >= 25 && minute == 1) {
+			var win = true;
 			$('.nextskill').html(' You made it ! You survive')
+			$('.endGame').fadeIn('slow')
+			$('.endGame').html('<p>Congratulations, you survive in the middle of the dinosaur jungle. Please see bellow my skill</p> ')
 		}
-	
+
 		// you die ! 
-		if (perso.energie <= 0) {
+		if (perso.energie <= 0 && !win) {
+
 			clearInterval(launchchrono)
-			$('.nextskill').html('Ohhhhh You loose ! Refresh to start again !')
+			$('.nextskill').html('Ohhhhh You loose ! Refresh to start again !');
+			// affichage du message de mort et possibilité de recommencer
+			$('.endGame').fadeIn('slow');
+			$('.endGame').append('<p>You die !</p><div class="startAgain">Reload</div >');
+			$('.startAgain').css({
+				'border': '1px solid red',
+				'cursor': 'pointer'
+
+			});
+
 		}
+		// lance un rafraichissement de la page des lors que l'on clique sur le bouton 
+		$('.startAgain').click(function() {
+			location.reload();
+		});
 
 	};
 
 	var launchchrono = setInterval(chrono, 1000);
 
 };
+
+	

@@ -23,36 +23,51 @@
 
 <div id="game">
 	
-	<div id="misc" class="container">
+	<!-- Tableau des scores -->
+	<div class="container">
 		
-		<div class="row tableau" >
-			<div class="col-xs-6 text-center">
+		<div class="row tableau misc" >
+			<div class="col-xs-3 text-center">
 				<div class="glyphicon glyphicon-time" aria-hidden="true"></div><span>Surviving Time</span>
 				<div id="compteur">
 					<div class="nextskill"></div>
 				</div>
 			</div>
-			<div class="col-xs-2 text-center">
+			<div class="col-xs-3 text-center">
 				<div class="glyphicon glyphicon-heart"></div>
 				<span>Health</span>
 				<div id="health"></div>
 			</div>
-			<div class="col-xs-2 text-center">
+			<div class="col-xs-3 text-center">
 				<div class="glyphicon glyphicon-usd"></div>
 				<span>Dynamite</span>
 				<div id="supply"></div>
 			</div>
 
 
-			<div class="col-xs-2 text-center">
+			<div class="col-xs-3 text-center">
 				<div class="glyphicon glyphicon-usd"></div>
 				<span >Score</span>
 				<div id="score"></div>
 			</div>	
 		</div>
 
+		<div class="row sub-menu misc">
+
+			<div class="cv col-xs-6">
+				<a href="#">Download My CV</a>
+			</div>
+			<div class="startAgain col-xs-6">
+				Start Again
+			</div>
+
+		</div>
+		
+
+
 	</div>
 
+	<!-- Chargement des sons -->
 	<div id="sound">
 		<audio id ='ptero'><source src='son/16456.mp3'></audio>
 		<audio id = 'raptor'><source src='son/141.mp3'></audio>
@@ -63,16 +78,23 @@
 		<audio id='main'><source src="son/main.mp3"><source src="son/main.ogg"></audio>
 	</div>
 
+	<!-- Bouton d'intro -->
+	<div class="how-to-play">How to play</div>
+	<div class="explanations"></div>
 	<div class="launch">Start the Game !</div>
+
+	<!-- Element -->
 	<div id="obstacle"></div>
 	<div id="background"></div>
-	<div class="nuage">
+	<div class="nuage"></div>
 
+	<!-- Overlay endGame -->
+	<div class="endGame">
+		
 	</div>
 
-
-
 </div>
+<!-- Affichage des compétences -->
 <div id="skill" class="container text-center">
 	<h2> Skills</h2>
 	
@@ -93,6 +115,7 @@
 		<img class="col-xs-12 col-md-6 nodejs" src="img/competences/nodejs-logo.png" alt="Node Js">
 		<img class="col-xs-12 col-md-6 meteor" src="img/competences/meteor_framework_logo.png" alt="Meteor">
 	</div>
+	
 	
 </div>
 
