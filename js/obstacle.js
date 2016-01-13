@@ -1,6 +1,7 @@
-// pour tester les collisions je mets les objets obstacles dans ce tableau. Nous testerons par la suite les collisions avec l'usine Bullet
-var tabObstacle = [];
+//Here they are dinosaurs, spike and bullet prototype and functions to build them.
 
+// pour tester les collisions je mets les objets obstacles dans ce tableau. Nous testerons par la suite les collisions avec l'usine Bullet.
+var tabObstacle = [];
 
 var usineObstacle = function(random) {
 
@@ -285,8 +286,8 @@ var usineObstacle = function(random) {
 	referenceRaptor.spriteXDead = [0, -249, -498, -747, -996, -1245, -1494, -1743, -1992, -2241];
 	//0 -> Attack  -100 -> Run
 	referenceRaptor.spriteY = [0, -150, -300, -450];
-	referenceRaptor.width = 249;
-	referenceRaptor.height = 150;
+	referenceRaptor.width = 249; // retranchement de 30 px
+	referenceRaptor.height = 150; //  retranchement de 5 px
 	referenceRaptor.choix = Math.round(Math.random() * 2);
 	referenceRaptor.idSon = 'raptor';
 
@@ -304,7 +305,7 @@ var usineObstacle = function(random) {
 	// 	//0 -> Attack  -100 -> Run
 	referencePtero.spriteY = [0, -100];
 	referencePtero.spriteXDead = [];
-	referencePtero.width = 128;
+	referencePtero.width = 128;// retranchement de 28px
 	referencePtero.height = 100;
 	referencePtero.idSon = "ptero";
 
@@ -317,8 +318,8 @@ var usineObstacle = function(random) {
 	referencePeaks.energie = 300;
 	referencePeaks.src = "img/Dino/spike.png";
 	referencePeaks.className = "spike"
-	referencePeaks.width = 128;
-	referencePeaks.height = 128;
+	referencePeaks.width = 70;
+	referencePeaks.height = 70;
 	referencePeaks.step = 3;
 	$('.spike').css('z-index', '35')
 
@@ -349,7 +350,7 @@ var creationObstacle = function() {
 	// si il est pas mort on lance des dino (evite le bug a la fin du jeu
 
 	setInterval(function() {
-		if (!perso.isDying || win) {
+		if (!perso.isDying && !win) {
 			var typeObstacle = Math.round(Math.random() * 4);
 			var nouvelObstacle = usineObstacle(typeObstacle).chainage();
 		}
@@ -511,7 +512,7 @@ var usineBullet = function() {
 			//On parcourt le tableau d'obstacle et si on trouve un obstacle aux prochaines coordonnées de la balle on le supprimer ou on déclenche une méthode qui le supprime.
 
 			for (var i = 0; i < tabObstacle.length; i++) {
-				if (tabObstacle[i] !== undefined) { // s'il existe et qu'il est vivant alors detection collision avec bullet
+				if (tabObstacle[i]) { // s'il existe et qu'il est vivant alors detection collision avec bullet
 
 					if (this.x + this.width >= tabObstacle[i].x && this.x + this.width <= tabObstacle[i].x + tabObstacle[i].width &&
 						// tester avec la valeur de height
@@ -538,7 +539,6 @@ var usineBullet = function() {
 			var objetBullet = this
 			if (this.collisionObstacle()) {
 
-
 				//suppression de la balle
 				$(this.elementHTML).remove();
 				delete this;
@@ -546,7 +546,6 @@ var usineBullet = function() {
 			} else {
 				this.x += 15;
 				this.y -= this.stepy;
-
 
 				$(this.elementHTML).css('left', this.x + 'px');
 				$(this.elementHTML).css('top', this.y + 'px');

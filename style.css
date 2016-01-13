@@ -11,12 +11,19 @@
 
 
 /*Css relatif au jeu*/
+
+#containerGame{
+	
+	height:580px;
+
+}
 #game {
 	
 	background: url('img/fond.png') no-repeat;
 	overflow:hidden;
-	height:550px;
 	width:100%;
+	height:580px;
+	position: absolute;
 }
 
 .how-to-play{
@@ -39,6 +46,7 @@
 
 }
 
+/*bouton play*/
 .launch {
 
 	font-family: Jurassik, sans-serif;
@@ -66,9 +74,9 @@
 }
 
 #skill h2{
-	padding-top:30px;
+	padding-top:0;
 	font-family: Jurassik, sans-serif;
-	font-size: 30px;
+	font-size: 60px;
 }
 
 .misc{

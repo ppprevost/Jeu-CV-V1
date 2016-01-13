@@ -1,3 +1,5 @@
+//Execution function
+
 $('document').ready(function() {
 
 
@@ -24,18 +26,17 @@ $('document').ready(function() {
 	$('.launch').click(function() {
 			//suppression du dom de l'intro
 			document.getElementById('introSon').pause();
-			$(this).hide(1500, function() {
+			$(this).hide('puff',1500, function() {
 				$(this).remove();
+					launchGame();
 			});
 
-			$('.how-to-play').hide(1500, function() {
+			$('.how-to-play').hide('puff',1500, function() {
 				$('.how-to-play').remove();
 			});
 			$('#intro').hide(1500, function() {
 				$('#intro').remove();
 			});
-
-			launchGame();
 
 
 		}) //click
@@ -43,9 +44,7 @@ $('document').ready(function() {
 	var launchGame = function() {
 
 		//affichage du tableau
-		$('.misc').css({
-			'display': 'block'
-		})
+		$('.misc').show(1500)
 
 
 		// met le jeu en pause a la perte du focus de la fenetre
@@ -116,7 +115,7 @@ $('document').ready(function() {
 		$('#supply').html(perso.supply);
 
 		//launch frame idle
-		perso.ruyFixed();
+		perso.heroFixed();
 
 		// var Obstacle = [usineObstacle(0), usineObstacle(1), usineObstacle()];
 
@@ -136,7 +135,7 @@ $('document').ready(function() {
 				case 38: //haut
 
 					if (!perso.isJumping) {
-						perso.RyuMove();
+						perso.heroMove();
 						perso.isJumpingUp = true;
 					}
 
@@ -232,7 +231,6 @@ $('document').ready(function() {
 
 				case 32:
 					// if (perso.isHaiduken) {
-
 
 					// }
 

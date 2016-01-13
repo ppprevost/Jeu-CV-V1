@@ -4,6 +4,8 @@
 // Terre//
 /////
 
+
+
 var Field = function() {
 
 	var bush = document.createElement('img');
@@ -11,7 +13,8 @@ var Field = function() {
 	$(bush).css({
 		'z-index': '5',
 		'position': 'absolute',
-		'overflow': 'hidden',
+		
+
 
 	});
 
@@ -93,7 +96,7 @@ var usineNuage = function() {
 	return referenceNuage;
 };
 
-// affichaga aléatoire des éléments en background
+// affichaga aléatoire des éléments en background (pierre, fleur etc...)
 var usineBackground = function() {
 
 
@@ -161,9 +164,13 @@ var creationBackground = function() {
 };
 
 /*
-Background Timer 
+// Background Timer 
+
  */
+// var win bind the event win
 var win;
+// permet d'incrementer les compétences
+var d = 0;
 var creationTimer = function() {
 
 	$('#compteur').prepend("<div id='timer'></div>");
@@ -191,71 +198,16 @@ var creationTimer = function() {
 		//Affichage des compétences //
 		/////
 
-		if (seconde >= 10 && seconde < 15 && minute == 0) {
-			$('#skill .html5').show(300);
-			$('.nextskill').html('New Skill : ' + $('.html5').attr('alt'))
-		} else if (seconde >= 15 && seconde < 20 && minute == 0) {
-			$('#skill .jquery').show(300)
-			$('.nextskill').html('New Skill : ' + $('.jquery').attr('alt'))
-		} else if (seconde >= 20 && seconde < 30 && minute == 0) {
-			$('#skill .angular').show(300);
-			$('.nextskill').html('Congratulations! New Skill : ' + $('.angular').attr('alt'));
-		} else if (seconde >= 30 && seconde < 40 && minute == 0) {
-			$('#skill .bootstrap').show(300);
-			$('.nextskill').html('Congratulations! New Skill : ' + $('.bootstrap').attr('alt'));
-		} else if (seconde >= 40 && seconde < 50 && minute == 0) {
-			$('#skill .mongodb').show(300);
-			$('.nextskill').html('Congratulations! New Skill : ' + $('.mongodb').attr('alt'))
-		} else if (seconde >= 50 && minute == 0) {
-			$('#skill .analytics').show(300);
-			$('.nextskill').html('Congratulations! New Skill : ' + $('.analytics').attr('alt'));
-		} else if (seconde >= 00 && seconde < 10 && minute == 1) {
-			$('#skill .nodejs').show(300);
-			$('.nextskill').html('Congratulations! New Skill : ' + $('.nodejs').attr('alt'));
+		tabCompetences = ['', ' .html5', ' .jquery', ' .angular', ' .bootstrap', ' .mongodb', ' .analytics', ' .nodejs', ' .meteor'];
 
-		} else if (seconde >= 20 && seconde < 25 && minute == 1) {
-			$('#skill .meteor').show(300);
-			$('.nextskill').html('Congratulations! New Skill : ' + $('.meteor').attr('alt'));
-
-			//You win ! 
-		} else if (seconde >= 25 && minute == 1) {
-			win = true;
-			clearInterval(launchChrono);
-			$('.nextskill').html(' You made it ! You survive')
-			$('.endGame').fadeIn('slow')
-			$('.endGame').html('<p>Congratulations, you survive in the middle of the dinosaur jungle. Please see my skills below</p> ');
-			tabObstacle = [];
-			$('#obstacle').remove()
-
-		}
-
-
-		//demander a camille
-		// tabCompetences = [' .html5', ' .jquery', ' .angular', ' .bootstrap', ' .mongodb', ' .analytics', ' .nodejs', ' .meteor'];
-
-		// var d = 0;
-		// var testTimer = function() {
-
-		// 			$('#skill' + tabCompetences[d]).show(300);
-		// 			$('.nextskill').html('New Skill : ' + $(tabCompetences[d]).attr('alt'));
-		// 			console.log(d)
-		// 			d++;
-
-		// }
-		// if seconde <25 && minute ==1
-		// if (d < tabCompetences.length) {
-		// var intervalle = setInterval(testTimer,2000)
-		// }
-		// if(d == tabCompetences.length){
-		// 	clearInterval(intervalle)
-		// }
-
-
-		// you die ! 
-		if (perso.energie <= 0 && !win) {
+	
+		/////////////////
+			// you die ! 	 //
+			/////////////////
+		if (perso.energie <= 0 && !win) { 
 
 			clearInterval(launchChrono);
-			$('.nextskill').html('Ohhhhh You loose ! Refresh to start again !');
+			$('.nextskill').html('Ohhhhh You loose ! Reload !');
 			// affichage du message de mort et possibilité de recommencer
 			$('.endGame').fadeIn('slow');
 			$('.endGame').append('<p>You die !</p><div class="startAgain">Reload</div >');
@@ -268,15 +220,41 @@ var creationTimer = function() {
 			setTimeout(function() {
 
 				tabObstacle = [];
-				$('#sound').remove()
-				$('.nuage').remove()
-			}, 2000)
-		}
-		// lance un rafraichissement de la page des lors que l'on clique sur le bouton 
+				$('#sound').remove();
+				$('.nuage').remove();
+			}, 2000);
+		} 
+		// else { 
+			if (d / 10 < tabCompetences.length) { // On incrémente alors les compétences
+				// chargement tous les 10 secondes
+				if (d > 0 && d % 10 === 0) {
+					$('#skill' + tabCompetences[d / 10]).show('pulsate',1500);
+					$('.nextskill').html('New Skill : ' + $(tabCompetences[d / 10]).attr('alt'));
+					// console.log(d / 10)
+				}
+
+				d++;
+			} else { // i d = 80; si il arrive au bout du tableau il gagne
+
+				win = true;
+				clearInterval(launchChrono);
+				$('.nextskill').html(' You made it ! You survive');
+				$('.endGame').fadeIn('slow');
+				$('.endGame').html('<p>Congratulations, you survive in the middle of the dinosaur jungle. Please see my skills below</p> ');
+				tabObstacle = [];
+				$('#obstacle').remove();
+
+			}
+
+		// }
+
+		//////////////////////////////////////////////////////////////////////////////////
+		// lance un rafraichissement de la page des lors que l'on clique sur le bouton  //
+		//////////////////////////////////////////////////////////////////////////////////
 		$('.startAgain').click(function() {
 			location.reload();
 		});
-		
+
 	};
 
 

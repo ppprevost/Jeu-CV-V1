@@ -1,4 +1,4 @@
-// Coordonnée Perso
+// Perso
 
 /**
  * [ObjetRyu fonction constructeur pour creer des héros]
@@ -76,7 +76,7 @@ var ObjetRyu = function() {
 		},
 		
 		// Perso Idle
-	this.ruyFixed = function() {
+	this.heroFixed = function() {
 		this.enAttente = true;
 		var frameFixed = 0;
 		var tActuel;
@@ -114,7 +114,7 @@ var ObjetRyu = function() {
 
 	};
 	//jump
-	this.RyuMove = function() {
+	this.heroMove = function() {
 		this.isJumping = true;
 		var refPerso = this;
 		this.isJumpingUp = false;
@@ -200,7 +200,7 @@ var ObjetRyu = function() {
 				//remise a 0
 			} else {
 
-				refPerso.ruyFixed();
+				refPerso.heroFixed();
 			}
 
 		};
@@ -287,7 +287,7 @@ var ObjetRyu = function() {
 
 
 			} else {
-				refPerso.ruyFixed();
+				refPerso.heroFixed();
 			}
 
 		};
@@ -297,6 +297,7 @@ var ObjetRyu = function() {
 
 		}, 800)
 	};
+	//Dynamite attack ! 
 	this.RyuDynamite = function() {
 		this.isDynamiting = true;
 		this.isHaiduken = false;
@@ -315,8 +316,8 @@ var ObjetRyu = function() {
 
 			if (delai > 70) {
 				frameHaiduken++;
-				// si le perso lance de la Dynamite
-				if (!perso.isJumping && !perso.isCrouching) {
+				// if he throw dynamite without jumping and crouching
+				if (!refPerso.isJumping && !refPerso.isCrouching &&!refPerso.isHurting) {
 					if (frameHaiduken <= 7) {
 						$('#contenu').css('left', refPerso.spriteX[frameHaiduken] + "px");
 						$('#contenu').css('top', refPerso.spriteY[10] + "px");
@@ -327,15 +328,13 @@ var ObjetRyu = function() {
 				tPrecedent = tActuel;
 			}
 
-
-
 			if (refPerso.isDynamiting) {
 
 				var animationRequestId = window.requestAnimationFrame(spriteDynamite);
 				refPerso.enAttente = false;
 
 			} else {
-				refPerso.ruyFixed();
+				refPerso.heroFixed();
 			}
 
 		};
@@ -392,7 +391,7 @@ var ObjetRyu = function() {
 				refPerso.enAttente = false;
 
 			} else {
-				refPerso.ruyFixed();
+				refPerso.heroFixed();
 			}
 
 		};
@@ -419,12 +418,12 @@ var ObjetRyu = function() {
 				$('#contenu').css('top', refPerso.spriteY[2] + "px");
 				tPrecedent = tActuel;
 			}
-			if (refPerso.isCrouching && !refPerso.isHaiduken) {
+			if (refPerso.isCrouching && !refPerso.isHaiduken && !refPerso.isHurting) {
 				var animationRequestId = window.requestAnimationFrame(spriteCrouching);
 				refPerso.enAttente = false;
 
 			} else {
-				refPerso.ruyFixed();
+				refPerso.heroFixed();
 			}
 
 		};
@@ -451,19 +450,17 @@ var ObjetRyu = function() {
 				frameCrouching++;
 
 
-
 				$('#contenu').css('left', refPerso.spriteX[frameCrouching] + "px");
 
 				$('#contenu').css('top', refPerso.spriteY[5] + "px");
 				tPrecedent = tActuel;
-
 
 			}
 			if (refPerso.isHurting) {
 				var animationRequestId = window.requestAnimationFrame(spriteHurting);
 				perso.enAttente = false;
 			} else {
-				refPerso.ruyFixed()
+				refPerso.heroFixed()
 			}
 
 		};

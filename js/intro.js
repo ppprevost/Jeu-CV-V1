@@ -1,3 +1,5 @@
+// introduction with jquery ui
+
 var intro = function(){
 
 	

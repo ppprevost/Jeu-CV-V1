@@ -2,7 +2,8 @@
 <html>
 <head>
 	<meta charset = "utf-8">
-	<title></title>
+	<title>Dinosaur Island, un jeu cv par Pierre-Philippe PREVOST
+	</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
 	<link rel="stylesheet" href="style.css">
@@ -21,6 +22,7 @@
 
 </head>
 
+<div id="containerGame">
 <div id="game">
 	
 	<!-- Tableau des scores -->
@@ -39,7 +41,7 @@
 				<div id="health"></div>
 			</div>
 			<div class="col-xs-3 text-center">
-				<div class="glyphicon glyphicon-usd"></div>
+				<div class="glyphicon glyphicon-flash"></div>
 				<span>Dynamite</span>
 				<div id="supply"></div>
 			</div>
@@ -66,10 +68,8 @@
 
 		</div>
 		
-
-
 	</div>
-
+</div>
 	<!-- Chargement des sons -->
 	<div id="sound">
 		<audio id ='ptero'><source src='son/16456.mp3'></audio>
@@ -78,7 +78,7 @@
 		<audio class='rifle'><source src="son/fusil.mp3"></audio>
 		<audio id='explosion'><source src="son/1428.mp3"></audio>
 		<audio id='introSon'><source src="son/trex_cri.mp3"></audio>
-		<audio id='main'><source src="son/main.mp3"><source src="son/main.ogg"></audio>
+		<audio id='main'><source src="son/main.mp3"></audio>
 	</div>
 
 	<!-- Bouton d'intro -->
@@ -93,10 +93,11 @@
 
 	<!-- Overlay endGame -->
 	<div class="endGame">
-		
+
 	</div>
 
 </div>
+
 <!-- Affichage des compétences -->
 <div id="skill" class="container text-center">
 	<h2> Skills</h2>
@@ -121,6 +122,7 @@
 	
 	
 </div>
-
+</div>
+</div>
 </html>
 
