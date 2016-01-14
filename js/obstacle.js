@@ -23,6 +23,7 @@ var usineObstacle = function(random) {
 		spriteXDead: null,
 		spriteY: null,
 		width: null,
+		widthDead:null,
 		height: null,
 		alive: true, // lance la methode boum et a la methode moveDinosaur qui va permettre de declencher le sprite correspondant en fonction de l'etat
 
@@ -33,6 +34,7 @@ var usineObstacle = function(random) {
 			this.elementHTML.style.left = this.x + "px";
 			this.elementHTML.appendChild(img);
 
+
 			if (this.choix !== undefined && this.visuel !== undefined) {
 				// methode pour la creation du visuel raptor
 				img.setAttribute('src', this.src + this.visuel[this.choix]);
@@ -40,15 +42,18 @@ var usineObstacle = function(random) {
 				img.setAttribute('src', this.src);
 			}
 			$(this.elementHTML).addClass(this.className);
-			$('.' + this.className).css({
+			
+
+	$('.' + this.className).css({
 				'z-index': '40',
 				'position': 'absolute',
 				'left': this.x + "px",
 				'top': this.y + "px",
-				'width': this.width + "px",
+				'width': this.width+ "px",
 				'height': this.height + "px",
 				'overflow': 'hidden'
 			});
+
 
 			//reglage des sons si pas mort	
 
@@ -63,7 +68,7 @@ var usineObstacle = function(random) {
 					document.getElementById('diplo').play();
 					document.getElementById('diplo').volume = 0.3;
 				}
-				
+
 			};
 
 			/////
@@ -83,6 +88,7 @@ var usineObstacle = function(random) {
 				tActuel = actuel;
 				tPrecedent = tPrecedent || actuel;
 				var delai = tActuel - tPrecedent;
+
 				if (delai > 100) {
 					tPrecedent = tActuel;
 					frame++;
@@ -99,6 +105,10 @@ var usineObstacle = function(random) {
 						}
 						$(img).css('top', dino.spriteY[1]);
 						$(img).css('left', dino.spriteXDead[frame] + "px");
+						$(dino.elementHTML).css('width',dino.widthDead + 'px')
+				
+			
+						
 					}
 				}
 
@@ -167,7 +177,7 @@ var usineObstacle = function(random) {
 					$(tabObstacle[i].elementHTML).fadeOut(2000, function() {
 						$(this).remove();
 
-						delete this;
+						delete tabObstacle[i];
 					});
 
 				}
@@ -236,7 +246,7 @@ var usineObstacle = function(random) {
 
 
 
-			$(obs).fadeOut(1000, function() {
+			$(obs).delay(600).fadeOut(1000, function() {
 				$(this).remove();
 				delete this;
 			})
@@ -259,16 +269,17 @@ var usineObstacle = function(random) {
 
 	var referenceDiplo = Object.create(ReferenceDinosaur);
 
-	referenceDiplo.y = 410;
+	referenceDiplo.y = 425;
 	referenceDiplo.spriteXDead = [0, -228, -456, -684, -912, -1140, -1368, -1596, -1824, -2052];
 	referenceDiplo.energie = 100;
 	referenceDiplo.src = 'img/Dino/diplo.png';
 	referenceDiplo.className = 'containerDiplo';
 	referenceDiplo.spriteX = [0, -228, -456, -684, -912, -1140, -1368, -1596];
 	// 	//0 -> Attack  -100 -> Run
-	referenceDiplo.spriteY = [0, -150, -300, -450];
-	referenceDiplo.width = 228;
-	referenceDiplo.height = 150;
+	referenceDiplo.spriteY = [-15, -150, -300, -450];
+	referenceDiplo.width = 185;
+	referenceDiplo.widthDead = 228;
+	referenceDiplo.height = 130;
 	referenceDiplo.classSon = 'diplo';
 
 
@@ -286,7 +297,9 @@ var usineObstacle = function(random) {
 	referenceRaptor.spriteXDead = [0, -249, -498, -747, -996, -1245, -1494, -1743, -1992, -2241];
 	//0 -> Attack  -100 -> Run
 	referenceRaptor.spriteY = [0, -150, -300, -450];
-	referenceRaptor.width = 249; // retranchement de 30 px
+	referenceRaptor.width = 205;
+	referenceRaptor.widthDead = 249;
+	// retranchement de 30 px
 	referenceRaptor.height = 150; //  retranchement de 5 px
 	referenceRaptor.choix = Math.round(Math.random() * 2);
 	referenceRaptor.idSon = 'raptor';
@@ -305,7 +318,7 @@ var usineObstacle = function(random) {
 	// 	//0 -> Attack  -100 -> Run
 	referencePtero.spriteY = [0, -100];
 	referencePtero.spriteXDead = [];
-	referencePtero.width = 128;// retranchement de 28px
+	referencePtero.width = 128 // retranchement de 28px
 	referencePtero.height = 100;
 	referencePtero.idSon = "ptero";
 
@@ -323,6 +336,19 @@ var usineObstacle = function(random) {
 	referencePeaks.step = 3;
 	$('.spike').css('z-index', '35')
 
+/////
+//Lianne //
+/////
+	var referenceVine = Object.create(ReferenceDinosaur);
+
+	referenceVine.y = 0;
+	referenceVine.energie = 100;
+	referenceVine.src = "img/Dino/vine.png";
+	referenceVine.className = "vine"
+	referenceVine.width = 41;
+	referenceVine.height = 477;
+	referenceVine.step = 3;
+	$('.vine').css('z-index', '35')
 
 	// Retour de l'objet en fonction de math random
 	if (random == 1) {
@@ -334,9 +360,16 @@ var usineObstacle = function(random) {
 		return referencePtero;
 
 	} else if (random == 3) {
-		tabObstacle.push(referencePeaks)
+		tabObstacle.push(referencePeaks);
 		return referencePeaks;
-	} else {
+	} 
+
+	else if (random ==4){
+		tabObstacle.push(referenceVine);
+		return referenceVine
+	}
+
+	else {
 		tabObstacle.push(referenceRaptor);
 		return referenceRaptor;
 	}
@@ -351,7 +384,7 @@ var creationObstacle = function() {
 
 	setInterval(function() {
 		if (!perso.isDying && !win) {
-			var typeObstacle = Math.round(Math.random() * 4);
+			var typeObstacle = Math.round(Math.random() * 5);
 			var nouvelObstacle = usineObstacle(typeObstacle).chainage();
 		}
 	}, 2000);

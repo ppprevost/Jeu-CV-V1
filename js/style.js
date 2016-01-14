@@ -64,7 +64,7 @@ $('document').ready(function() {
 				else {
 					main.pause()
 				}
-			},200)
+			},400)
 			
 
 		// Chargement du terrain

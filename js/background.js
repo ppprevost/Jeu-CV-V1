@@ -235,13 +235,15 @@ var creationTimer = function() {
 
 				d++;
 			} else { // i d = 80; si il arrive au bout du tableau il gagne
-
+				sonOn = false;
 				win = true;
 				clearInterval(launchChrono);
 				$('.nextskill').html(' You made it ! You survive');
 				$('.endGame').fadeIn('slow');
 				$('.endGame').html('<p>Congratulations, you survive in the middle of the dinosaur jungle. Please see my skills below</p> ');
 				tabObstacle = [];
+				document.getElementById('winner').play()
+				document.getElementById('winner').volume = 0.5;
 				$('#obstacle').remove();
 
 			}

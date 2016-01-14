@@ -1,4 +1,7 @@
+// Welcome to my Dinosaur's game ! Hope you enjoy it
+// Pierre-Philippe PREVOST Copyright
 // introduction with jquery ui
+
 
 var intro = function(){
 
@@ -10,8 +13,6 @@ var intro = function(){
 //son T rex
 	document.getElementById('introSon').play()
 	document.getElementById('introSon').volume = 0.1
-
-
 	
 
 	var dinoArrival = $(window).width()+200;
@@ -95,7 +96,7 @@ $('.how-to-play').click(function() {
 
 				});
 			});
-			$('.explanations').html('<p>Use "Up", "Left", "Down", "Right" to move,<p/><p> "D" for Dynamiting and "Space" to Shoot </p><p>Are you ready to survive?</p>');
+			$('.explanations').html('<p>Use "Up", "Left", "Down", "Right" to move,<p/><p> "D" for Dynamiting and "Space" to Shoot </p><p>Are you ready to survive 1:30?</p>');
 		}
 
 	});

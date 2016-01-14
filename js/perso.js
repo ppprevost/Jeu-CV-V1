@@ -14,7 +14,7 @@ var ObjetRyu = function() {
 	this.isConflict = false; // test la collision
 	this.score = 0;
 	this.isDying = false // Hero Die
-	this.width = 116;
+	this.width = 110;
 	this.height = 100;
 	this.x = 200;
 	this.supply = 3;
@@ -23,59 +23,61 @@ var ObjetRyu = function() {
 	this.spriteHeight = 80;
 	this.src = 'img/test.png';
 	this.energie = 100;
-	this.spriteX = [0, -116, -232, -348, -464, -580, -696, -812, -928, -1044]; // coordonnées X des sprites pour 10 frames 
+	this.spriteX = [-10, -126, -242, -358, -474, -590, -706, -822, -938, -1054]; // coordonnées X des sprites pour 10 frames 
 	// 0 -> walk -100 -> Jump -200 -> Crouch -300 -> Walk Shoot  -400 -> Run -500 -> Die  -600 -> runShoot -700 -> crouchShoot -800 -> crouchDynamite -900->jumpShoot -1000 ->  Dynamite
 	this.spriteY = [0, -100, -200, -300, -400, -500, -600, -700, -800, -900, -1000]; //bullet
 	this.creation = function() {
-			$('#container').css({
-				'z-index': '40',
-				'position': 'absolute',
-				'left': this.x + 'px',
-				'top': this.y + 'px',
-				'width': this.width + 'px',
-				'height': this.height + 'px',
-				'overflow': 'hidden'
-			});
+		$('#container').css({
+			'z-index': '40',
+			'position': 'absolute',
+			'left': this.x + 'px',
+			'top': this.y + 'px',
+			'width': this.width + 'px',
+			'height': this.height + 'px',
+			'overflow': 'hidden'
+		});
 
-		}
-		// test conflict. Improve code and factorise some move ! 
+	}
+	// test conflict. Improve code and factorise some move ! 
 	this.testCollision = function() {
-			var refPerso = this
-			for (var i = 0; i < tabObstacle.length; i++) {
-				if ( // tester toujours avec la valeur de x + width
-					this.x + this.width >= tabObstacle[i].x && this.x + this.width <= tabObstacle[i].x + tabObstacle[i].width &&
-					//tester tjrs avec la valeur de y + height
-					this.y + this.height >= tabObstacle[i].y && this.y + this.height <= tabObstacle[i].y + tabObstacle[i].height
-				) {
-					this.isConflict = true;
-					if (this.isConflict) {
-						this.energie -= 10;
-						if (!perso.isHurting) {
-							this.RyuHurt();
+		var refPerso = this
+		for (var i = 0; i < tabObstacle.length; i++) {
+			if ( // tester toujours avec la valeur de x + width
+				this.x + this.width >= tabObstacle[i].x && this.x + this.width <= tabObstacle[i].x + tabObstacle[i].width &&
+				//tester tjrs avec la valeur de y + height
+				this.y + this.height >= tabObstacle[i].y && this.y + this.height <= tabObstacle[i].y + tabObstacle[i].height 
+				// pour les liannes
+				|| !perso.isCrouching && tabObstacle[i].className == "vine" && this.x + this.width >= tabObstacle[i].x && this.x + this.width <= tabObstacle[i].x + tabObstacle[i].width) {
+				this.isConflict = true;
+				if (this.isConflict) {
+					this.energie -= 10;
+					if (!perso.isHurting) {
+						this.RyuHurt();
 
-						}
+					}
 
-						this.isConflict = false;
+					this.isConflict = false;
 
-						// le contact enleve juste un point
-						// des conflit on supprime l'bstacle du tableau
-						tabObstacle.splice(i, 1);
-						$('#health').text(this.energie)
-							//Sonne le glas
-						if (refPerso.energie <= 0) {
-							refPerso.RyuDie();
+					// le contact enleve juste un point
+					// des conflit on supprime l'bstacle du tableau
+					tabObstacle.splice(i, 1);
+					$('#health').text(this.energie)
+					//Sonne le glas
+					if (refPerso.energie <= 0) {
+						refPerso.RyuDie();
 
-						}
 					}
 				}
 			}
-			//tester les collisions toutes les x ms
-			setTimeout(function() {
-				refPerso.testCollision();
-			}, 100);
-		},
-		
-		// Perso Idle
+
+		}
+		//tester les collisions toutes les x ms
+		setTimeout(function() {
+			refPerso.testCollision();
+		}, 200);
+	},
+
+	// Perso Idle
 	this.heroFixed = function() {
 		this.enAttente = true;
 		var frameFixed = 0;
@@ -295,7 +297,7 @@ var ObjetRyu = function() {
 		setTimeout(function() {
 			refPerso.isHaiduken = false;
 
-		}, 800)
+		}, 700)
 	};
 	//Dynamite attack ! 
 	this.RyuDynamite = function() {
@@ -317,7 +319,7 @@ var ObjetRyu = function() {
 			if (delai > 70) {
 				frameHaiduken++;
 				// if he throw dynamite without jumping and crouching
-				if (!refPerso.isJumping && !refPerso.isCrouching &&!refPerso.isHurting) {
+				if (!refPerso.isJumping && !refPerso.isCrouching && !refPerso.isHurting) {
 					if (frameHaiduken <= 7) {
 						$('#contenu').css('left', refPerso.spriteX[frameHaiduken] + "px");
 						$('#contenu').css('top', refPerso.spriteY[10] + "px");
