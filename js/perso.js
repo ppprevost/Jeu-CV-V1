@@ -45,7 +45,7 @@ var ObjetRyu = function() {
 			if ( // tester toujours avec la valeur de x + width
 				this.x + this.width >= tabObstacle[i].x && this.x + this.width <= tabObstacle[i].x + tabObstacle[i].width &&
 				//tester tjrs avec la valeur de y + height
-				this.y + this.height >= tabObstacle[i].y && this.y + this.height <= tabObstacle[i].y + tabObstacle[i].height 
+				this.y + this.height >= tabObstacle[i].y && this.y + this.height <= tabObstacle[i].y + tabObstacle[i].height
 				// pour les liannes
 				|| !perso.isCrouching && tabObstacle[i].className == "vine" && this.x + this.width >= tabObstacle[i].x && this.x + this.width <= tabObstacle[i].x + tabObstacle[i].width) {
 				this.isConflict = true;
@@ -289,7 +289,12 @@ var ObjetRyu = function() {
 
 
 			} else {
-				refPerso.heroFixed();
+				if (refPerso.isCrouching) {
+					refPerso.RyuCrouching();
+				} else {
+					refPerso.heroFixed();
+					
+				}
 			}
 
 		};

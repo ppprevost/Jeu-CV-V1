@@ -80,6 +80,7 @@
 	padding-top:0;
 	font-family: Jurassik, sans-serif;
 	font-size: 60px;
+	margin-bottom:-10px;
 }
 
 .misc{
@@ -89,7 +90,8 @@
 	height:auto;
 	border:1px red solid;
 	color:white;
-	text-align: center
+	text-align: center;
+	z-index:-1;
 }
 
 

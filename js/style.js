@@ -24,28 +24,29 @@ $('document').ready(function() {
 
 	//declencheur du jeu
 	$('.launch').click(function() {
-			//suppression du dom de l'intro
-			document.getElementById('introSon').pause();
-			$(this).hide('puff',1500, function() {
-				$(this).remove();
-					launchGame();
-			});
+		//suppression du dom de l'intro
+		document.getElementById('introSon').pause();
+		$(this).hide('puff', 1500, function() {
+			$(this).remove();
+			launchGame();
+		});
 
-			$('.how-to-play').hide('puff',1500, function() {
-				$('.how-to-play').remove();
-			});
-			$('#intro').hide(1500, function() {
-				$('#intro').remove();
-			});
+		$('.how-to-play').hide('puff', 1500, function() {
+			$('.how-to-play').remove();
+		});
+		$('#intro').hide(1500, function() {
+			$('#intro').remove();
+		});
 
 
-		}) //click
+	}) //click
 
 	var launchGame = function() {
 
 		//affichage du tableau
 		$('.misc').show(1500)
-
+//tableau des scores en arriere plan
+		// $('.container').css('z-index', 1500);
 
 		// met le jeu en pause a la perte du focus de la fenetre
 		// var timeOut;
@@ -56,16 +57,16 @@ $('document').ready(function() {
 		var main = document.getElementById('main');
 		setInterval(function() {
 			//lancement du son
-				if (sonOn & !perso.isDying) {
-					main.play()
-					main.loop = true;
-					main.volume = 0.07;
-				} //stopper le son
-				else {
-					main.pause()
-				}
-			},400)
-			
+			if (sonOn & !perso.isDying) {
+				main.play()
+				main.loop = true;
+				main.volume = 0.07;
+			} //stopper le son
+			else {
+				main.pause()
+			}
+		}, 400)
+
 
 		// Chargement du terrain
 		Field().creation().animate();
@@ -122,7 +123,7 @@ $('document').ready(function() {
 
 		creationObstacle();
 
-
+		
 
 		/////
 		//Déplacement //
@@ -147,6 +148,8 @@ $('document').ready(function() {
 						perso.RyuRunning();
 
 					}
+
+
 
 					break;
 

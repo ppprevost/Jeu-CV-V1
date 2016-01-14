@@ -59,7 +59,7 @@ var usineNuage = function() {
 	var nuage = document.createElement('img');
 	nuage.src = "img/Nuage.png";
 	nuage.style.position = "absolute";
-	nuage.style.zIndex = 0;
+	nuage.style.zIndex = 10;
 
 	var referenceNuage = {
 		y: Math.floor(Math.random() * 200),
@@ -267,3 +267,4 @@ var creationTimer = function() {
 //declaration de variable son
 var sonOn = true;
 // Arreter le son
+
