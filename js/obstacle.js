@@ -207,6 +207,19 @@ var usineObstacle = function(random) {
 				'z-index': '800'
 
 			});
+
+
+			// improving spike hit box
+			if(this.className =='spike'){
+				$(obs).css({
+				'left': this.x - this.width + 'px',
+				'top': this.y -this.height + 'px',
+
+			});
+			
+
+			}
+
 			$(img).css({
 				'position': 'absolute',
 			});
@@ -254,7 +267,7 @@ var usineObstacle = function(random) {
 
 		},
 		chainage: function() {
-			if (this.className != 'spike') { // spike ne possede pas la methode move Dinosaur
+			if (this.className != 'spike' && this.className!='vine') { // spike ne possede pas la methode move Dinosaur
 				this.creation().animate().moveDinosaur();
 			} else {
 				this.creation().animate()
@@ -598,7 +611,6 @@ var usineBullet = function() {
 
 	}; // fin de objet parent
 
-
 	var Bullet = Object.create(ObjetBullet);
 
 	Bullet.className = 'containerBullet';
@@ -615,8 +627,6 @@ var usineBullet = function() {
 	Dynamite.height = 38;
 	Dynamite.y = $('#container').position().top + 40;
 	Dynamite.x = $('#container').position().left + 20;
-
-
 
 	if (perso.isDynamiting) {
 

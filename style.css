@@ -12,7 +12,9 @@
 
 /*Css relatif au jeu*/
 
-
+div{
+	border:1px solid black;
+}
 
 
 #containerGame{

@@ -97,7 +97,8 @@ $('document').ready(function() {
 		$('#game').append("<img id='contenu'></div>");
 		$('#contenu').attr('src', perso.src).wrap($('<div id="container"></div>')).css('position', 'absolute');
 
-		perso.creation();
+		//launch frame idle
+		perso.creation().heroFixed();
 
 		/////
 		// Test des Collisions //
@@ -115,8 +116,8 @@ $('document').ready(function() {
 		//Affichage de la dynamite
 		$('#supply').html(perso.supply);
 
-		//launch frame idle
-		perso.heroFixed();
+		
+		
 
 		// var Obstacle = [usineObstacle(0), usineObstacle(1), usineObstacle()];
 

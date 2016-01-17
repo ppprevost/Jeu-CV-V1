@@ -13,7 +13,7 @@ var Field = function() {
 	$(bush).css({
 		'z-index': '5',
 		'position': 'absolute',
-		
+
 
 
 	});
@@ -191,7 +191,7 @@ var creationTimer = function() {
 		}
 		if (seconde >= 10 && minute < 10) {
 			$('#timer').html("0" + minute + ": " + seconde)
-				// $('#timer').append("<p> Bravo vous avez tenu " + seconde + " secondes et " + minute + " minute(s)</p>")
+			// $('#timer').append("<p> Bravo vous avez tenu " + seconde + " secondes et " + minute + " minute(s)</p>")
 		}
 
 		/////
@@ -200,11 +200,11 @@ var creationTimer = function() {
 
 		tabCompetences = ['', ' .html5', ' .jquery', ' .angular', ' .bootstrap', ' .mongodb', ' .analytics', ' .nodejs', ' .meteor'];
 
-	
+
 		/////////////////
-			// you die ! 	 //
-			/////////////////
-		if (perso.energie <= 0 && !win) { 
+		// you die ! 	 //
+		/////////////////
+		if (perso.energie <= 0 && !win) {
 
 			clearInterval(launchChrono);
 			$('.nextskill').html('Ohhhhh You loose ! Reload !');
@@ -223,32 +223,31 @@ var creationTimer = function() {
 				$('#sound').remove();
 				$('.nuage').remove();
 			}, 2000);
-		} 
-		// else { 
-			if (d / 10 < tabCompetences.length) { // On incrémente alors les compétences
-				// chargement tous les 10 secondes
-				if (d > 0 && d % 10 === 0) {
-					$('#skill' + tabCompetences[d / 10]).show('pulsate',1500);
-					$('.nextskill').html('New Skill : ' + $(tabCompetences[d / 10]).attr('alt'));
-					// console.log(d / 10)
-				}
+		}
 
-				d++;
-			} else { // i d = 80; si il arrive au bout du tableau il gagne
-				sonOn = false;
-				win = true;
-				clearInterval(launchChrono);
-				$('.nextskill').html(' You made it ! You survive');
-				$('.endGame').fadeIn('slow');
-				$('.endGame').html('<p>Congratulations, you survive in the middle of the dinosaur jungle. Please see my skills below</p> ');
-				tabObstacle = [];
-				document.getElementById('winner').play()
-				document.getElementById('winner').volume = 0.5;
-				$('#obstacle').remove();
+		if (d / 10 < tabCompetences.length) { // On incrémente alors les compétences
+			// chargement tous les 10 secondes
+			if (d > 0 && d % 10 === 0) {
+				$('#skill' + tabCompetences[d / 10]).show('pulsate', 1500);
+				$('.nextskill').html('New Skill : ' + $(tabCompetences[d / 10]).attr('alt'));
 
 			}
+			d++;
+		} else { // i d = 80; si il arrive au bout du tableau il gagne
+			sonOn = false;
+			win = true;
+			clearInterval(launchChrono);
+			$('.nextskill').html(' You made it ! You survive');
+			$('.endGame').fadeIn('slow');
+			$('.endGame').html('<p>Congratulations, you survive in the middle of the dinosaur jungle. Please see my skills below</p> ');
+			tabObstacle = [];
+			document.getElementById('winner').play()
+			document.getElementById('winner').volume = 0.5;
+			$('#obstacle').remove();
 
-		// }
+		}
+
+
 
 		//////////////////////////////////////////////////////////////////////////////////
 		// lance un rafraichissement de la page des lors que l'on clique sur le bouton  //
@@ -267,4 +266,3 @@ var creationTimer = function() {
 //declaration de variable son
 var sonOn = true;
 // Arreter le son
-

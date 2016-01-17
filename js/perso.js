@@ -36,7 +36,7 @@ var ObjetRyu = function() {
 			'height': this.height + 'px',
 			'overflow': 'hidden'
 		});
-
+		return this;
 	}
 	// test conflict. Improve code and factorise some move ! 
 	this.testCollision = function() {
