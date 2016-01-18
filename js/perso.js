@@ -51,7 +51,10 @@ var ObjetRyu = function() {
 				this.isConflict = true;
 				if (this.isConflict) {
 					this.energie -= 10;
-					if (!perso.isHurting) {
+					if (!perso.isHurting && sonOn) {
+						document.getElementById('cri').play();
+						document.getElementById('cri').volume = 0.1;
+
 						this.RyuHurt();
 
 					}

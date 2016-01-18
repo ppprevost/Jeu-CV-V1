@@ -73,7 +73,7 @@ $('.perso-logo').css({
 	'cursor':'pointer',
 	'position':'absolute',
 	// centrage du logo
-	'left':(window.innerWidth/2)-($('.perso-dino').innerWidth()/2) +'px'
+	'left':(window.innerWidth/2)-($('.perso-dino').width()/2)-15 +'px'
 });
 
 $('.perso-hunter').css({

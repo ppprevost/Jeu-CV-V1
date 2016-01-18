@@ -228,7 +228,14 @@ var creationTimer = function() {
 		if (d / 10 < tabCompetences.length) { // On incrémente alors les compétences
 			// chargement tous les 10 secondes
 			if (d > 0 && d % 10 === 0) {
-				$('#skill' + tabCompetences[d / 10]).show('pulsate', 1500);
+				$('#skill' + tabCompetences[d / 10]).show('pulsate', 1500).animate({
+					width: '+=150'
+				}, 2000,'easeInQuint', function() {
+					$(this).delay(2500).animate({
+						width: '-=150'
+					}, 2000, 'easeOutExpo');
+				});
+
 				$('.nextskill').html('New Skill : ' + $(tabCompetences[d / 10]).attr('alt'));
 
 			}
@@ -258,10 +265,11 @@ var creationTimer = function() {
 
 	};
 
-
 	var launchChrono = setInterval(chrono, 1000);
 
 };
+
+
 
 //declaration de variable son
 var sonOn = true;

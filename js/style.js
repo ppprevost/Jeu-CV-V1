@@ -45,7 +45,7 @@ $('document').ready(function() {
 
 		//affichage du tableau
 		$('.misc').show(1500)
-//tableau des scores en arriere plan
+		//tableau des scores en arriere plan
 		// $('.container').css('z-index', 1500);
 
 		// met le jeu en pause a la perte du focus de la fenetre
@@ -116,15 +116,14 @@ $('document').ready(function() {
 		//Affichage de la dynamite
 		$('#supply').html(perso.supply);
 
-		
-		
+
 
 		// var Obstacle = [usineObstacle(0), usineObstacle(1), usineObstacle()];
 
 
 		creationObstacle();
 
-		
+
 
 		/////
 		//Déplacement //
