@@ -96,7 +96,7 @@ $('.how-to-play').click(function() {
 
 				});
 			});
-			$('.explanations').html('<p>Use "Up", "Left", "Down", "Right" to move,<p/><p> "D" for Dynamiting and "Space" to Shoot </p><p>Are you ready to survive 1:30?</p>').append('<iframe width="420" height="315" src="https://www.youtube.com/embed/NNZ5XWnEgvA" frameborder="0" allowfullscreen></iframe>');
+			$('.explanations').html('<p>Use "Up", "Left", "Down", "Right" to move,<p/><p> "D" for Dynamiting and "Space" to Shoot </p><p>Are you ready to survive 1:30?</p>').append('<iframe width="420" height="300" src="https://www.youtube.com/embed/NNZ5XWnEgvA" frameborder="0" allowfullscreen></iframe>');
 		}
 
 	});
