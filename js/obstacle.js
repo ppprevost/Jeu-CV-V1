@@ -257,8 +257,6 @@ var usineObstacle = function(random) {
 
 			}
 
-
-
 			$(obs).delay(600).fadeOut(1000, function() {
 				$(this).remove();
 				delete this;
