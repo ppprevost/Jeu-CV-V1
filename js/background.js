@@ -1,10 +1,10 @@
 //creation des backgrounds, du timer et des conditions de temps pour l'affichage des competences et la mort ou la victoire
-
+// declartation des variables globales (ex perso)
 /////
 // Terre//
 /////
-
-
+// pour le mode use strict
+var perso;
 
 var Field = function() {
 
@@ -171,6 +171,8 @@ var creationBackground = function() {
 var win;
 // permet d'incrementer les compétences
 var d = 0;
+
+
 var creationTimer = function() {
 
 	$('#compteur').prepend("<div id='timer'></div>");

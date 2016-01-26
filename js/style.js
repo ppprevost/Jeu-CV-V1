@@ -2,6 +2,7 @@
 
 $('document').ready(function() {
 
+"use strict";
 
 	//introduction jeu intro.js
 	intro();
