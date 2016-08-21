@@ -4,7 +4,6 @@
  * [ObjetRyu fonction constructeur pour creer des héros]
  */
 
-
 class ObjetRyu {
     constructor() {
         this.isJumping = false; // Frame Saut
@@ -31,7 +30,6 @@ class ObjetRyu {
         this.spriteY = [0, -100, -200, -300, -400, -500, -600, -700, -800, -900, -1000]; //bullet
 
     }
-
     creation() {
         $('#container').css({
             'z-index': '40',
@@ -46,7 +44,7 @@ class ObjetRyu {
     }
 
     testCollision() {
-        var refPerso = this
+        var refPerso = this;
         for (var i = 0; i < tabObstacle.length; i++) {
             if ( // tester toujours avec la valeur de x + width
             this.x + this.width >= tabObstacle[i].x && this.x + this.width <= tabObstacle[i].x + tabObstacle[i].width &&
@@ -128,7 +126,6 @@ class ObjetRyu {
         this.isJumping = true;
         var refPerso = this;
         this.isJumpingUp = false;
-        this.isJumpingDown = false;
 
         var tActuel;
         var tPrecedent;
@@ -157,7 +154,7 @@ class ObjetRyu {
             var jumpMove = function () {
                 if (refPerso.isJumpingUp) {
                     refPerso.y -= 15;
-                    refPerso.x += 2
+                    refPerso.x += 2;
                     if (refPerso.y <= 200) {
                         refPerso.isJumpingUp = false;
 
@@ -446,7 +443,6 @@ class ObjetRyu {
         };
         spriteCrouching();
     };
-
 
     // perso is hurting
 

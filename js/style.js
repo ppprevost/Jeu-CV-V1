@@ -1,289 +1,310 @@
 //Execution function
 
-$('document').ready(function() {
-
-"use strict";
-
-	//introduction jeu intro.js
-	intro();
-
-	// lance un rafraichissement de la page des lors que l'on clique sur le bouton 
-	$('.startAgain').click(function() {
-		location.reload();
-	});
-
-	$('.sound').click(function() {
-
-		if (sonOn) {
-			sonOn = false;
-			$(this).html('Sound off')
-		} else {
-			sonOn = true;
-			$(this).html('Sound on');
-		}
-	})
+$('document').ready(function () {
+
+    "use strict";
+
+    //introduction jeu intro.js
+    intro();
+
+    // lance un rafraichissement de la page des lors que l'on clique sur le bouton
+    $('.startAgain').click(function () {
+        location.reload();
+    });
+
+    $('.sound').click(function () {
+
+        if (sonOn) {
+            sonOn = false;
+            $(this).html('Sound off')
+        } else {
+            sonOn = true;
+            $(this).html('Sound on');
+        }
+    })
 
-	//declencheur du jeu
-	$('.launch').click(function() {
-		//suppression du dom de l'intro
-		document.getElementById('introSon').pause();
-		$(this).hide('puff', 1500, function() {
-			$(this).remove();
-			launchGame();
-		});
+    //declencheur du jeu
+    $('.launch').click(function () {
+        //suppression du dom de l'intro
+        document.getElementById('introSon').pause();
+        $(this).hide('puff', 1500, function () {
+            $(this).remove();
+            launchGame();
+        });
 
-		$('.how-to-play').hide('puff', 1500, function() {
-			$('.how-to-play').remove();
-		});
-		$('#intro').hide(1500, function() {
-			$('#intro').remove();
-		});
+        $('.how-to-play').hide('puff', 1500, function () {
+            $('.how-to-play').remove();
+        });
+        $('#intro').hide(1500, function () {
+            $('#intro').remove();
+        });
 
 
-	}) //click
+    }) //click
 
-	var launchGame = function() {
+    var launchGame = function () {
 
-		//affichage du tableau
-		$('.misc').show(1500)
-		//tableau des scores en arriere plan
-		// $('.container').css('z-index', 1500);
+        //affichage du tableau
+        $('.misc').show(1500)
+        //tableau des scores en arriere plan
+        // $('.container').css('z-index', 1500);
 
-		// met le jeu en pause a la perte du focus de la fenetre
-		// var timeOut;
-		// $(window).focus(function() {
-		// 	alert('Jeu mis en pause, appuyer sur ok pour continuer');
-		// 	timeOut = '';
-		// });
-		var main = document.getElementById('main');
-		setInterval(function() {
-			//lancement du son
-			if (sonOn & !perso.isDying) {
-				main.play()
-				main.loop = true;
-				main.volume = 0.07;
-			} //stopper le son
-			else {
-				main.pause()
-			}
-		}, 400)
+        // met le jeu en pause a la perte du focus de la fenetre
+        // var timeOut;
+        // $(window).focus(function() {
+        // 	alert('Jeu mis en pause, appuyer sur ok pour continuer');
+        // 	timeOut = '';
+        // });
+        var main = document.getElementById('main');
+        setInterval(function () {
+            //lancement du son
+            if (sonOn & !perso.isDying) {
+                main.play()
+                main.loop = true;
+                main.volume = 0.07;
+            } //stopper le son
+            else {
+                main.pause()
+            }
+        }, 400)
 
 
-		// Chargement du terrain
-		Field().creation().animate();
+        // Chargement du terrain
+        Field().creation().animate();
 
 
-		//Chargement des nuages
-		var Clouds = [usineNuage(), usineNuage(), usineNuage()];
+        //Chargement des nuages
+        var Clouds = [usineNuage(), usineNuage(), usineNuage()];
 
-		var creationNuage = function() {
+        var creationNuage = function () {
 
-			for (var i = 0; i < Clouds.length; i++) {
-				Clouds[i].creation().animate();
-			}
-		};
+            for (var i = 0; i < Clouds.length; i++) {
+                Clouds[i].creation().animate();
+            }
+        };
 
-		creationNuage();
-		//chagement des objets Background
-		creationBackground();
+        creationNuage();
+        //chagement des objets Background
+        creationBackground();
 
-		//chargement du compteur 
-		creationTimer();
+        //chargement du compteur
+        creationTimer();
 
 
-		// crer un nouvel hero à l'aide de la fonction constructeur ! 
-		perso = new ObjetRyu();
-		// Positionnement générale de ryu! 
-		$('#game').append("<img id='contenu'></div>");
-		$('#contenu').attr('src', perso.src).wrap($('<div id="container"></div>')).css('position', 'absolute');
+        // crer un nouvel hero à l'aide de la fonction constructeur !
+        perso = new ObjetRyu();
+        // Positionnement générale de ryu!
+        $('#game').append("<img id='contenu'></div>");
+        $('#contenu').attr('src', perso.src).wrap($('<div id="container"></div>')).css('position', 'absolute');
 
 
-		//launch frame idle
-		perso.creation().heroFixed();
+        //launch frame idle
+        perso.creation().heroFixed();
 
-		/////
-		// Test des Collisions //
-		/////
-		// detecter les collisions du Hero avec les Dinos
-		perso.testCollision();
-		// detecter les collisions des balles avec les Dinos
+        /////
+        // Test des Collisions //
+        /////
+        // detecter les collisions du Hero avec les Dinos
+        perso.testCollision();
+        // detecter les collisions des balles avec les Dinos
 
-		// Affichage de la vie 
-		$('#health').text(perso.energie)
+        // Affichage de la vie
+        $('#health').text(perso.energie)
 
-		// Affichage du score 
-		$('#score').text(perso.score);
+        // Affichage du score
+        $('#score').text(perso.score);
 
-		//Affichage de la dynamite
-		$('#supply').html(perso.supply);
+        //Affichage de la dynamite
+        $('#supply').html(perso.supply);
 
 
-		// var Obstacle = [usineObstacle(0), usineObstacle(1), usineObstacle()];
+        // var Obstacle = [usineObstacle(0), usineObstacle(1), usineObstacle()];
 
-		creationObstacle();
+        creationObstacle();
 
-		/////
-		//Déplacement //
-		/////
+        /////
+        //Déplacement //
+        /////
 
-		document.addEventListener('keydown', function(e) {
+        var container = document.getElementById('container');
+        var hammer = Hammer(container, {
+            transform_always_block: true,
+            tap_always: false,
+            drag_min_distance: 0
+        });
 
-			switch (e.keyCode) {
+        hammer.on("tap", (event) => {
+            actionHammer(event);
+        });
 
-				case 38: //haut
 
-					if (!perso.isJumping) {
-						perso.heroMove();
-						perso.isJumpingUp = true;
-					}
+        var actionHammer = (event)=> {
+            switch (event.type) {
+                case "tap":
+                    persoIsShootingWithSpace(event);
+                    break;
+            }
+        };
 
-					break;
-				case 39: //droite
-					e.preventDefault();
-					if (!perso.isRunning && !perso.isJumping) {
 
-						perso.RyuRunning();
+        document.addEventListener('keydown', function (e) {
 
-					}
+            switch (e.keyCode) {
 
+                case 38: //haut
 
+                    if (!perso.isJumping) {
+                        perso.heroMove();
+                        perso.isJumpingUp = true;
+                    }
 
-					break;
+                    break;
+                case 39: //droite
+                    e.preventDefault();
+                    if (!perso.isRunning && !perso.isJumping) {
 
-				case 37: //gauche
-					e.preventDefault();
-					if (!perso.isRunning && !perso.isJumping && !perso.isCrouching) {
-						perso.isRunningLeft = true;
-						perso.RyuRunning();
+                        perso.RyuRunning();
 
-					}
+                    }
 
-					break;
-				case 32: //espace
-					e.preventDefault();
-					if (!perso.isHaiduken && !perso.isJumping && !perso.isCrouching) {
-						// on lance l'animation du Hero avec son fusil
-						perso.RyuHaiduken();
-						// on lance la fonction usine retournant balle
-						ObjetBalleEnMouvement();
+                    break;
 
-					} else if (!perso.isHaiduken && !perso.isJumping && perso.isCrouching)
-					// Get Low
-					{
-						usineBullet().creation().animate();
-						perso.RyuHaiduken(); // remplacer le visuel correspondant par Crouching + shot
-					}
+                case 37: //gauche
+                    e.preventDefault();
+                    if (!perso.isRunning && !perso.isJumping && !perso.isCrouching) {
+                        perso.isRunningLeft = true;
+                        perso.RyuRunning();
 
-					// Get low and Shoot
-					else if (!perso.isHaiduken && !perso.isJumping && !perso.isCrouching && perso.isRunning)
+                    }
 
-					{
-						usineBullet().creation().animate();
-						perso.RyuHaiduken(); // remplacer le visuel correspondant par Crouching + shot
-					}
+                    break;
+                case 32: //espace
+                    persoIsShootingWithSpace(e);
+                    break;
 
-					// Jump and Shoot 
-					else if (!perso.isHaiduken && perso.isJumping && !perso.isCrouching && !perso.isRunning) {
+                case 40: // bas
+                    e.preventDefault();
+                    if (!perso.isCrouching && !perso.isHaiduken) {
+                        perso.RyuCrouching()
+                    }
+                    break;
 
-						usineBullet().creation().animate();
-						perso.RyuHaiduken();
+                case 68: // d as Dynamite !!
+                    if (!perso.isDynamiting && perso.supply > 0) {
 
-					}
-					// jump move and shoot
-					else if (!perso.isHaiduken && perso.isJumping && !perso.isCrouching && perso.isRunning) {
-						usineBullet().creation().animate();
-						perso.RyuHaiduken();
-					}
-					//Run and Shoot
-					else if (!perso.isHaiduken && !perso.isJumping && !perso.isCrouching && perso.isRunning) {
-						usineBullet().creation().animate();
-						perso.RyuHaiduken();
-					}
 
-					break;
+                        // methode de shoot
+                        perso.RyuDynamite()
+                        ObjetBalleEnMouvement();
+                    }
 
-				case 40: // bas
-					e.preventDefault();
-					if (!perso.isCrouching && !perso.isHaiduken) {
-						perso.RyuCrouching()
-					}
-					break;
+                    break;
 
-				case 68: // d as Dynamite !!
-					if (!perso.isDynamiting && perso.supply > 0) {
+            }
 
+        }, false);
 
-						// methode de shoot
-						perso.RyuDynamite()
-						ObjetBalleEnMouvement();
-					}
+        document.addEventListener('keyup', function (e) {
 
-					break;
 
-			}
+            switch (e.keyCode) {
 
-		}, false);
+                case 32:
+                    // if (perso.isHaiduken) {
 
-		document.addEventListener('keyup', function(e) {
+                    // }
 
+                    break;
+                case 38:
+                    if (perso.isJumping) {
 
-			switch (e.keyCode) {
+                        // c'est le delay d'apres saut qui fait passer la variable is jumping en false
+                        perso.isJumpingUp = false;
+                    }
 
-				case 32:
-					// if (perso.isHaiduken) {
+                    break;
+                case 39:
+                    e.preventDefault();
+                    if (perso.isRunning) {
+                        perso.isRunning = false;
 
-					// }
+                    }
 
-					break;
-				case 38:
-					if (perso.isJumping) {
+                    break;
 
-						// c'est le delay d'apres saut qui fait passer la variable is jumping en false
-						perso.isJumpingUp = false;
-					}
+                case 37:
+                    e.preventDefault();
+                    if (perso.isRunning) {
+                        perso.isRunningLeft = false;
+                        perso.isRunning = false;
 
-					break;
-				case 39:
-					e.preventDefault();
-					if (perso.isRunning) {
-						perso.isRunning = false;
+                    }
 
-					}
+                    break;
+                case 40:
 
-					break;
+                    if (perso.isCrouching) {
+                        perso.isCrouching = false;
+                    }
+                    break;
 
-				case 37:
-					e.preventDefault();
-					if (perso.isRunning) {
-						perso.isRunningLeft = false;
-						perso.isRunning = false;
+                case 68: // d as Dynamite !!
+                    if (perso.isDynamiting) {
 
-					}
 
-					break;
-				case 40:
+                    }
 
-					if (perso.isCrouching) {
-						perso.isCrouching = false;
-					}
-					break;
 
-				case 68: // d as Dynamite !!
-					if (perso.isDynamiting) {
+                    break;
+            }
 
 
-					}
+        }, false);
 
+    }; // launch game
 
-					break;
-			}
 
+    let persoIsShootingWithSpace = (event)=> {
+        event.preventDefault();
+        if (!perso.isHaiduken && !perso.isJumping && !perso.isCrouching) {
+            // on lance l'animation du Hero avec son fusil
+            perso.RyuHaiduken();
+            // on lance la fonction usine retournant balle
+            ObjetBalleEnMouvement();
 
+        } else if (!perso.isHaiduken && !perso.isJumping && perso.isCrouching)
+        // Get Low
+        {
+            usineBullet().creation().animate();
+            perso.RyuHaiduken(); // remplacer le visuel correspondant par Crouching + shot
+        }
 
-		}, false);
+        // Get low and Shoot
+        else if (!perso.isHaiduken && !perso.isJumping && !perso.isCrouching && perso.isRunning) {
+            usineBullet().creation().animate();
+            perso.RyuHaiduken(); // remplacer le visuel correspondant par Crouching + shot
+        }
 
-	}; // launch game
+        // Jump and Shoot
+        else if (!perso.isHaiduken && perso.isJumping && !perso.isCrouching && !perso.isRunning) {
 
+            usineBullet().creation().animate();
+            perso.RyuHaiduken();
+
+        }
+        // jump move and shoot
+        else if (!perso.isHaiduken && perso.isJumping && !perso.isCrouching && perso.isRunning) {
+            usineBullet().creation().animate();
+            perso.RyuHaiduken();
+        }
+        //Run and Shoot
+        else if (!perso.isHaiduken && !perso.isJumping && !perso.isCrouching && perso.isRunning) {
+            usineBullet().creation().animate();
+            perso.RyuHaiduken();
+        }
+
+
+    }
 
 
 }); // end
