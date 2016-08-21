@@ -122,7 +122,6 @@ var usineObstacle = function(random) {
 
 		animate: function() {
 
-
 			this.x = this.x - this.step;
 			this.elementHTML.style.left = this.x + 'px';
 			this.elementHTML.style.top = this.y + 'px';

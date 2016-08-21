@@ -3,6 +3,9 @@
 /**
  * [ObjetRyu fonction constructeur pour creer des héros]
  */
+
+
+
 var ObjetRyu = function() {
 	this.isJumping = false; // Frame Saut
 	this.enAttente = true; // Frame idle
@@ -458,8 +461,6 @@ var ObjetRyu = function() {
 
 			if (delai > 70) {
 				frameCrouching++;
-
-
 				$('#contenu').css('left', refPerso.spriteX[frameCrouching] + "px");
 
 				$('#contenu').css('top', refPerso.spriteY[5] + "px");

@@ -55,7 +55,6 @@ var Field = function() {
 /////
 //
 var usineNuage = function() {
-
 	var nuage = document.createElement('img');
 	nuage.src = "img/Nuage.png";
 	nuage.style.position = "absolute";
@@ -64,7 +63,7 @@ var usineNuage = function() {
 	var referenceNuage = {
 		y: Math.floor(Math.random() * 200),
 		step: Math.round(Math.random() * 10) + 1,
-		x: 2000,
+		x: window.innerWidth,
 		width: 100,
 		height: 100,
 		borderWidth: 5,
@@ -109,6 +108,7 @@ var usineBackground = function() {
 		x: window.innerWidth,
 		src: 'img/background/background',
 		className: 'objetBackground',
+		width: 90,
 		width: 90,
 		height: 80,
 		elementHTML: background,

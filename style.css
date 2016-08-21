@@ -9,10 +9,7 @@
 	font-style: normal;
 }
 
-
 /*Css relatif au jeu*/
-
-
 
 
 #containerGame{
@@ -22,7 +19,7 @@
 }
 #game {
 	
-	background: url('img/fond.png') no-repeat;
+	background: url('img/fond.png') repeat-x;
 	overflow:hidden;
 	width:100%;
 	height:580px;

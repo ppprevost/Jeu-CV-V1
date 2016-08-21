@@ -84,7 +84,6 @@ $('document').ready(function() {
 		};
 
 		creationNuage();
-
 		//chagement des objets Background
 		creationBackground();
 
@@ -97,6 +96,7 @@ $('document').ready(function() {
 		// Positionnement générale de ryu! 
 		$('#game').append("<img id='contenu'></div>");
 		$('#contenu').attr('src', perso.src).wrap($('<div id="container"></div>')).css('position', 'absolute');
+
 
 		//launch frame idle
 		perso.creation().heroFixed();
@@ -118,13 +118,9 @@ $('document').ready(function() {
 		$('#supply').html(perso.supply);
 
 
-
 		// var Obstacle = [usineObstacle(0), usineObstacle(1), usineObstacle()];
 
-
 		creationObstacle();
-
-
 
 		/////
 		//Déplacement //
