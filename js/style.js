@@ -143,6 +143,7 @@ $('document').ready(function () {
                 case "tap":
                     persoIsShootingWithSpace(event);
                     break;
+
             }
         };
 
@@ -307,4 +308,4 @@ $('document').ready(function () {
     }
 
 
-}); // end
+});// end
