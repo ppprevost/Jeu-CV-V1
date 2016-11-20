@@ -410,29 +410,6 @@ class ObjetRyu {
     //perso is ding
     RyuDie() {
         this.isDying = true;
-        // var tActuel;
-        // var tPrecedent;
-        // var frameCrouching = 0;
-        // var refPerso = this;
-        //
-        // var spriteDie = function (actuel) {
-        //     tActuel = actuel;
-        //     tPrecedent = tPrecedent || actuel;
-        //
-        //     var delai = tActuel - tPrecedent;
-        //     if (delai > 70) {
-        //         frameCrouching++;
-        //         console.log('fin du jeu');
-        //         $('#contenu').css('left', refPerso.spriteX[frameCrouching] + "px");
-        //         $('#contenu').css('top', refPerso.spriteY[5] + "px");
-        //         tPrecedent = tActuel;
-        //     }
-        //     if (refPerso.idDying) {
-        //         var animationRequestId = window.requestAnimationFrame(spriteDie);
-        //         this.enAttente = false;
-        //     }
-        // };
-        // spriteDie();
         animateRequestFrame(70,this,()=>this.isDying,null,5);
     };
 
