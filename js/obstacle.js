@@ -387,12 +387,46 @@ var usineObstacle = function (random) {
 
 var creationObstacle = function () {
     // si il est pas mort on lance des dino (evite le bug a la fin du jeu
-    setInterval(function () {
+    var div = $('#my-div');
+    var interval = (3000); //30fps
+    var leftValue = 0;
+    function animationFrame() {
+        now = new Date();
+        var elapsedTime = (now.getTime() - before.getTime());
+
+        if(elapsedTime > interval) {
+            // Recover the motion lost while inactive
+            leftValue += Math.floor(elapsedTime/interval);
+        } else {
+            leftValue++;
+        }
+
+        before = now;
+        requestAnimationFrame(applyChanges);
+    }
+
+    function applyChanges() {
         if (!perso.isDying && !win) {
             var typeObstacle = Math.round(Math.random() * 5);
             var nouvelObstacle = usineObstacle(typeObstacle).chainage();
         }
-    }, 2000);
+        setTimeout(animationFrame, interval);
+        // Queue the next frame
+
+    }
+
+// Store the animation T=0 to calc delta later on
+    var before = new Date();
+
+// Start the animation loop by rendering the first frame
+    setTimeout(()=>animationFrame(),2000);
+
+    // setInterval(function () {
+    //     if (!perso.isDying && !win) {
+    //         var typeObstacle = Math.round(Math.random() * 5);
+    //         var nouvelObstacle = usineObstacle(typeObstacle).chainage();
+    //     }
+    // }, 2000);
 };
 
 //fonction usine balle

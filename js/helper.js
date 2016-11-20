@@ -27,7 +27,7 @@ let animateRequestFrame = (tempo, context, condition, endOfAnimation, numberOfFr
     let spriteAnimation = function (actuel) {
         tActuel = actuel;
         tPrecedent = tPrecedent || actuel;
-        var delai = tActuel - tPrecedent;
+        let delai = tActuel - tPrecedent;
         if (delai > tempo) {
             frame++;
             if (frame == refPerso.spriteX.length) {
@@ -36,10 +36,6 @@ let animateRequestFrame = (tempo, context, condition, endOfAnimation, numberOfFr
             }
             $('#contenu').css('left', refPerso.spriteX[frame] + "px");
             $('#contenu').css('top', refPerso.spriteY[numberOfFrame] + "px");
-            // if (isIdle) {
-            //     $('#contenu').css('width', refPerso.idle[frameFixed].w + "px");
-            //     $('#contenu').css('height', refPerso.idle[frameFixed].h + "px");
-            // }
 
             tPrecedent = tActuel;
         }
