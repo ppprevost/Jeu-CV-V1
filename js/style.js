@@ -1,7 +1,6 @@
 //Execution function
 
 $('document').ready(function () {
-
     "use strict";
     //introduction jeu intro.js
     intro();
@@ -19,8 +18,7 @@ $('document').ready(function () {
             sonOn = true;
             $(this).html('Sound on');
         }
-    })
-
+    });
     //declencheur du jeu
     $('.launch').click(function () {
         //suppression du dom de l'intro

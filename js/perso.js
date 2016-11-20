@@ -397,7 +397,6 @@ class ObjetRyu {
     };
 
     // perso is hurting
-
     RyuHurt() {
         this.isHurting = true;
         document.getElementById('cri').play();
