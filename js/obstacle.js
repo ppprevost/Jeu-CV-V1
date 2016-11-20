@@ -2,7 +2,6 @@
 
 // pour tester les collisions je mets les objets obstacles dans ce tableau. Nous testerons par la suite les collisions avec l'usine Bullet.
 var tabObstacle = [];
-
 var usineObstacle = function(random) {
 
 	var obs = document.createElement('div');

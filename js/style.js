@@ -12,7 +12,6 @@ $('document').ready(function () {
     });
 
     $('.sound').click(function () {
-
         if (sonOn) {
             sonOn = false;
             $(this).html('Sound off')
@@ -41,8 +40,7 @@ $('document').ready(function () {
 
     }) //click
 
-    var launchGame = function () {
-
+    let launchGame = function () {
         //affichage du tableau
         $('.misc').show(1500)
         //tableau des scores en arriere plan
@@ -67,20 +65,11 @@ $('document').ready(function () {
             }
         }, 400)
 
-
         // Chargement du terrain
-        Field().creation().animate();
-
+        field.creation().animate();
 
         //Chargement des nuages
-        var Clouds = [usineNuage(), usineNuage(), usineNuage()];
 
-        var creationNuage = function () {
-
-            for (var i = 0; i < Clouds.length; i++) {
-                Clouds[i].creation().animate();
-            }
-        };
 
         creationNuage();
         //chagement des objets Background
@@ -88,7 +77,6 @@ $('document').ready(function () {
 
         //chargement du compteur
         creationTimer();
-
 
         // crer un nouvel hero à l'aide de la fonction constructeur !
         perso = new ObjetRyu();
@@ -146,158 +134,10 @@ $('document').ready(function () {
             }
         };
 
-
-        document.addEventListener('keydown', function (e) {
-
-            switch (e.keyCode) {
-
-                case 38: //haut
-
-                    if (!perso.isJumping) {
-                        perso.heroMove();
-                        perso.isJumpingUp = true;
-                    }
-
-                    break;
-                case 39: //droite
-                    e.preventDefault();
-                    if (!perso.isRunning && !perso.isJumping) {
-                        perso.RyuRunning();
-                    }
-
-                    break;
-
-                case 37: //gauche
-                    e.preventDefault();
-                    if (!perso.isRunning && !perso.isJumping && !perso.isCrouching) {
-                        perso.isRunningLeft = true;
-                        perso.RyuRunning();
-
-                    }
-
-                    break;
-                case 32: //espace
-                    persoIsShootingWithSpace(e);
-                    break;
-
-                case 40: // bas
-                    e.preventDefault();
-                    if (!perso.isCrouching && !perso.isHaiduken) {
-                        perso.RyuCrouching()
-                    }
-                    break;
-
-                case 68: // d as Dynamite !!
-                    if (!perso.isDynamiting && perso.supply > 0) {
-
-
-                        // methode de shoot
-                        perso.RyuDynamite()
-                        ObjetBalleEnMouvement();
-                    }
-
-                    break;
-
-            }
-
-        }, false);
-
-        document.addEventListener('keyup', function (e) {
-
-
-            switch (e.keyCode) {
-
-                case 32:
-                    // if (perso.isHaiduken) {
-
-                    // }
-
-                    break;
-                case 38:
-                    if (perso.isJumping) {
-
-                        // c'est le delay d'apres saut qui fait passer la variable is jumping en false
-                        perso.isJumpingUp = false;
-                    }
-
-                    break;
-                case 39:
-                    e.preventDefault();
-                    if (perso.isRunning) {
-                        perso.isRunning = false;
-
-                    }
-
-                    break;
-
-                case 37:
-                    e.preventDefault();
-                    if (perso.isRunning) {
-                        perso.isRunningLeft = false;
-                        perso.isRunning = false;
-
-                    }
-
-                    break;
-                case 40:
-
-                    if (perso.isCrouching) {
-                        perso.isCrouching = false;
-                    }
-                    break;
-
-                case 68: // d as Dynamite !!
-
-                    break;
-            }
-
-
-        }, false);
-
     }; // launch game
 
 
-    let persoIsShootingWithSpace = (event)=> {
-        event.preventDefault();
-        if (!perso.isHaiduken && !perso.isJumping && !perso.isCrouching) {
-            // on lance l'animation du Hero avec son fusil
-            perso.RyuHaiduken();
-            // on lance la fonction usine retournant balle
-            ObjetBalleEnMouvement();
-
-        } else if (!perso.isHaiduken && !perso.isJumping && perso.isCrouching)
-        // Get Low
-        {
-            usineBullet().creation().animate();
-            perso.RyuHaiduken(); // remplacer le visuel correspondant par Crouching + shot
-        }
-
-        // Get low and Shoot
-        else if (!perso.isHaiduken && !perso.isJumping && !perso.isCrouching && perso.isRunning) {
-            usineBullet().creation().animate();
-            perso.RyuHaiduken(); // remplacer le visuel correspondant par Crouching + shot
-        }
-
-        // Jump and Shoot
-        else if (!perso.isHaiduken && perso.isJumping && !perso.isCrouching && !perso.isRunning) {
-
-            usineBullet().creation().animate();
-            perso.RyuHaiduken();
-
-        }
-        // jump move and shoot
-        else if (!perso.isHaiduken && perso.isJumping && !perso.isCrouching && perso.isRunning) {
-            usineBullet().creation().animate();
-            perso.RyuHaiduken();
-        }
-        //Run and Shoot
-        else if (!perso.isHaiduken && !perso.isJumping && !perso.isCrouching && perso.isRunning) {
-            usineBullet().creation().animate();
-            perso.RyuHaiduken();
-        }
-
-
-    }
 
 
 });// end
+
