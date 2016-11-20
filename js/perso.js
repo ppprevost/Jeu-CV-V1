@@ -56,15 +56,9 @@ class ObjetRyu {
                 if (this.isConflict) {
                     this.energie -= 10;
                     if (!perso.isHurting && sonOn) {
-                        document.getElementById('cri').play();
-                        document.getElementById('cri').volume = 0.1;
-
                         this.RyuHurt();
-
                     }
-
                     this.isConflict = false;
-
                     // le contact enleve juste un point
                     // des conflit on supprime l'bstacle du tableau
                     tabObstacle.splice(i, 1);
@@ -72,7 +66,6 @@ class ObjetRyu {
                     //Sonne le glas
                     if (this.energie <= 0) {
                         this.RyuDie();
-
                     }
                 }
             }
@@ -86,39 +79,7 @@ class ObjetRyu {
 
     heroFixed() {
         this.enAttente = true;
-        var frameFixed = 0;
-        var tActuel;
-        var tPrecedent;
-
-        var refPerso = this; // reference à l'objet
-        var animate = function (actuel) {
-
-            tActuel = actuel;
-            tPrecedent = tPrecedent || actuel;
-            var delai = tActuel - tPrecedent;
-
-            if (delai > 70) {
-
-                tPrecedent = tActuel;
-
-                frameFixed++;
-                if (frameFixed == refPerso.spriteX.length) {
-                    frameFixed = 0;
-                }
-                $('#contenu').css('left', refPerso.spriteX[frameFixed] + "px");
-                $('#contenu').css('top', refPerso.spriteY[0] + "px");
-                // Pour regler la taille du sprite
-                //  $('#contenu').css('width', refPerso.idle[frameFixed].w + "px");
-                // $('#contenu').css('height', refPerso.idle[frameFixed].h + "px");
-
-            }
-            if (refPerso.enAttente) {
-                window.requestAnimationFrame(animate);
-
-            }
-
-        };
-        animate();
+        animateRequestFrame(70,this,()=>this.enAttente,"repeat",0, true)
 
     }
 
@@ -290,8 +251,6 @@ class ObjetRyu {
                 var animationRequestId = window.requestAnimationFrame(spriteHaiduken);
 
                 refPerso.enAttente = false;
-
-
             } else {
                 if (refPerso.isCrouching) {
                     refPerso.RyuCrouching();
@@ -320,9 +279,7 @@ class ObjetRyu {
         var frameHaiduken = 0;
         var refPerso = this;
         $('#supply').html(perso.supply);
-
         var spriteDynamite = function (actuel) {
-
             tActuel = actuel;
             tPrecedent = tPrecedent || actuel;
             var delai = tActuel - tPrecedent;
@@ -337,24 +294,21 @@ class ObjetRyu {
                     }
 
                 }
-
                 tPrecedent = tActuel;
             }
-
             if (refPerso.isDynamiting) {
-
                 var animationRequestId = window.requestAnimationFrame(spriteDynamite);
                 refPerso.enAttente = false;
-
             } else {
                 refPerso.heroFixed();
             }
 
         };
         spriteDynamite();
-        setTimeout(function () {
-            perso.isDynamiting = false
-        }, 2000)
+        // animateRequestFrame(70,this,()=>{return !this.isJumping && !this.isCrouching && !this.isHurting}, null,10)
+        // setTimeout(function () {
+        //     perso.isDynamiting = false
+        // }, 2000)
     };
 
     // Running right
@@ -366,12 +320,9 @@ class ObjetRyu {
         var refPerso = this;
 
         var spriteRunning = function (actuel) {
-
             tActuel = actuel;
             tPrecedent = tPrecedent || actuel;
-
             var delai = tActuel - tPrecedent;
-
             if (delai > 70) {
 
                 if (!refPerso.isCrouching) {
@@ -381,8 +332,6 @@ class ObjetRyu {
                         refPerso.x += 5;
                     }
                 }
-
-
                 $('#container').css('left', refPerso.x);
                 frameRunning++;
                 if (frameRunning == 8) {
@@ -442,73 +391,49 @@ class ObjetRyu {
 
         };
         spriteCrouching();
+        // animateRequestFrame(70,this,()=>{return this.isCrouching && !this.isHaiduken && !this.isHurting},"repeat",2);
+
+
     };
 
     // perso is hurting
 
     RyuHurt() {
         this.isHurting = true;
-        this.enAttente = false;
-        var tActuel;
-        var tPrecedent;
-        var frameCrouching = 0;
-        var refPerso = this;
-        var spriteHurting = function (actuel) {
-            tActuel = actuel;
-            tPrecedent = tPrecedent || actuel;
-
-            var delai = tActuel - tPrecedent;
-
-            if (delai > 70) {
-                frameCrouching++;
-                $('#contenu').css('left', refPerso.spriteX[frameCrouching] + "px");
-
-                $('#contenu').css('top', refPerso.spriteY[5] + "px");
-                tPrecedent = tActuel;
-
-            }
-            if (refPerso.isHurting) {
-                var animationRequestId = window.requestAnimationFrame(spriteHurting);
-                perso.enAttente = false;
-            } else {
-                refPerso.heroFixed()
-            }
-
-        };
-        spriteHurting();
-        setTimeout(function () {
-            refPerso.isHurting = false;
-
-        }, 800);
+        document.getElementById('cri').play();
+        document.getElementById('cri').volume = 0.1;
+        animateRequestFrame(70,this,()=>this.isHurting,null,5);
+        setTimeout(()=>this.isHurting = false,800);
 
     };
 
     //perso is ding
     RyuDie() {
         this.isDying = true;
-        var tActuel;
-        var tPrecedent;
-        var frameCrouching = 0;
-        var refPerso = this;
-
-        var spriteDie = function (actuel) {
-            tActuel = actuel;
-            tPrecedent = tPrecedent || actuel;
-
-            var delai = tActuel - tPrecedent;
-            if (delai > 70) {
-                frameCrouching++;
-                console.log('fin du jeu');
-                $('#contenu').css('left', refPerso.spriteX[frameCrouching] + "px");
-                $('#contenu').css('top', refPerso.spriteY[5] + "px");
-                tPrecedent = tActuel;
-            }
-            if (refPerso.idDying) {
-                var animationRequestId = window.requestAnimationFrame(spriteDie);
-                this.enAttente = false;
-            }
-        };
-        spriteDie();
+        // var tActuel;
+        // var tPrecedent;
+        // var frameCrouching = 0;
+        // var refPerso = this;
+        //
+        // var spriteDie = function (actuel) {
+        //     tActuel = actuel;
+        //     tPrecedent = tPrecedent || actuel;
+        //
+        //     var delai = tActuel - tPrecedent;
+        //     if (delai > 70) {
+        //         frameCrouching++;
+        //         console.log('fin du jeu');
+        //         $('#contenu').css('left', refPerso.spriteX[frameCrouching] + "px");
+        //         $('#contenu').css('top', refPerso.spriteY[5] + "px");
+        //         tPrecedent = tActuel;
+        //     }
+        //     if (refPerso.idDying) {
+        //         var animationRequestId = window.requestAnimationFrame(spriteDie);
+        //         this.enAttente = false;
+        //     }
+        // };
+        // spriteDie();
+        animateRequestFrame(70,this,()=>this.isDying,null,5);
     };
 
 

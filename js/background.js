@@ -4,7 +4,11 @@
 // Terre//
 /////
 // pour le mode use strict
+
+
+
 var perso;
+
 
 var Field = function() {
 

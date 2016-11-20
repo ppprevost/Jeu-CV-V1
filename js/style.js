@@ -3,7 +3,6 @@
 $('document').ready(function () {
 
     "use strict";
-
     //introduction jeu intro.js
     intro();
 
@@ -163,9 +162,7 @@ $('document').ready(function () {
                 case 39: //droite
                     e.preventDefault();
                     if (!perso.isRunning && !perso.isJumping) {
-
                         perso.RyuRunning();
-
                     }
 
                     break;
@@ -250,11 +247,6 @@ $('document').ready(function () {
                     break;
 
                 case 68: // d as Dynamite !!
-                    if (perso.isDynamiting) {
-
-
-                    }
-
 
                     break;
             }
