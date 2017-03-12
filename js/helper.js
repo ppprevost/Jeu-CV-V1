@@ -56,7 +56,7 @@ document.addEventListener('keydown', function (e) {
     switch (e.keyCode) {
 
         case 38: //haut
-
+            e.preventDefault();
             if (!perso.isJumping) {
                 perso.heroMove();
                 perso.isJumpingUp = true;
@@ -93,8 +93,6 @@ document.addEventListener('keydown', function (e) {
 
         case 68: // d as Dynamite !!
             if (!perso.isDynamiting && perso.supply > 0) {
-
-
                 // methode de shoot
                 perso.RyuDynamite()
                 ObjetBalleEnMouvement();
@@ -108,10 +106,6 @@ document.addEventListener('keyup', function (e) {
     switch (e.keyCode) {
 
         case 32:
-            // if (perso.isHaiduken) {
-
-            // }
-
             break;
         case 38:
             if (perso.isJumping) {
@@ -302,13 +296,13 @@ var creationTimer = function () {
 
     };
 
-    var launchChrono = setInterval(chrono, 1000);
+    let launchChrono = setInterval(chrono, 1000);
 
 };
 
 
 //declaration de variable son
-var perso;
+var perso = {};
 var sonOn = true;
 // Arreter le son
 

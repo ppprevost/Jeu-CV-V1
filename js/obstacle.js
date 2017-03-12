@@ -1,20 +1,21 @@
 //Here they are dinosaurs, spike and bullet prototype and functions to build them.
 
 // pour tester les collisions je mets les objets obstacles dans ce tableau. Nous testerons par la suite les collisions avec l'usine Bullet.
-var tabObstacle = [];
+let tabObstacle = [];
 //
-var usineObstacle = function (random) {
+let usineObstacle = function (random) {
 
-    var obs = document.createElement('div');
-    var img = document.createElement('img');
+    let obs = document.createElement('div');
+    let img = document.createElement('img');
     img.style.position = "absolute";
     obs.style.zIndex = "6";
-    var colisionPositionPersoX = $('#container').position().left;
-    var colisionPositionPersoY = $('#container').position().top;
+    let colisionPositionPersoX = $('#container').position().left;
+    let colisionPositionPersoY = $('#container').position().top;
 
-    var ReferenceDinosaur = {
+
+    let ReferenceDinosaur = {
         step: Math.round(Math.random() * 10) + 1, //c'est une soustraction qui lance l'animation si = 0 pas de déplacement !!!
-        x: window.innerWidth,
+        x: windowContainer,
         energie: null,
         y: null,
         src: null,
@@ -42,7 +43,6 @@ var usineObstacle = function (random) {
                 img.setAttribute('src', this.src);
             }
             $(this.elementHTML).addClass(this.className);
-
 
             $('.' + this.className).css({
                 'z-index': '40',
@@ -239,26 +239,23 @@ var usineObstacle = function (random) {
                     $(img).css('top', 0);
                     $(img).css('left', spriteX[frame] + "px");
                 }
-                if (perso.isDynamiting) {
-                    window.requestAnimationFrame(spriteExplode);
-                }
 
+                window.requestAnimationFrame(spriteExplode);
 
             };
             spriteExplode();
             //Explosion sound
             if (sonOn) {
-                document.getElementById('explosion').play();
-                document.getElementById('explosion').volume = 0.5;
-
+                let sonExplode = new Audio("son/1428.mp3");
+                sonExplode.pause();
+                sonExplode.currentTime = 0;
+                sonExplode.play();
+                sonExplode.volume = 0.5;
             }
-
             $(obs).delay(600).fadeOut(1000, function () {
-                $(this).remove();
+                $(obs).remove();
                 delete this;
             })
-
-
         },
         chainage: function () {
             if (this.className != 'spike' && this.className != 'vine') { // spike ne possede pas la methode move Dinosaur
@@ -274,7 +271,7 @@ var usineObstacle = function (random) {
     //Diplo //
     /////
 
-    var referenceDiplo = Object.create(ReferenceDinosaur);
+    var referenceDiplo = Object.assign({}, ReferenceDinosaur);
 
     referenceDiplo.y = 425;
     referenceDiplo.spriteXDead = [0, -228, -456, -684, -912, -1140, -1368, -1596, -1824, -2052];
@@ -290,7 +287,7 @@ var usineObstacle = function (random) {
     referenceDiplo.classSon = 'diplo';
 
 
-    var referenceRaptor = Object.create(ReferenceDinosaur);
+    var referenceRaptor = Object.assign({}, ReferenceDinosaur);
 
     /////
     //Raptor //
@@ -315,7 +312,7 @@ var usineObstacle = function (random) {
     /////
     //Pterodactyle //
     /////
-    var referencePtero = Object.create(ReferenceDinosaur);
+    var referencePtero = Object.assign({}, ReferenceDinosaur);
 
     referencePtero.y = 282;
     referencePtero.energie = 60;
@@ -332,7 +329,7 @@ var usineObstacle = function (random) {
     /////
     //Peaks //
     /////
-    var referencePeaks = Object.create(ReferenceDinosaur);
+    var referencePeaks = Object.assign({}, ReferenceDinosaur);
 
     referencePeaks.y = 484;
     referencePeaks.energie = 300;
@@ -346,7 +343,7 @@ var usineObstacle = function (random) {
 /////
 //Lianne //
 /////
-    var referenceVine = Object.create(ReferenceDinosaur);
+    var referenceVine = Object.assign({}, ReferenceDinosaur);
 
     referenceVine.y = 0;
     referenceVine.energie = 100;
@@ -388,45 +385,41 @@ var usineObstacle = function (random) {
 var creationObstacle = function () {
     // si il est pas mort on lance des dino (evite le bug a la fin du jeu
     var div = $('#my-div');
-    var interval = (3000); //30fps
+    var interval; //30fps
+    if (window.matchMedia("(min-width: 1400px)").matches) {
+        interval = 1700;
+    } else {
+        interval = 2000;
+    }
     var leftValue = 0;
+
     function animationFrame() {
         now = new Date();
         var elapsedTime = (now.getTime() - before.getTime());
-
-        if(elapsedTime > interval) {
+        if (elapsedTime > interval) {
             // Recover the motion lost while inactive
-            leftValue += Math.floor(elapsedTime/interval);
+            leftValue += Math.floor(elapsedTime / interval);
         } else {
             leftValue++;
         }
-
         before = now;
         requestAnimationFrame(applyChanges);
     }
 
     function applyChanges() {
         if (!perso.isDying && !win) {
-            var typeObstacle = Math.round(Math.random() * 5);
-            var nouvelObstacle = usineObstacle(typeObstacle).chainage();
+            let typeObstacle = Math.round(Math.random() * 5);
+            usineObstacle(typeObstacle).chainage();
         }
         setTimeout(animationFrame, interval);
         // Queue the next frame
-
     }
 
 // Store the animation T=0 to calc delta later on
     var before = new Date();
 
 // Start the animation loop by rendering the first frame
-    setTimeout(()=>animationFrame(),2000);
-
-    // setInterval(function () {
-    //     if (!perso.isDying && !win) {
-    //         var typeObstacle = Math.round(Math.random() * 5);
-    //         var nouvelObstacle = usineObstacle(typeObstacle).chainage();
-    //     }
-    // }, 2000);
+    setTimeout(() => animationFrame(), interval);
 };
 
 //fonction usine balle
@@ -453,11 +446,11 @@ var usineBullet = function () {
 
             //Play sound when you pull the trigger
             if (this.className == 'containerBullet' && sonOn) {
-                var sonRifle = document.getElementsByClassName('rifle');
-                for (var i = 0; i < sonRifle.length; i++) {
-                    sonRifle[i].pause()
+                let sonRifle = document.getElementsByClassName('rifle');
+                for (let i = 0; i < sonRifle.length; i++) {
+                    sonRifle[i].pause();
                     sonRifle[i].currentTime = 0;
-                    sonRifle[i].play()
+                    sonRifle[i].play();
                     sonRifle[i].volume = 0.1;
                 }
 
@@ -591,17 +584,15 @@ var usineBullet = function () {
                         } else {
                             tabObstacle[i].boum();
                         }
-
                         return true;
                     }
-
                 }
             }
 
         },
 
         animate: function () {
-            var objetBullet = this
+            let objetBullet = this;
             if (this.collisionObstacle()) {
 
                 //suppression de la balle
@@ -618,7 +609,6 @@ var usineBullet = function () {
                 if ($(this.elementHTML).position().left >= $(window).width()) {
                     $(this.elementHTML).remove();
                 }
-
                 window.requestAnimationFrame(function () {
                     objetBullet.animate();
                 });
@@ -626,16 +616,14 @@ var usineBullet = function () {
             }
             return this;
         },
-
-
     }; // fin de objet parent
 
-    var Bullet = Object.create(ObjetBullet);
+    let Bullet = Object.assign({}, ObjetBullet);
     Bullet.className = 'containerBullet';
     Bullet.spriteItemX = [0, -29, -58, -87, -116, -145, -174, -203, -232, -261];
     Bullet.width = 29;
     Bullet.height = 13;
-    var Dynamite = Object.create(ObjetBullet);
+    let Dynamite = Object.assign({}, ObjetBullet);
     Dynamite.className = 'containerDynamite';
     Dynamite.spriteItemX = [0, -51, -102, -153, -204];
     Dynamite.width = 51;
@@ -644,13 +632,10 @@ var usineBullet = function () {
     Dynamite.x = $('#container').position().left + 20;
 
     if (perso.isDynamiting) {
-
         return Dynamite;
-
     } else {
         return Bullet;
     }
-
 };
 
 var ObjetBalleEnMouvement = function () {

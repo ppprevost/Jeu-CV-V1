@@ -2,10 +2,11 @@
 // Pierre-Philippe PREVOST Copyright
 // introduction with jquery ui
 
+    var windowContainer = $("#game").width();
 
 var intro = function(){
 
-	
+
 	$('#game').prepend("<div id='intro'></div>");
 	$('#intro').append("<div></div>");
 	
@@ -15,22 +16,20 @@ var intro = function(){
 	document.getElementById('introSon').volume = 0.1
 	
 
-	var dinoArrival = $(window).width()+200;
+	var dinoArrival = windowContainer+200;
 	for (var i = 0; i < 7; i++) {
 		$("#intro").prepend("<img>");
-		
-
 	}
 
 //hunter
 var hunter = $('#intro img:nth-of-type(2)');
-hunter.attr('src','img/intro/hunter.png').addClass('perso-hunter').css({'left':'-400px'}).animate({'left':'+=' + window.innerWidth*0.30+'px'},2000,'easeInOutCirc',function(){
+hunter.attr('src','img/intro/hunter.png').addClass('perso-hunter').css({'left':'-400px'}).animate({'left':'+=' + windowContainer*0.30+'px'},2000,'easeInOutCirc',function(){
 
-	dino1.animate({'left':'-=' + window.innerWidth*0.48 +'px'},2000,'easeInExpo');
-	dino2.animate({'left':'-='+ window.innerWidth*0.44 +'px'},2000,'easeInExpo');
-	dino3.animate({'left':'-=' + window.innerWidth*0.40 +'px'},2000,'easeInExpo');
-	dino4.animate({'left':'-=' + window.innerWidth*0.36 + 'px'},2000,'easeInExpo');
-	dino5.animate({'left':'-='+ window.innerWidth*0.32+ 'px'},2000, function(){
+	dino1.animate({'left':'-=' + windowContainer*0.48 +'px'},2000,'easeInExpo');
+	dino2.animate({'left':'-='+ windowContainer*0.44 +'px'},2000,'easeInExpo');
+	dino3.animate({'left':'-=' + windowContainer*0.40 +'px'},2000,'easeInExpo');
+	dino4.animate({'left':'-=' + windowContainer*0.36 + 'px'},2000,'easeInExpo');
+	dino5.animate({'left':'-='+ windowContainer*0.32+ 'px'},2000, function(){
 	logo.animate({'top':'+=250px'},3500)});
 
 });
@@ -63,7 +62,6 @@ $('.perso-dino').css({
 });
 
 $('.perso-ptero').css({
-	
 	'position':'absolute',
 	top: '230px'
 });
@@ -73,7 +71,7 @@ $('.perso-logo').css({
 	'cursor':'pointer',
 	'position':'absolute',
 	// centrage du logo
-	'left':(window.innerWidth/2)-($('.perso-dino').width()/2)-15 +'px'
+	'left':(windowContainer/2)-($('.perso-dino').width()/2)-15 +'px'
 });
 
 $('.perso-hunter').css({
