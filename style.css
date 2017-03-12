@@ -22,8 +22,10 @@
 	background: url('img/fond.png') repeat-x;
 	overflow:hidden;
 	width:100%;
+	margin:0 auto;
 	height:580px;
-	position: absolute;
+	position: relative;
+	max-width:1400px;
 }
 
 .how-to-play{

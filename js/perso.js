@@ -4,7 +4,7 @@
  * [ObjetRyu fonction constructeur pour creer des héros]
  */
 
-class ObjetRyu {
+export class ObjetRyu {
     constructor() {
         this.isJumping = false; // Frame Saut
         this.enAttente = true; // Frame idle
@@ -82,7 +82,6 @@ class ObjetRyu {
         animateRequestFrame(70,this,()=>this.enAttente,"repeat",0, true)
 
     }
-
     heroMove() {
         this.isJumping = true;
         var refPerso = this;
@@ -297,7 +296,7 @@ class ObjetRyu {
                 tPrecedent = tActuel;
             }
             if (refPerso.isDynamiting) {
-                var animationRequestId = window.requestAnimationFrame(spriteDynamite);
+                window.requestAnimationFrame(spriteDynamite);
                 refPerso.enAttente = false;
             } else {
                 refPerso.heroFixed();
@@ -369,7 +368,6 @@ class ObjetRyu {
         var spriteCrouching = function (actuel) {
             tActuel = actuel;
             tPrecedent = tPrecedent || actuel;
-
             var delai = tActuel - tPrecedent;
 
             if (delai > 70) {
