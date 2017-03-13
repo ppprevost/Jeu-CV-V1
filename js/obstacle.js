@@ -132,6 +132,7 @@ let usineObstacle = function (random) {
                     if (tabObstacle[i] == this) {
                         delete tabObstacle[i];
                         tabObstacle.splice(i, 1);
+                        delete usineObstacle(random)
                     }
                 }
 
@@ -156,6 +157,7 @@ let usineObstacle = function (random) {
                     if (tabObstacle[i] == this) {
                         delete tabObstacle[i];
                         tabObstacle.splice(i, 1);
+                        delete usineObstacle(random)
                     }
                 }
                 // lancer l'animation dead  puis le supprimer du DOM
@@ -354,30 +356,9 @@ let usineObstacle = function (random) {
     referenceVine.step = 3;
     $('.vine').css('z-index', '35')
 
-    // Retour de l'objet en fonction de math random
-    if (random == 1) {
-        tabObstacle.push(referenceDiplo);
-        return referenceDiplo;
-
-    } else if (random == 2) {
-        tabObstacle.push(referencePtero);
-        return referencePtero;
-
-    } else if (random == 3) {
-        tabObstacle.push(referencePeaks);
-        return referencePeaks;
-    }
-
-    else if (random == 4) {
-        tabObstacle.push(referenceVine);
-        return referenceVine
-    }
-
-    else {
-        tabObstacle.push(referenceRaptor);
-        return referenceRaptor;
-    }
-
+    let tabObstacleChoice = [referenceDiplo, referencePeaks, referencePtero, referenceVine, referenceRaptor];
+    tabObstacle.push(tabObstacleChoice[random] || referenceRaptor);
+    return tabObstacleChoice[random] || referenceRaptor;
 
 }; // fin de la fonction usine
 
