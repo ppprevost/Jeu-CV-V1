@@ -189,6 +189,7 @@ let usineObstacle = function (random) {
             var obs = document.createElement('div');
             var img = document.createElement('img');
 
+
             $('#game').append(obs);
             $(obs).addClass('explode');
             $(obs).append(img);
@@ -248,11 +249,36 @@ let usineObstacle = function (random) {
             spriteExplode();
             //Explosion sound
             if (sonOn) {
+                var numberDinoDie = tabObstacle.length
+                let typeKill = (mp3) => {
+                    let sonDie;
+                    sonDie = new Audio(`son/${mp3}.mp3`);
+                    sonDie.pause();
+                    sonDie.currentTime = 0;
+                    sonDie.play();
+                    sonDie.volume = 0.2;
+                };
+
+                switch (numberDinoDie) {
+                    case 2:
+                        typeKill("double_kill");
+                        break;
+
+                    case 3:
+                        typeKill("ultrakill");
+                        break;
+                    case 4 :
+                        typeKill('dominating');
+                        break;
+                    case 5 :
+                        typeKill("unstoppable");
+                        break;
+                }
                 let sonExplode = new Audio("son/1428.mp3");
                 sonExplode.pause();
                 sonExplode.currentTime = 0;
                 sonExplode.play();
-                sonExplode.volume = 0.5;
+                sonExplode.volume = 0.4;
             }
             $(obs).delay(600).fadeOut(1000, function () {
                 $(obs).remove();

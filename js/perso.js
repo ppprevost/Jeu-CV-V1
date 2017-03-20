@@ -30,6 +30,7 @@ class ObjetRyu {
         this.spriteY = [0, -100, -200, -300, -400, -500, -600, -700, -800, -900, -1000]; //bullet
 
     }
+
     creation() {
         $('#container').css({
             'z-index': '40',
@@ -44,44 +45,46 @@ class ObjetRyu {
     }
 
     testCollision() {
-        var refPerso = this;
-        for (var i = 0; i < tabObstacle.length; i++) {
-            if ( // tester toujours avec la valeur de x + width
-            this.x + this.width >= tabObstacle[i].x && this.x + this.width <= tabObstacle[i].x + tabObstacle[i].width &&
+        let refPerso = this;
+        if (tabObstacle.length) {
+            for (let i = 0; i < tabObstacle.length; i++) {
+                if ( // tester toujours avec la valeur de x + width
+                this.x + this.width >= tabObstacle[i].x && this.x + this.width <= tabObstacle[i].x + tabObstacle[i].width &&
                 //tester tjrs avec la valeur de y + height
-            this.y + this.height >= tabObstacle[i].y && this.y + this.height <= tabObstacle[i].y + tabObstacle[i].height
+                this.y + this.height >= tabObstacle[i].y && this.y + this.height <= tabObstacle[i].y + tabObstacle[i].height
                 // pour les liannes
-            || !perso.isCrouching && tabObstacle[i].className == "vine" && this.x + this.width >= tabObstacle[i].x && this.x + this.width <= tabObstacle[i].x + tabObstacle[i].width) {
-                this.isConflict = true;
-                if (this.isConflict) {
-                    this.energie -= 10;
-                    if (!perso.isHurting && sonOn) {
-                        this.RyuHurt();
-                    }
-                    this.isConflict = false;
-                    // le contact enleve juste un point
-                    // des conflit on supprime l'bstacle du tableau
-                    tabObstacle.splice(i, 1);
-                    $('#health').text(this.energie);
-                    //Sonne le glas
-                    if (this.energie <= 0) {
-                        this.RyuDie();
+                || !perso.isCrouching && tabObstacle[i].className == "vine" && this.x + this.width >= tabObstacle[i].x && this.x + this.width <= tabObstacle[i].x + tabObstacle[i].width) {
+                    this.isConflict = true;
+                    if (this.isConflict) {
+                        this.energie -= 10;
+                        if (!perso.isHurting && sonOn) {
+                            this.RyuHurt();
+                        }
+                        this.isConflict = false;
+                        // le contact enleve juste un point
+                        // des conflit on supprime l'bstacle du tableau
+                        tabObstacle.splice(i, 1);
+                        $('#health').text(this.energie);
+                        //Sonne le glas
+                        if (this.energie <= 0) {
+                            this.RyuDie();
+                        }
                     }
                 }
             }
-
         }
         //tester les collisions toutes les x ms
         setTimeout(function () {
             refPerso.testCollision();
-        }, 200);
+        }, 300);
     }
 
     heroFixed() {
         this.enAttente = true;
-        animateRequestFrame(70,this,()=>this.enAttente,"repeat",0, true)
+        animateRequestFrame(70, this, () => this.enAttente, "repeat", 0, true)
 
     }
+
     heroMove() {
         this.isJumping = true;
         var refPerso = this;
@@ -157,7 +160,6 @@ class ObjetRyu {
             }
 
             if (refPerso.isJumping) {
-
                 window.requestAnimationFrame(spriteJumping);
                 // window.requestAnimationFrame(jumpUp);
 
@@ -165,7 +167,6 @@ class ObjetRyu {
 
                 //remise a 0
             } else {
-
                 refPerso.heroFixed();
             }
 
@@ -264,7 +265,7 @@ class ObjetRyu {
         setTimeout(function () {
             refPerso.isHaiduken = false;
 
-        }, 700)
+        }, 500)
     }
 
     //Dynamite attack !
@@ -304,10 +305,6 @@ class ObjetRyu {
 
         };
         spriteDynamite();
-        // animateRequestFrame(70,this,()=>{return !this.isJumping && !this.isCrouching && !this.isHurting}, null,10)
-        // setTimeout(function () {
-        //     perso.isDynamiting = false
-        // }, 2000)
     };
 
     // Running right
@@ -399,15 +396,15 @@ class ObjetRyu {
         this.isHurting = true;
         document.getElementById('cri').play();
         document.getElementById('cri').volume = 0.1;
-        animateRequestFrame(70,this,()=>this.isHurting,null,5);
-        setTimeout(()=>this.isHurting = false,800);
+        animateRequestFrame(70, this, () => this.isHurting, null, 5);
+        setTimeout(() => this.isHurting = false, 800);
 
     };
 
     //perso is ding
     RyuDie() {
         this.isDying = true;
-        animateRequestFrame(70,this,()=>this.isDying,null,5);
+        animateRequestFrame(70, this, () => this.isDying, null, 5);
     };
 
 
