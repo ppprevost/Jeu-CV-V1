@@ -33,11 +33,13 @@ $('document').ready(function () {
 
     }) //click
 
+
+
 });// end
 
 let launchGame = function () {
     //affichage du tableau
-    $('.misc').show(1500)
+    $('.misc').show(1500);
     //tableau des scores en arriere plan
     // $('.container').css('z-index', 1500);
 
@@ -70,11 +72,10 @@ let launchGame = function () {
     //chagement des objets Background
     creationBackground();
 
-    //chargement du compteur
-    creationTimer();
+
 
     // crer un nouvel hero à l'aide de la fonction constructeur !
-    perso = new ObjetRyu();
+    var perso = new ObjetRyu();
     // Positionnement générale de ryu!
     $('#game').append("<img id='contenu'></div>");
     $('#contenu').attr('src', perso.src).wrap($('<div id="container"></div>')).css('position', 'absolute');
@@ -102,7 +103,7 @@ let launchGame = function () {
 
     // var Obstacle = [usineObstacle(0), usineObstacle(1), usineObstacle()];
 
-    creationObstacle();
+    creationObstacle(perso);
 
     /////
     //Déplacement //
@@ -123,12 +124,16 @@ let launchGame = function () {
     var actionHammer = (event) => {
         switch (event.type) {
             case "tap":
-                persoIsShootingWithSpace(event);
+                persoIsShootingWithSpace(event,perso);
+                //ObjetBalleEnMouvement(event,perso);
                 break;
 
         }
     };
 
+    eventListener(perso);
+    //chargement du compteur
+    creationTimer(perso);
 }; // launch game
 
 

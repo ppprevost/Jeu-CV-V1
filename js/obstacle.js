@@ -3,7 +3,7 @@
 // pour tester les collisions je mets les objets obstacles dans ce tableau. Nous testerons par la suite les collisions avec l'usine Bullet.
 let tabObstacle = [];
 //
-let usineObstacle = function (random) {
+let usineObstacle = function (random, perso) {
 
     let obs = document.createElement('div');
     let img = document.createElement('img');
@@ -132,7 +132,7 @@ let usineObstacle = function (random) {
                     if (tabObstacle[i] == this) {
                         delete tabObstacle[i];
                         tabObstacle.splice(i, 1);
-                        delete usineObstacle(random)
+                        delete usineObstacle(random,perso)
                     }
                 }
 
@@ -157,7 +157,7 @@ let usineObstacle = function (random) {
                     if (tabObstacle[i] == this) {
                         delete tabObstacle[i];
                         tabObstacle.splice(i, 1);
-                        delete usineObstacle(random)
+                        delete usineObstacle(random,perso)
                     }
                 }
                 // lancer l'animation dead  puis le supprimer du DOM
@@ -389,7 +389,7 @@ let usineObstacle = function (random) {
 }; // fin de la fonction usine
 
 
-var creationObstacle = function () {
+var creationObstacle = function (perso) {
     // si il est pas mort on lance des dino (evite le bug a la fin du jeu
     var div = $('#my-div');
     var interval; //30fps
@@ -416,7 +416,7 @@ var creationObstacle = function () {
     function applyChanges() {
         if (!perso.isDying && !win) {
             let typeObstacle = Math.round(Math.random() * 5);
-            usineObstacle(typeObstacle).chainage();
+            usineObstacle(typeObstacle, perso).chainage();
         }
         setTimeout(animationFrame, interval);
         // Queue the next frame
@@ -431,7 +431,7 @@ var creationObstacle = function () {
 
 //fonction usine balle
 
-var usineBullet = function () {
+var usineBullet = function (perso) {
     var obs = document.createElement('div');
     var img = document.createElement('img');
 
@@ -613,7 +613,7 @@ var usineBullet = function () {
                 $(this.elementHTML).css('left', this.x + 'px');
                 $(this.elementHTML).css('top', this.y + 'px');
 
-                if ($(this.elementHTML).position().left >= $(window).width()) {
+                if ($(this.elementHTML).position().left >= windowContainer) {
                     $(this.elementHTML).remove();
                 }
                 window.requestAnimationFrame(function () {
@@ -645,6 +645,6 @@ var usineBullet = function () {
     }
 };
 
-var ObjetBalleEnMouvement = function () {
-    usineBullet().creation().moveBullet().animate();
+var ObjetBalleEnMouvement = function (perso) {
+    usineBullet(perso).creation().moveBullet().animate();
 };

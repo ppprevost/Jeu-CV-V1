@@ -51,146 +51,149 @@ let animateRequestFrame = (tempo, context, condition, endOfAnimation, numberOfFr
     spriteAnimation();
 };
 
-document.addEventListener('keydown', function (e) {
+let eventListener = (perso) => {
+    document.addEventListener('keydown', function (e) {
 
-    switch (e.keyCode) {
+        if (perso) {
+            switch (e.keyCode) {
 
-        case 38: //haut
-            e.preventDefault();
-            if (!perso.isJumping) {
-                perso.heroMove();
-                perso.isJumpingUp = true;
+                case 38: //haut
+                    e.preventDefault();
+                    if (!perso.isJumping) {
+                        perso.heroMove();
+                        perso.isJumpingUp = true;
+                    }
+
+                    break;
+                case 39: //droite
+                    e.preventDefault();
+                    if (!perso.isRunning && !perso.isJumping) {
+                        perso.RyuRunning();
+                    }
+
+                    break;
+
+                case 37: //gauche
+                    e.preventDefault();
+                    if (!perso.isRunning && !perso.isJumping && !perso.isCrouching) {
+                        perso.isRunningLeft = true;
+                        perso.RyuRunning();
+
+                    }
+
+                    break;
+                case 32: //espace
+                    persoIsShootingWithSpace(e, perso);
+                    //ObjetBalleEnMouvement(e,perso);
+                    break;
+
+                case 40: // bas
+                    e.preventDefault();
+                    if (!perso.isCrouching && !perso.isHaiduken) {
+                        perso.RyuCrouching()
+                    }
+                    break;
+
+                case 68: // d as Dynamite !!
+                    if (!perso.isDynamiting && perso.supply > 0) {
+                        // methode de shoot
+                        perso.RyuDynamite()
+                        ObjetBalleEnMouvement(perso);
+                    }
+                    break;
             }
+        }
 
-            break;
-        case 39: //droite
-            e.preventDefault();
-            if (!perso.isRunning && !perso.isJumping) {
-                perso.RyuRunning();
+
+    }, false);
+
+    document.addEventListener('keyup', function (e) {
+        if (perso) {
+            switch (e.keyCode) {
+
+                case 32:
+                    break;
+                case 38:
+                    if (perso.isJumping) {
+
+                        // c'est le delay d'apres saut qui fait passer la variable is jumping en false
+                        perso.isJumpingUp = false;
+                    }
+
+                    break;
+                case 39:
+                    e.preventDefault();
+                    if (perso.isRunning) {
+                        perso.isRunning = false;
+
+                    }
+
+                    break;
+
+                case 37:
+                    e.preventDefault();
+                    if (perso.isRunning) {
+                        perso.isRunningLeft = false;
+                        perso.isRunning = false;
+                    }
+                    break;
+                case 40:
+
+                    if (perso.isCrouching) {
+                        perso.isCrouching = false;
+                    }
+                    break;
+
+                case 68: // d as Dynamite !!
+
+                    break;
             }
-
-            break;
-
-        case 37: //gauche
-            e.preventDefault();
-            if (!perso.isRunning && !perso.isJumping && !perso.isCrouching) {
-                perso.isRunningLeft = true;
-                perso.RyuRunning();
-
-            }
-
-            break;
-        case 32: //espace
-            persoIsShootingWithSpace(e);
-            break;
-
-        case 40: // bas
-            e.preventDefault();
-            if (!perso.isCrouching && !perso.isHaiduken) {
-                perso.RyuCrouching()
-            }
-            break;
-
-        case 68: // d as Dynamite !!
-            if (!perso.isDynamiting && perso.supply > 0) {
-                // methode de shoot
-                perso.RyuDynamite()
-                ObjetBalleEnMouvement();
-            }
-            break;
-    }
-
-}, false);
-
-document.addEventListener('keyup', function (e) {
-    switch (e.keyCode) {
-
-        case 32:
-            break;
-        case 38:
-            if (perso.isJumping) {
-
-                // c'est le delay d'apres saut qui fait passer la variable is jumping en false
-                perso.isJumpingUp = false;
-            }
-
-            break;
-        case 39:
-            e.preventDefault();
-            if (perso.isRunning) {
-                perso.isRunning = false;
-
-            }
-
-            break;
-
-        case 37:
-            e.preventDefault();
-            if (perso.isRunning) {
-                perso.isRunningLeft = false;
-                perso.isRunning = false;
-
-            }
-
-            break;
-        case 40:
-
-            if (perso.isCrouching) {
-                perso.isCrouching = false;
-            }
-            break;
-
-        case 68: // d as Dynamite !!
-
-            break;
-    }
+        }
+    }, false);
+};
 
 
-}, false);
-
-
-let persoIsShootingWithSpace = (event) => {
+let persoIsShootingWithSpace = (event, perso) => {
     event.preventDefault();
-    if (!perso.isHaiduken && !perso.isJumping && !perso.isCrouching) {
-        // on lance l'animation du Hero avec son fusil
-        perso.RyuHaiduken();
-        // on lance la fonction usine retournant balle
-        ObjetBalleEnMouvement();
+    if (perso) {
+        if (!perso.isHaiduken && !perso.isJumping && !perso.isCrouching) {
+            // on lance l'animation du Hero avec son fusil
+            perso.RyuHaiduken();
+            // on lance la fonction usine retournant balle
+            ObjetBalleEnMouvement(perso);
 
-    } else if (!perso.isHaiduken && !perso.isJumping && perso.isCrouching)
-    // Get Low
-    {
-        usineBullet().creation().animate();
-        perso.RyuHaiduken(); // remplacer le visuel correspondant par Crouching + shot
+        } else if (!perso.isHaiduken && !perso.isJumping && perso.isCrouching)
+        // Get Low
+        {
+            usineBullet(perso).creation().animate();
+            perso.RyuHaiduken(); // remplacer le visuel correspondant par Crouching + shot
+        }
+
+        // Get low and Shoot
+        else if (!perso.isHaiduken && !perso.isJumping && !perso.isCrouching && perso.isRunning) {
+            usineBullet(perso).creation().animate();
+            perso.RyuHaiduken(); // remplacer le visuel correspondant par Crouching + shot
+        }
+
+        // Jump and Shoot
+        else if (!perso.isHaiduken && perso.isJumping && !perso.isCrouching && !perso.isRunning) {
+
+            usineBullet(perso).creation().animate();
+            perso.RyuHaiduken();
+
+        }
+        // jump move and shoot
+        else if (!perso.isHaiduken && perso.isJumping && !perso.isCrouching && perso.isRunning) {
+            usineBullet(perso).creation().animate();
+            perso.RyuHaiduken();
+        }
+        //Run and Shoot
+        else if (!perso.isHaiduken && !perso.isJumping && !perso.isCrouching && perso.isRunning) {
+            usineBullet(perso).creation().animate();
+            perso.RyuHaiduken();
+        }
     }
-
-    // Get low and Shoot
-    else if (!perso.isHaiduken && !perso.isJumping && !perso.isCrouching && perso.isRunning) {
-        usineBullet().creation().animate();
-        perso.RyuHaiduken(); // remplacer le visuel correspondant par Crouching + shot
-    }
-
-    // Jump and Shoot
-    else if (!perso.isHaiduken && perso.isJumping && !perso.isCrouching && !perso.isRunning) {
-
-        usineBullet().creation().animate();
-        perso.RyuHaiduken();
-
-    }
-    // jump move and shoot
-    else if (!perso.isHaiduken && perso.isJumping && !perso.isCrouching && perso.isRunning) {
-        usineBullet().creation().animate();
-        perso.RyuHaiduken();
-    }
-    //Run and Shoot
-    else if (!perso.isHaiduken && !perso.isJumping && !perso.isCrouching && perso.isRunning) {
-        usineBullet().creation().animate();
-        perso.RyuHaiduken();
-    }
-
-
-}
-
+};
 
 /*
  // Background Timer
@@ -202,7 +205,7 @@ var win;
 var d = 0;
 
 
-var creationTimer = function () {
+var creationTimer = function (perso) {
 
     $('#compteur').prepend("<div id='timer'></div>");
     $('#timer').html("00 : 00");
@@ -302,7 +305,7 @@ var creationTimer = function () {
 
 
 //declaration de variable son
-var perso = {};
+//var perso = {};
 var sonOn = true;
 // Arreter le son
 

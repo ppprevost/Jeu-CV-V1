@@ -53,11 +53,11 @@ class ObjetRyu {
                 //tester tjrs avec la valeur de y + height
                 this.y + this.height >= tabObstacle[i].y && this.y + this.height <= tabObstacle[i].y + tabObstacle[i].height
                 // pour les liannes
-                || !perso.isCrouching && tabObstacle[i].className == "vine" && this.x + this.width >= tabObstacle[i].x && this.x + this.width <= tabObstacle[i].x + tabObstacle[i].width) {
+                || !this.isCrouching && tabObstacle[i].className == "vine" && this.x + this.width >= tabObstacle[i].x && this.x + this.width <= tabObstacle[i].x + tabObstacle[i].width) {
                     this.isConflict = true;
                     if (this.isConflict) {
                         this.energie -= 10;
-                        if (!perso.isHurting && sonOn) {
+                        if (!this.isHurting && sonOn) {
                             this.RyuHurt();
                         }
                         this.isConflict = false;
@@ -74,9 +74,7 @@ class ObjetRyu {
             }
         }
         //tester les collisions toutes les x ms
-        setTimeout(function () {
-            refPerso.testCollision();
-        }, 300);
+        setTimeout(() => this.testCollision(), 300);
     }
 
     heroFixed() {
@@ -182,20 +180,20 @@ class ObjetRyu {
     }
 
     RyuHaiduken() {
-        perso.isHaiduken = true;
-        perso.isDynamiting = false;
+        this.isHaiduken = true;
+        this.isDynamiting = false;
         var tActuel;
         var tPrecedent;
         var frameHaiduken = 0;
         var refPerso = this;
 
-        var spriteHaiduken = function (actuel) {
+        var spriteHaiduken = (actuel) => {
 
             tActuel = actuel;
             tPrecedent = tPrecedent || actuel;
             var delai = tActuel - tPrecedent;
             var tps = 70;
-            if (perso.isCrouching) { // animation - rapide
+            if (this.isCrouching) { // animation - rapide
                 tps = 120;
             }
             if (delai > tps) {
@@ -217,7 +215,7 @@ class ObjetRyu {
                         $('#contenu').css('left', refPerso.spriteX[frameHaiduken] + "px");
                         $('#contenu').css('top', refPerso.spriteY[6] + "px");
 
-                    } else if (perso.isCrouching) {
+                    } else if (this.isCrouching) {
                         // Crouch and Shoot
 
                         if (frameHaiduken == 5) {
@@ -226,7 +224,7 @@ class ObjetRyu {
                         $('#contenu').css('left', refPerso.spriteX[frameHaiduken] + "px");
                         $('#contenu').css('top', refPerso.spriteY[7] + "px");
 
-                    } else if (perso.isJumping) {
+                    } else if (this.isJumping) {
                         // jump and shoot
                         if (frameHaiduken == refPerso.spriteX.length) {
                             frameHaiduken = 0;
@@ -278,7 +276,7 @@ class ObjetRyu {
         var tPrecedent;
         var frameHaiduken = 0;
         var refPerso = this;
-        $('#supply').html(perso.supply);
+        $('#supply').html(this.supply);
         var spriteDynamite = function (actuel) {
             tActuel = actuel;
             tPrecedent = tPrecedent || actuel;
